@@ -1,0 +1,33 @@
+{
+    "name": "marsskom/magento-module-generator",
+    "description": "Magento 2 Generator Module automates developer's routine with creation of files.",
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Andrii Prakapas",
+            "email": "marsskom@gmail.com",
+            "homepage": "https://github.com/marsskom",
+            "role": "PHP Developer"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "version": "1.0.0",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "~7.4.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Marsskom\\Generator": ""
+        }
+    }
+}
