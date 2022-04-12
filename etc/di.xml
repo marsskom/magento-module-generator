@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generatorDataPatchCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
+        <arguments>
+            <argument name="sequence" xsi:type="object">ClassSequence</argument>
+            <argument name="translators" xsi:type="array">
+                <item name="40"
+                      xsi:type="object">Marsskom\Generator\Model\Console\Command\DataPatchTranslator</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="ClassSequence" type="Marsskom\Generator\Model\Php\Foundation\Sequence">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="5" xsi:type="object">SeparateClassSequence</item>
+                <item name="100" xsi:type="object">Marsskom\Generator\Model\Php\Automation\Writer</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SeparateClassSequence" type="Marsskom\Generator\Model\Php\Foundation\SeparateSequence">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="5" xsi:type="object">Marsskom\Generator\Model\Php\Heap\FileGenerator</item>
+                <item name="10" xsi:type="object">Marsskom\Generator\Model\Php\Heap\ClassGenerator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Marsskom\Generator\Api\Data\CoordinatorInterface"
+                type="Marsskom\Generator\Model\Console\Coordinator"/>
+
+    <type name="Marsskom\Generator\Model\Console\Coordinator">
+        <arguments>
+            <argument name="translator"
+                      xsi:type="object">Marsskom\Generator\Model\Console\BaseTranslator</argument>
+        </arguments>
+    </type>
+
+    <type name="Marsskom\Generator\Model\Console\BaseTranslator">
+        <arguments>
+            <argument name="translators" xsi:type="array">
+                <item name="10"
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\ModuleTranslator</item>
+                <item name="20"
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\FileTranslator</item>
+                <item name="30"
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\ClassTranslator</item>
+            </argument>
+            <argument name="inputContexts" xsi:type="array">
+                <item name="module"
+                      xsi:type="object">Marsskom\Generator\Model\Context\Input\ModuleFactory</item>
+                <item name="file"
+                      xsi:type="object">Marsskom\Generator\Model\Context\Input\FileFactory</item>
+                <item name="class"
+                      xsi:type="object">Marsskom\Generator\Model\Context\Input\ClassInputFactory</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
