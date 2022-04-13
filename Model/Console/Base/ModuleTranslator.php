@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Console\Base;
 
 use Marsskom\Generator\Api\Data\Context\InputTranslatorInterface;
+use Marsskom\Generator\Model\Context\Parameters;
 
 class ModuleTranslator implements InputTranslatorInterface
 {
@@ -19,7 +20,7 @@ class ModuleTranslator implements InputTranslatorInterface
 
         return [
             'module' => [
-                'name' => $inputOptions['module'],
+                'name' => $inputOptions[Parameters::MODULE],
             ],
         ];
     }

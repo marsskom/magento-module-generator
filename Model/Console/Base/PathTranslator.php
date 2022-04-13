@@ -7,6 +7,7 @@ namespace Marsskom\Generator\Model\Console\Base;
 use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\InputTranslatorInterface;
 use Marsskom\Generator\Helper\Translator\PathHelper;
+use Marsskom\Generator\Model\Context\Parameters;
 
 class PathTranslator implements InputTranslatorInterface
 {
@@ -32,10 +33,10 @@ class PathTranslator implements InputTranslatorInterface
     {
         return [
             'path' => [
-                'toModule' => $this->pathHelper->getModulePath($inputOptions['module']),
+                'toModule' => $this->pathHelper->getModulePath($inputOptions[Parameters::MODULE]),
                 'toFile'   => $this->pathHelper->getPathToFile(
-                    $inputOptions['module'],
-                    $inputOptions['path']
+                    $inputOptions[Parameters::MODULE],
+                    $inputOptions[Parameters::PATH]
                 ),
             ],
         ];

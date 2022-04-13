@@ -8,6 +8,7 @@ use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\InputTranslatorInterface;
 use Marsskom\Generator\Helper\Translator\NamespaceHelper;
 use Marsskom\Generator\Model\Context\InputFactory;
+use Marsskom\Generator\Model\Context\Parameters;
 use Marsskom\Generator\Model\Helper\UseModelFactory;
 use Nette\PhpGenerator\PhpNamespace;
 
@@ -40,7 +41,10 @@ class DataPatchTranslator implements InputTranslatorInterface
     {
         return [
             'file'  => [
-                'namespace' => $this->namespaceHelper->getNamespace($inputOptions['module'], $inputOptions['path']),
+                'namespace' => $this->namespaceHelper->getNamespace(
+                    $inputOptions[Parameters::MODULE],
+                    $inputOptions[Parameters::PATH]
+                ),
                 'uses'      => [
                     $this->useFactory->create([
                         'name' => \Magento\Framework\Setup\Patch\DataPatchInterface::class,
@@ -49,11 +53,9 @@ class DataPatchTranslator implements InputTranslatorInterface
                 ],
             ],
             'class' => [
-                'extends'    => '',
                 'implements' => [
                     'DataPatchInterface',
                 ],
-                'comments'   => [],
             ],
         ];
     }

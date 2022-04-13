@@ -10,8 +10,10 @@ use Marsskom\Generator\Api\Data\Context\InputTranslatorInterface;
 use Marsskom\Generator\Api\Data\ContextInterface;
 use Marsskom\Generator\Api\Data\CoordinatorInterfaceFactory;
 use Marsskom\Generator\Api\Data\SequenceInterface;
+use Marsskom\Generator\Model\Context\Parameters;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class GeneratorCommand extends Command
@@ -45,6 +47,43 @@ abstract class GeneratorCommand extends Command
         $this->coordinatorFactory = $coordinatorFactory;
         $this->inputTranslators = $inputTranslators;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function configure(): void
+    {
+        $this->setDefinition($this->getOptionsList());
+
+        parent::configure();
+    }
+
+    /**
+     * Returns options list.
+     *
+     * @return array
+     */
+    protected function getOptionsList(): array
+    {
+        return array_merge(
+            [
+                new InputOption(
+                    Parameters::MODULE,
+                    null,
+                    InputOption::VALUE_REQUIRED,
+                    'Module name (Vendor_Module)'
+                ),
+            ],
+            $this->optionsList(),
+        );
+    }
+
+    /**
+     * Returns specific command options list.
+     *
+     * @return array
+     */
+    abstract protected function optionsList(): array;
 
     /**
      * @inheritdoc
