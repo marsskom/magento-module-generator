@@ -14,4 +14,18 @@ interface GeneratorInterface
      * @return ContextInterface
      */
     public function execute(ContextInterface $context): ContextInterface;
+
+    /**
+     * Sets next middleware-generator.
+     *
+     * @param GeneratorInterface $middleware
+     */
+    public function setNextMiddleware(GeneratorInterface $middleware): void;
+
+    /**
+     * Returns next middleware.
+     *
+     * @return null|GeneratorInterface
+     */
+    public function next(): ?GeneratorInterface;
 }

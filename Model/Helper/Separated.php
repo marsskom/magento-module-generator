@@ -14,13 +14,13 @@ class Separated
     private array $collection = [];
 
     /**
-     * Adds chunk into collection.
+     * Adds content chunk into collection.
      *
      * @param string $chunk
      *
      * @return $this
      */
-    public function add(string $chunk): self
+    public function addContent(string $chunk): self
     {
         $this->collection[] = $chunk;
 

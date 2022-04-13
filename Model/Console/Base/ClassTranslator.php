@@ -21,7 +21,6 @@ class ClassTranslator implements InputTranslatorInterface
         return [
             'class' => [
                 'name'       => $inputOptions[Parameters::NAME],
-                'namespace'  => null,
                 'extends'    => '',
                 'implements' => [],
                 'comments'   => [],
