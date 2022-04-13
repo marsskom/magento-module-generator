@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context;
 
+// phpcs:disable Magento2.PHP.FinalImplementation
 final class Parameters
 {
     /**
@@ -12,7 +13,7 @@ final class Parameters
     public const MODULE = 'module';
 
     /**
-     * Filename or/and classname.z
+     * Filename or/and classname.
      */
     public const NAME = 'name';
 
