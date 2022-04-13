@@ -20,6 +20,14 @@
         </arguments>
     </type>
 
+    <virtualType name="FileSequence" type="Marsskom\Generator\Model\Php\Foundation\Sequence">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="5" xsi:type="object">Marsskom\Generator\Model\Php\Heap\FileGenerator</item>
+                <item name="100" xsi:type="object">Marsskom\Generator\Model\Php\Automation\Writer</item>
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="ClassSequence" type="Marsskom\Generator\Model\Php\Foundation\Sequence">
         <arguments>
             <argument name="sequences" xsi:type="array">
