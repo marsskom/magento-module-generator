@@ -16,7 +16,7 @@ class BaseTranslator implements TranslatorInterface
     /**
      * @var SplQueue<InputTranslatorInterface>
      */
-    private SplQueue $translators;
+    private SplQueue $inputTranslators;
 
     private array $inputContexts;
 
@@ -25,17 +25,17 @@ class BaseTranslator implements TranslatorInterface
     /**
      * Base translator constructor.
      *
-     * @param array        $translators
+     * @param array        $inputTranslators
      * @param array        $inputContexts
      * @param InputFactory $inputFactory
      */
     public function __construct(
-        array $translators,
+        array $inputTranslators,
         array $inputContexts,
         InputFactory $inputFactory
     ) {
-        $this->translators = new SplQueue();
-        $this->addTranslators($translators);
+        $this->inputTranslators = new SplQueue();
+        $this->addInputTranslators($inputTranslators);
 
         $this->inputContexts = $inputContexts;
         $this->inputFactory = $inputFactory;
@@ -44,10 +44,10 @@ class BaseTranslator implements TranslatorInterface
     /**
      * @inheritdoc
      */
-    public function addTranslators(array $translators): TranslatorInterface
+    public function addInputTranslators(array $inputTranslators): TranslatorInterface
     {
-        foreach ($translators as $translator) {
-            $this->translators->push($translator);
+        foreach ($inputTranslators as $translator) {
+            $this->inputTranslators->push($translator);
         }
 
         return $this;
@@ -60,7 +60,7 @@ class BaseTranslator implements TranslatorInterface
     {
         $options = [];
 
-        foreach ($this->translators as $translator) {
+        foreach ($this->inputTranslators as $translator) {
             foreach ($translator->translate($this->inputContexts, $inputOptions) as $key => $values) {
                 if (!isset($options[$key])) {
                     $options[$key] = $values;

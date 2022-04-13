@@ -10,20 +10,15 @@ class Module implements ModuleInterface
 {
     private string $name;
 
-    private string $path;
-
     /**
      * Module constructor.
      *
      * @param string $name
-     * @param string $path
      */
     public function __construct(
-        string $name,
-        string $path
+        string $name
     ) {
         $this->name = $name;
-        $this->path = $path;
     }
 
     /**
@@ -32,13 +27,5 @@ class Module implements ModuleInterface
     public function getModuleName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPathToModule(): string
-    {
-        return $this->path;
     }
 }

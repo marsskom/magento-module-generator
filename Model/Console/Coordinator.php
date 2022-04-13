@@ -7,11 +7,14 @@ namespace Marsskom\Generator\Model\Console;
 use Marsskom\Generator\Api\Data\ContextInterface;
 use Marsskom\Generator\Api\Data\CoordinatorInterface;
 use Marsskom\Generator\Api\Data\TranslatorInterface;
+use Marsskom\Generator\Model\Context;
 use Marsskom\Generator\Model\Context\OutputFactory;
 use Marsskom\Generator\Model\ContextFactory;
 
 class Coordinator implements CoordinatorInterface
 {
+    private Context $context;
+
     private ContextFactory $contextFactory;
 
     private OutputFactory $outputFactory;
@@ -48,13 +51,23 @@ class Coordinator implements CoordinatorInterface
     /**
      * @inheritdoc
      */
-    public function createContext(): ContextInterface
+    public function create(): CoordinatorInterface
     {
-        return $this->contextFactory->create([
+        $this->context = $this->contextFactory->create([
             'input'  => $this->translator
-                ->addTranslators($this->inputTranslators)
+                ->addInputTranslators($this->inputTranslators)
                 ->translate($this->inputOptions),
             'output' => $this->outputFactory->create(),
         ]);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get(): ContextInterface
+    {
+        return $this->context;
     }
 }

@@ -7,9 +7,17 @@ namespace Marsskom\Generator\Api\Data\Context;
 use Marsskom\Generator\Api\Data\Context\Input\ClassInterface;
 use Marsskom\Generator\Api\Data\Context\Input\FileInterface;
 use Marsskom\Generator\Api\Data\Context\Input\ModuleInterface;
+use Marsskom\Generator\Api\Data\Context\Input\PathInterface;
 
 interface InputInterface
 {
+    /**
+     * Returns path context.
+     *
+     * @return PathInterface
+     */
+    public function path(): PathInterface;
+    
     /**
      * Returns module input context.
      *
@@ -27,11 +35,7 @@ interface InputInterface
     /**
      * Returns class input context.
      *
-     * !!! WARNING
-     * About strange method name `iclass`.
-     * I cannot call it `class` so this is input-class -> `iclass`.
-     *
      * @return ClassInterface
      */
-    public function iclass(): ClassInterface;
+    public function classCxt(): ClassInterface;
 }

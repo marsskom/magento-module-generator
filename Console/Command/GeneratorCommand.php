@@ -23,27 +23,27 @@ abstract class GeneratorCommand extends Command
     /**
      * @var InputTranslatorInterface[]
      */
-    protected array $translators;
+    protected array $inputTranslators;
 
     /**
      * Generator command constructor.
      *
      * @param SequenceInterface           $sequence
      * @param CoordinatorInterfaceFactory $coordinatorFactory
-     * @param InputTranslatorInterface[]  $translators
+     * @param InputTranslatorInterface[]  $inputTranslators
      * @param string|null                 $name
      */
     public function __construct(
         SequenceInterface $sequence,
         CoordinatorInterfaceFactory $coordinatorFactory,
-        array $translators = [],
+        array $inputTranslators = [],
         string $name = null
     ) {
         parent::__construct($name);
 
         $this->sequence = $sequence;
         $this->coordinatorFactory = $coordinatorFactory;
-        $this->translators = $translators;
+        $this->inputTranslators = $inputTranslators;
     }
 
     /**
@@ -52,7 +52,7 @@ abstract class GeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $this->sequence->execute($this->createContext($input));
+            $this->sequence->execute($this->getContext($input));
         } catch (LocalizedException $exception) {
             $output->writeln($exception->getMessage());
 
@@ -71,11 +71,15 @@ abstract class GeneratorCommand extends Command
      *
      * @return ContextInterface
      */
-    protected function createContext(InputInterface $input): ContextInterface
+    protected function getContext(InputInterface $input): ContextInterface
     {
-        return $this->coordinatorFactory->create([
+        $coordinator = $this->coordinatorFactory->create([
             'inputOptions'     => $input->getOptions(),
-            'inputTranslators' => $this->translators,
-        ])->createContext();
+            'inputTranslators' => $this->inputTranslators,
+        ]);
+
+        $coordinator->create();
+
+        return $coordinator->get();
     }
 }

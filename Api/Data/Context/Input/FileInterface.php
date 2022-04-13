@@ -30,13 +30,6 @@ interface FileInterface
     public function getFullName(): string;
 
     /**
-     * Returns path to file.
-     *
-     * @return string
-     */
-    public function getPathToFile(): string;
-
-    /**
      * Returns namespace.
      *
      * @return string
@@ -44,7 +37,7 @@ interface FileInterface
     public function getNamespace(): string;
 
     /**
-     * Returns true is uses exist.
+     * Returns true if the uses exist.
      *
      * @return bool
      */

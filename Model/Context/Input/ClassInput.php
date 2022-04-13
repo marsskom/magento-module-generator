@@ -19,10 +19,10 @@ class ClassInput implements ClassInterface
     /**
      * Class input constructor.
      *
-     * @param string        $name
-     * @param string        $extends
-     * @param array<string> $implements
-     * @param array<string> $comments
+     * @param string   $name
+     * @param string   $extends
+     * @param string[] $implements
+     * @param string[] $comments
      */
     public function __construct(
         string $name,

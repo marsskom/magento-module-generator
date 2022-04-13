@@ -7,10 +7,13 @@ namespace Marsskom\Generator\Model\Context;
 use Marsskom\Generator\Api\Data\Context\Input\ClassInterface;
 use Marsskom\Generator\Api\Data\Context\Input\FileInterface;
 use Marsskom\Generator\Api\Data\Context\Input\ModuleInterface;
+use Marsskom\Generator\Api\Data\Context\Input\PathInterface;
 use Marsskom\Generator\Api\Data\Context\InputInterface;
 
 class Input implements InputInterface
 {
+    private PathInterface $path;
+
     private ModuleInterface $module;
 
     private FileInterface $file;
@@ -20,18 +23,29 @@ class Input implements InputInterface
     /**
      * Input context constructor.
      *
+     * @param PathInterface   $path
      * @param ModuleInterface $module
      * @param FileInterface   $file
      * @param ClassInterface  $class
      */
     public function __construct(
+        PathInterface $path,
         ModuleInterface $module,
         FileInterface $file,
         ClassInterface $class
     ) {
+        $this->path = $path;
         $this->module = $module;
         $this->file = $file;
         $this->class = $class;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function path(): PathInterface
+    {
+        return $this->path;
     }
 
     /**
@@ -53,7 +67,7 @@ class Input implements InputInterface
     /**
      * @inheritdoc
      */
-    public function iclass(): ClassInterface
+    public function classCxt(): ClassInterface
     {
         return $this->class;
     }

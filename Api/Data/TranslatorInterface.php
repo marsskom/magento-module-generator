@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Api\Data;
 
 use Marsskom\Generator\Api\Data\Context\InputInterface;
+use Marsskom\Generator\Api\Data\Context\InputTranslatorInterface;
 
 interface TranslatorInterface
 {
@@ -18,11 +19,11 @@ interface TranslatorInterface
     public function translate(array $inputOptions): InputInterface;
 
     /**
-     * Adds translators.
+     * Adds input translators.
      *
-     * @param array $translators
+     * @param InputTranslatorInterface[] $inputTranslators
      *
      * @return TranslatorInterface
      */
-    public function addTranslators(array $translators): TranslatorInterface;
+    public function addInputTranslators(array $inputTranslators): TranslatorInterface;
 }

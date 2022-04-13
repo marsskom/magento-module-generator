@@ -33,7 +33,7 @@ class NamespaceHelper
      */
     public function getNamespace(string $moduleName, string $path = ''): string
     {
-        $module = $this->moduleBuilder->fromCliString($moduleName);
+        $module = $this->moduleBuilder->fromMagentoModuleName($moduleName);
 
         return implode(
             '\\',

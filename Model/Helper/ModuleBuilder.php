@@ -28,7 +28,7 @@ class ModuleBuilder
      *
      * @return Module
      */
-    public function fromCliString(string $moduleName): Module
+    public function fromMagentoModuleName(string $moduleName): Module
     {
         $chunks = explode('_', $moduleName);
 

@@ -41,10 +41,10 @@ class Writer extends AbstractSequence
         $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
 
         $stream = $directory->openFile(
-            $context->input()->file()->getPathToFile() . DIRECTORY_SEPARATOR . $context->input()->file()->getFullName()
+            $context->input()->path()->toFile() . DIRECTORY_SEPARATOR . $context->input()->file()->getFullName()
         );
         $stream->lock();
-        $stream->write($context->output()->getResult());
+        $stream->write($context->output()->asString());
         $stream->unlock();
         $stream->close();
 

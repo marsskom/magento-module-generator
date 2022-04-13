@@ -34,7 +34,7 @@ class Output implements OutputInterface
     /**
      * @inheritdoc
      */
-    public function getResult(): string
+    public function asString(): string
     {
         return (string) $this->state;
     }

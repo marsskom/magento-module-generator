@@ -16,7 +16,7 @@ class ClassGenerator extends AbstractSequence
      */
     public function execute(ContextInterface $context): ContextInterface
     {
-        $input = $context->input()->iclass();
+        $input = $context->input()->classCxt();
 
         $class = new ClassType($input->getClassName());
 

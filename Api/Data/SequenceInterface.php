@@ -8,7 +8,7 @@ interface SequenceInterface extends GeneratorInterface
 {
     /**
      * Sets parent sequence for current.
-     * 
+     *
      * @param SequenceInterface $parent
      *
      * @return SequenceInterface
@@ -17,14 +17,14 @@ interface SequenceInterface extends GeneratorInterface
 
     /**
      * Returns parent sequence.
-     * 
+     *
      * @return null|SequenceInterface
      */
     public function getParent(): ?SequenceInterface;
 
     /**
      * Adds sequence to children of current.
-     * 
+     *
      * @param SequenceInterface $sequence
      *
      * @return SequenceInterface

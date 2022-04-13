@@ -38,7 +38,7 @@ class PathHelper
      */
     public function getModulePath(string $moduleName): string
     {
-        $module = $this->moduleBuilder->fromCliString($moduleName);
+        $module = $this->moduleBuilder->fromMagentoModuleName($moduleName);
 
         $directoryPath = $this->directoryList->getPath(DirectoryList::APP);
 
@@ -57,19 +57,18 @@ class PathHelper
      * Returns path to file.
      *
      * @param string $moduleName
-     * @param string $fileName
+     * @param string $pathToFile
      *
      * @return string
      * @throws FileSystemException
      */
-    public function getPathToFile(string $moduleName, string $fileName): string
+    public function getPathToFile(string $moduleName, string $pathToFile): string
     {
         return implode(
             DIRECTORY_SEPARATOR,
             [
-
                 $this->getModulePath($moduleName),
-                $fileName,
+                $pathToFile,
             ]
         );
     }

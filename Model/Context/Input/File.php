@@ -14,8 +14,6 @@ class File implements FileInterface
 
     private string $extension;
 
-    private string $path;
-
     private string $namespace;
 
     /**
@@ -28,20 +26,17 @@ class File implements FileInterface
      *
      * @param string     $name
      * @param string     $extension
-     * @param string     $path
      * @param string     $namespace
      * @param UseModel[] $uses
      */
     public function __construct(
         string $name,
         string $extension,
-        string $path,
         string $namespace,
         array $uses = []
     ) {
         $this->name = $name;
         $this->extension = $extension;
-        $this->path = $path;
         $this->namespace = $namespace;
         $this->uses = $uses;
     }
@@ -68,14 +63,6 @@ class File implements FileInterface
     public function getFullName(): string
     {
         return implode('.', [$this->name, $this->extension]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPathToFile(): string
-    {
-        return $this->path;
     }
 
     /**

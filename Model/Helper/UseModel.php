@@ -10,27 +10,27 @@ class UseModel
 {
     private string $name;
 
-    private ?string $alias;
+    private string $type;
 
-    private ?string $type;
+    private ?string $alias;
 
     /**
      * Use model constructor.
      *
      * @param string      $name
+     * @param string      $type
      * @param null|string $alias
-     * @param null|string $type
      *
      * @see PhpFile::addUse()
      */
     public function __construct(
         string $name,
-        ?string $alias = null,
-        ?string $type = null
+        string $type,
+        ?string $alias = null
     ) {
         $this->name = $name;
-        $this->alias = $alias;
         $this->type = $type;
+        $this->alias = $alias;
     }
 
     /**
@@ -44,6 +44,16 @@ class UseModel
     }
 
     /**
+     * Returns type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
      * Returns alias.
      *
      * @return null|string
@@ -51,15 +61,5 @@ class UseModel
     public function getAlias(): ?string
     {
         return $this->alias;
-    }
-
-    /**
-     * Returns type.
-     *
-     * @return null|string
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
     }
 }

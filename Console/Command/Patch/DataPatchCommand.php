@@ -41,6 +41,13 @@ class DataPatchCommand extends GeneratorCommand
                 InputOption::VALUE_REQUIRED,
                 'Class name'
             ),
+            new InputOption(
+                'path',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'File location',
+                'Setup/Patch/Data'
+            ),
         ];
     }
 }

@@ -12,11 +12,4 @@ interface ModuleInterface
      * @return string
      */
     public function getModuleName(): string;
-
-    /**
-     * Returns path to module.
-     *
-     * @return string
-     */
-    public function getPathToModule(): string;
 }

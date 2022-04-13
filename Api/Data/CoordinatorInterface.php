@@ -9,7 +9,14 @@ interface CoordinatorInterface
     /**
      * Creates context.
      *
+     * @return CoordinatorInterface
+     */
+    public function create(): CoordinatorInterface;
+
+    /**
+     * Returns context.
+     *
      * @return ContextInterface
      */
-    public function createContext(): ContextInterface;
+    public function get(): ContextInterface;
 }

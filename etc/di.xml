@@ -13,7 +13,7 @@
     <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
         <arguments>
             <argument name="sequence" xsi:type="object">ClassSequence</argument>
-            <argument name="translators" xsi:type="array">
+            <argument name="inputTranslators" xsi:type="array">
                 <item name="40"
                       xsi:type="object">Marsskom\Generator\Model\Console\Command\DataPatchTranslator</item>
             </argument>
@@ -28,7 +28,7 @@
             </argument>
         </arguments>
     </virtualType>
-    <virtualType name="SeparateClassSequence" type="Marsskom\Generator\Model\Php\Foundation\SeparateSequence">
+    <virtualType name="SeparateClassSequence" type="Marsskom\Generator\Model\Php\Foundation\SeparatedSequence">
         <arguments>
             <argument name="sequences" xsi:type="array">
                 <item name="5" xsi:type="object">Marsskom\Generator\Model\Php\Heap\FileGenerator</item>
@@ -49,15 +49,19 @@
 
     <type name="Marsskom\Generator\Model\Console\BaseTranslator">
         <arguments>
-            <argument name="translators" xsi:type="array">
+            <argument name="inputTranslators" xsi:type="array">
                 <item name="10"
-                      xsi:type="object">Marsskom\Generator\Model\Console\Base\ModuleTranslator</item>
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\PathTranslator</item>
                 <item name="20"
-                      xsi:type="object">Marsskom\Generator\Model\Console\Base\FileTranslator</item>
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\ModuleTranslator</item>
                 <item name="30"
+                      xsi:type="object">Marsskom\Generator\Model\Console\Base\FileTranslator</item>
+                <item name="40"
                       xsi:type="object">Marsskom\Generator\Model\Console\Base\ClassTranslator</item>
             </argument>
             <argument name="inputContexts" xsi:type="array">
+                <item name="path"
+                      xsi:type="object">Marsskom\Generator\Model\Context\Input\PathFactory</item>
                 <item name="module"
                       xsi:type="object">Marsskom\Generator\Model\Context\Input\ModuleFactory</item>
                 <item name="file"

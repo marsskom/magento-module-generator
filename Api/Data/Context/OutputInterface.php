@@ -7,7 +7,7 @@ namespace Marsskom\Generator\Api\Data\Context;
 interface OutputInterface
 {
     /**
-     * Sets  context state.
+     * Sets context state.
      *
      * @param mixed $value
      *
@@ -23,9 +23,9 @@ interface OutputInterface
     public function getState();
 
     /**
-     * Returns result.
+     * Returns output as string.
      *
      * @return string
      */
-    public function getResult(): string;
+    public function asString(): string;
 }
