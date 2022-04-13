@@ -6,7 +6,7 @@ namespace Marsskom\Generator\Model\Helper;
 
 use function implode;
 
-class Separator
+class Separated
 {
     /**
      * @var string[]

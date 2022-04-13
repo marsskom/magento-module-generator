@@ -5,20 +5,20 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Php\Foundation;
 
 use Marsskom\Generator\Api\Data\ContextInterface;
-use Marsskom\Generator\Model\Helper\SeparatorFactory;
+use Marsskom\Generator\Model\Helper\SeparatedFactory;
 
-class SeparateSequence extends AbstractSequence
+class SeparatedSequence extends AbstractSequence
 {
-    private SeparatorFactory $factory;
+    private SeparatedFactory $factory;
 
     /**
      * Sequence constructor.
      *
-     * @param SeparatorFactory $factory
+     * @param SeparatedFactory $factory
      * @param array            $sequences
      */
     public function __construct(
-        SeparatorFactory $factory,
+        SeparatedFactory $factory,
         array $sequences = []
     ) {
         parent::__construct($sequences);
@@ -36,7 +36,7 @@ class SeparateSequence extends AbstractSequence
         foreach ($this->children as $child) {
             $child->execute($context);
 
-            $separator->add($context->output()->getResult());
+            $separator->add($context->output()->asString());
         }
 
         $context->output()->setState($separator);
