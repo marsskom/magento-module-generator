@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Marsskom\Generator\Api\Data\Context\ContextInterface"
+                type="Marsskom\Generator\Model\Context\Context"/>
+    <preference for="Marsskom\Generator\Api\Data\Context\InputInterface"
+                type="Marsskom\Generator\Model\Context\Input"/>
+    <preference for="Marsskom\Generator\Api\Data\Context\OutputInterface"
+                type="Marsskom\Generator\Model\Context\Output"/>
+    <preference for="Marsskom\Generator\Api\Data\CoordinatorInterface"
+                type="Marsskom\Generator\Model\Coordinator"/>
+
+    <preference for="Marsskom\Generator\Api\Data\TemplateEngineInterface"
+                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Engine"/>
+    <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
+                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
+
+    <virtualType name="ClassSequence" type="Marsskom\Generator\Model\Foundation\Sequence">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="generator" xsi:type="object"
+                      sortOrder="10">Marsskom\Generator\Model\Foundation\Generator</item>
+                <item name="writer" xsi:type="object"
+                      sortOrder="20">Marsskom\Generator\Model\Automation\Writer</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generatorDataPatchCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
+        <arguments>
+            <argument name="translator"
+                      xsi:type="object">Marsskom\Generator\Model\Translator\Php\PhpTranslator</argument>
+            <argument name="sequence" xsi:type="object">ClassSequence</argument>
+        </arguments>
+    </type>
+</config>

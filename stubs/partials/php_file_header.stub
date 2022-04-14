@@ -1,0 +1,10 @@
+<?php
+{{{ file.annotation }}}
+
+declare(strict_types = 1);
+
+namespace {{{ file.namespace }}};
+
+{{# file.uses }}
+use {{{ . }}};
+{{/ file.uses }}

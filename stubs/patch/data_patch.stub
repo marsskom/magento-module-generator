@@ -1,0 +1,48 @@
+{{> php_file_header }}
+
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+
+{{{ class.annotation }}}
+class {{{ class.name }}} implements DataPatchInterface
+{
+    protected ModuleDataSetupInterface $moduleDataSetup;
+
+    /**
+     * {{{ class.name }}} constructor.
+     *
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     */
+    public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup
+    ) {
+        $this->moduleDataSetup = $moduleDataSetup;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function apply()
+    {
+        $this->moduleDataSetup->getConnection()->startSetup();
+
+        // Your code here.
+
+        $this->moduleDataSetup->getConnection()->endSetup();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getDependencies()
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+}
