@@ -15,7 +15,7 @@
     <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
                 type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
 
-    <virtualType name="ClassSequence" type="Marsskom\Generator\Model\Foundation\Sequence">
+    <virtualType name="DefaultSequence" type="Marsskom\Generator\Model\Foundation\Sequence">
         <arguments>
             <argument name="sequences" xsi:type="array">
                 <item name="generator" xsi:type="object"
@@ -38,8 +38,8 @@
     <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
         <arguments>
             <argument name="translator"
-                      xsi:type="object">Marsskom\Generator\Model\Translator\Php\PhpTranslator</argument>
-            <argument name="sequence" xsi:type="object">ClassSequence</argument>
+                      xsi:type="object">Marsskom\Generator\Model\Translator\Php\Patch\DataPatchTranslator</argument>
+            <argument name="sequence" xsi:type="object">DefaultSequence</argument>
         </arguments>
     </type>
 </config>

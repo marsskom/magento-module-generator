@@ -10,6 +10,7 @@ use Magento\Framework\Filesystem;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use function implode;
+use const DIRECTORY_SEPARATOR;
 
 class Writer extends AbstractSequence
 {

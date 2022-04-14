@@ -1,5 +1,6 @@
 {{> php_file_header }}
 
+use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
 {{{ class.annotation }}}
@@ -21,7 +22,7 @@ class {{{ class.name }}} implements DataPatchInterface
     /**
      * @inheritdoc
      */
-    public function apply()
+    public function apply(): void
     {
         $this->moduleDataSetup->getConnection()->startSetup();
 
@@ -33,7 +34,7 @@ class {{{ class.name }}} implements DataPatchInterface
     /**
      * @inheritdoc
      */
-    public static function getDependencies()
+    public static function getDependencies(): array
     {
         return [];
     }
@@ -41,7 +42,7 @@ class {{{ class.name }}} implements DataPatchInterface
     /**
      * @inheritdoc
      */
-    public function getAliases()
+    public function getAliases(): array
     {
         return [];
     }

@@ -5,42 +5,36 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model;
 
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
-use Marsskom\Generator\Api\Data\Context\ContextInterfaceFactory;
-use Marsskom\Generator\Api\Data\Context\InputInterfaceFactory;
-use Marsskom\Generator\Api\Data\Context\OutputInterfaceFactory;
 use Marsskom\Generator\Api\Data\CoordinatorInterface;
 use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
+use Marsskom\Generator\Model\Context\Builder\ContextBuilder;
 
 class Coordinator implements CoordinatorInterface
 {
-    /**
-     * @var array<string, string>
-     */
-    private array $input = [];
+    private ContextBuilder $contextBuilder;
 
     private TranslatorInterface $translator;
 
-    private ContextInterfaceFactory $contextFactory;
-
-    private InputInterfaceFactory $inputFactory;
-
-    private OutputInterfaceFactory $outputFactory;
+    /**
+     * @var array<string, string>
+     */
+    private array $input;
 
     /**
      * Coordinator constructor.
      *
-     * @param ContextInterfaceFactory $contextFactory
-     * @param InputInterfaceFactory   $inputFactory
-     * @param OutputInterfaceFactory  $outputFactory
+     * @param ContextBuilder        $contextBuilder
+     * @param TranslatorInterface   $translator
+     * @param array<string, string> $input
      */
     public function __construct(
-        ContextInterfaceFactory $contextFactory,
-        InputInterfaceFactory $inputFactory,
-        OutputInterfaceFactory $outputFactory
+        ContextBuilder $contextBuilder,
+        TranslatorInterface $translator,
+        array $input
     ) {
-        $this->contextFactory = $contextFactory;
-        $this->inputFactory = $inputFactory;
-        $this->outputFactory = $outputFactory;
+        $this->contextBuilder = $contextBuilder;
+        $this->translator = $translator;
+        $this->input = $input;
     }
 
     /**
@@ -68,15 +62,15 @@ class Coordinator implements CoordinatorInterface
      */
     public function getContext(): ContextInterface
     {
-        return $this->contextFactory->create([
-            'input'  => $this->inputFactory->create([
+        return $this->contextBuilder->create(
+            [
                 'stubName'    => $this->translator->getStubName($this->input),
                 'stubClasses' => $this->translator->translate($this->input),
-            ]),
-            'output' => $this->outputFactory->create([
+            ],
+            [
                 'path'     => $this->translator->getPath($this->input),
                 'fileName' => $this->translator->getFileName($this->input),
-            ]),
-        ]);
+            ]
+        );
     }
 }

@@ -24,7 +24,7 @@ class ModuleBuilder
     }
 
     /**
-     * Create module from Magneto 2 module name.
+     * Creates module from Magneto 2 module name.
      *
      * @param string $moduleName
      *

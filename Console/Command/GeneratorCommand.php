@@ -6,7 +6,7 @@ namespace Marsskom\Generator\Console\Command;
 
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
-use Marsskom\Generator\Api\Data\CoordinatorInterface;
+use Marsskom\Generator\Api\Data\CoordinatorInterfaceFactory;
 use Marsskom\Generator\Api\Data\SequenceInterface;
 use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class GeneratorCommand extends Command
 {
-    protected CoordinatorInterface $coordinator;
+    protected CoordinatorInterfaceFactory $coordinatorFactory;
 
     protected TranslatorInterface $translator;
 
@@ -26,20 +26,21 @@ abstract class GeneratorCommand extends Command
     /**
      * Command constructor.
      *
-     * @param CoordinatorInterface $coordinator
-     * @param TranslatorInterface  $translator
-     * @param SequenceInterface    $sequence
-     * @param string|null          $name
+     *
+     * @param TranslatorInterface         $translator
+     * @param SequenceInterface           $sequence
+     * @param CoordinatorInterfaceFactory $coordinatorFactory
+     * @param string|null                 $name
      */
     public function __construct(
-        CoordinatorInterface $coordinator,
         TranslatorInterface $translator,
         SequenceInterface $sequence,
+        CoordinatorInterfaceFactory $coordinatorFactory,
         string $name = null
     ) {
         parent::__construct($name);
 
-        $this->coordinator = $coordinator;
+        $this->coordinatorFactory = $coordinatorFactory;
         $this->translator = $translator;
         $this->sequence = $sequence;
     }
@@ -94,9 +95,10 @@ abstract class GeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $coordinator = $this->coordinator
-                ->setInput($input->getOptions())
-                ->setTranslator($this->translator);
+            $coordinator = $this->coordinatorFactory->create([
+                'translator' => $this->translator,
+                'input'      => $input->getOptions(),
+            ]);
 
             $this->sequence->execute($coordinator->getContext());
         } catch (LocalizedException $exception) {
