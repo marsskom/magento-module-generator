@@ -4,49 +4,51 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context\Builder;
 
+use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterfaceFactory;
-use Marsskom\Generator\Api\Data\Context\InputInterfaceFactory;
-use Marsskom\Generator\Api\Data\Context\OutputInterfaceFactory;
+use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
 
 class ContextBuilder
 {
     private ContextInterfaceFactory $contextFactory;
 
-    private InputInterfaceFactory $inputFactory;
+    private InputBuilder $inputBuilder;
 
-    private OutputInterfaceFactory $outputFactory;
+    private OutputBuilder $outputBuilder;
 
     /**
      * Coordinator constructor.
      *
      * @param ContextInterfaceFactory $contextFactory
-     * @param InputInterfaceFactory   $inputFactory
-     * @param OutputInterfaceFactory  $outputFactory
+     * @param InputBuilder            $inputBuilder
+     * @param OutputBuilder           $outputBuilder
      */
     public function __construct(
         ContextInterfaceFactory $contextFactory,
-        InputInterfaceFactory $inputFactory,
-        OutputInterfaceFactory $outputFactory
+        InputBuilder $inputBuilder,
+        OutputBuilder $outputBuilder
     ) {
         $this->contextFactory = $contextFactory;
-        $this->inputFactory = $inputFactory;
-        $this->outputFactory = $outputFactory;
+        $this->inputBuilder = $inputBuilder;
+        $this->outputBuilder = $outputBuilder;
     }
 
     /**
      * Creates context.
      *
-     * @param array $inputData
-     * @param array $outputData
+     * @param array               $userInput
+     * @param TranslatorInterface $translator
      *
      * @return ContextInterface
+     *
+     * @throws FileSystemException
      */
-    public function create(array $inputData, array $outputData): ContextInterface
+    public function create(array $userInput, TranslatorInterface $translator): ContextInterface
     {
         return $this->contextFactory->create([
-            'input'  => $this->inputFactory->create($inputData),
-            'output' => $this->outputFactory->create($outputData),
+            'input'  => $this->inputBuilder->create($userInput, $translator),
+            'output' => $this->outputBuilder->create($userInput, $translator),
         ]);
     }
 }

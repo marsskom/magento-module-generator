@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Model\Automation;
+namespace Marsskom\Generator\Model\Helper\Translator;
 
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 

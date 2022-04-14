@@ -12,22 +12,22 @@ class Input implements InputInterface
     private string $stubName;
 
     /**
-     * @var StubInterface[]
+     * @var array
      */
-    private array $stubClasses = [];
+    private array $variables = [];
 
     /**
      * Input constructor.
      *
      * @param string $stubName
-     * @param array  $stubClasses
+     * @param array  $variables
      */
     public function __construct(
         string $stubName,
-        array $stubClasses = []
+        array $variables = []
     ) {
         $this->stubName = $stubName;
-        $this->stubClasses = $stubClasses;
+        $this->variables = $variables;
     }
 
     /**
@@ -43,12 +43,6 @@ class Input implements InputInterface
      */
     public function toArray(): array
     {
-        $result = [];
-
-        foreach ($this->stubClasses as $stub) {
-            $result[$stub->getKey()] = $stub->toArray();
-        }
-
-        return $result;
+        return $this->variables;
     }
 }

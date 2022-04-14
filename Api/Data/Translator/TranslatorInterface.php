@@ -4,19 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Api\Data\Translator;
 
-use Marsskom\Generator\Api\Data\StubInterface;
-
 interface TranslatorInterface
 {
-    /**
-     * Returns path to file.
-     *
-     * @param array $input
-     *
-     * @return string
-     */
-    public function getPath(array $input): string;
-
     /**
      * Returns file name with extension.
      *
@@ -36,11 +25,11 @@ interface TranslatorInterface
     public function getStubName(array $input): string;
 
     /**
-     * "Translates" input into stubs.
+     * "Translates" input into variables array.
      *
      * @param array $input
      *
-     * @return StubInterface[]
+     * @return array
      */
     public function translate(array $input): array;
 }

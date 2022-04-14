@@ -4,15 +4,16 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Translator\Php;
 
-use Marsskom\Generator\Model\Translator\AbstractTranslator;
+use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
+use Marsskom\Generator\Model\Enum\InputParameter;
 
-abstract class PhpTranslator extends AbstractTranslator
+abstract class PhpTranslator implements TranslatorInterface
 {
     /**
      * @inheritdoc
      */
     public function getFileName(array $input): string
     {
-        return parent::getFileName($input) . '.php';
+        return $input[InputParameter::NAME] . '.php';
     }
 }

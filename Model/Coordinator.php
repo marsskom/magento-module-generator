@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model;
 
+use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\CoordinatorInterface;
 use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
@@ -59,18 +60,11 @@ class Coordinator implements CoordinatorInterface
 
     /**
      * @inheritdoc
+     *
+     * @throws FileSystemException
      */
     public function getContext(): ContextInterface
     {
-        return $this->contextBuilder->create(
-            [
-                'stubName'    => $this->translator->getStubName($this->input),
-                'stubClasses' => $this->translator->translate($this->input),
-            ],
-            [
-                'path'     => $this->translator->getPath($this->input),
-                'fileName' => $this->translator->getFileName($this->input),
-            ]
-        );
+        return $this->contextBuilder->create($this->input, $this->translator);
     }
 }
