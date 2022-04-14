@@ -26,7 +26,6 @@ abstract class GeneratorCommand extends Command
     /**
      * Command constructor.
      *
-     *
      * @param TranslatorInterface         $translator
      * @param SequenceInterface           $sequence
      * @param CoordinatorInterfaceFactory $coordinatorFactory
