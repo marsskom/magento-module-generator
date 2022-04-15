@@ -6,9 +6,8 @@ namespace Marsskom\Generator\Console\Command;
 
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
-use Marsskom\Generator\Api\Data\CoordinatorInterfaceFactory;
 use Marsskom\Generator\Api\Data\SequenceInterface;
-use Marsskom\Generator\Api\Data\Translator\TranslatorInterface;
+use Marsskom\Generator\Model\Context\ContextFactory;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,31 +16,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class GeneratorCommand extends Command
 {
-    protected CoordinatorInterfaceFactory $coordinatorFactory;
-
-    protected TranslatorInterface $translator;
-
     protected SequenceInterface $sequence;
+
+    protected ContextFactory $contextFactory;
 
     /**
      * Command constructor.
      *
-     * @param TranslatorInterface         $translator
-     * @param SequenceInterface           $sequence
-     * @param CoordinatorInterfaceFactory $coordinatorFactory
-     * @param string|null                 $name
+     * @param SequenceInterface $sequence
+     * @param ContextFactory    $contextFactory
+     * @param string|null       $name
      */
     public function __construct(
-        TranslatorInterface $translator,
         SequenceInterface $sequence,
-        CoordinatorInterfaceFactory $coordinatorFactory,
+        ContextFactory $contextFactory,
         string $name = null
     ) {
         parent::__construct($name);
 
-        $this->coordinatorFactory = $coordinatorFactory;
-        $this->translator = $translator;
         $this->sequence = $sequence;
+        $this->contextFactory = $contextFactory;
     }
 
     /**
@@ -94,12 +88,11 @@ abstract class GeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $coordinator = $this->coordinatorFactory->create([
-                'translator' => $this->translator,
-                'input'      => $input->getOptions(),
-            ]);
-
-            $this->sequence->execute($coordinator->getContext());
+            $this->sequence->execute(
+                $this->contextFactory->create([
+                    'userInput' => $input->getOptions(),
+                ])
+            );
         } catch (LocalizedException $exception) {
             $output->writeln($exception->getMessage());
 

@@ -4,19 +4,78 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Api\Data\Context;
 
+use Marsskom\Generator\Api\Data\Template\TemplateInterface;
+
 interface ContextInterface
 {
     /**
-     * Returns input context.
+     * Sets template.
      *
-     * @return InputInterface
+     * @param TemplateInterface $template
+     *
+     * @return ContextInterface
      */
-    public function input(): InputInterface;
+    public function setTemplate(TemplateInterface $template): ContextInterface;
 
     /**
-     * Returns output context.
+     * Returns template.
      *
-     * @return OutputInterface
+     * @return TemplateInterface
      */
-    public function output(): OutputInterface;
+    public function getTemplate(): TemplateInterface;
+
+    /**
+     * Sets template variables.
+     *
+     * @param array $variables
+     *
+     * @return ContextInterface
+     */
+    public function setVariables(array $variables): ContextInterface;
+    
+    /**
+     * Returns template variables.
+     *
+     * @return array
+     */
+    public function getVariables(): array;
+
+    /**
+     * Sets path.
+     *
+     * @param string $path
+     *
+     * @return ContextInterface
+     */
+    public function setPath(string $path): ContextInterface;
+
+    /**
+     * Returns path to file.
+     *
+     * @return string
+     */
+    public function getPath(): string;
+
+    /**
+     * Sets file name.
+     *
+     * @param string $fileName
+     *
+     * @return ContextInterface
+     */
+    public function setFileName(string $fileName): ContextInterface;
+
+    /**
+     * Returns file name with extension.
+     *
+     * @return string
+     */
+    public function getFileName(): string;
+
+    /**
+     * Returns user input.
+     *
+     * @return array<string, string>
+     */
+    public function getUserInput(): array;
 }

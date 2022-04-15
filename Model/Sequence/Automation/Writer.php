@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Model\Automation;
+namespace Marsskom\Generator\Model\Sequence\Automation;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -43,13 +43,13 @@ class Writer extends AbstractSequence
             implode(
                 DIRECTORY_SEPARATOR,
                 [
-                    $context->output()->getPath(),
-                    $context->output()->getFileName(),
+                    $context->getPath(),
+                    $context->getFileName(),
                 ]
             )
         );
         $stream->lock();
-        $stream->write((string) $context->output()->get());
+        $stream->write((string) $context->getTemplate());
         $stream->unlock();
         $stream->close();
 

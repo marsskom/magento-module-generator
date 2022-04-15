@@ -5,9 +5,10 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Foundation;
 
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Generator\StubGeneratorInterface;
 use Marsskom\Generator\Api\Data\TemplateEngineInterfaceFactory;
 
-class Generator extends AbstractSequence
+abstract class StubGenerator extends AbstractSequence implements StubGeneratorInterface
 {
     private TemplateEngineInterfaceFactory $templateFactory;
 
@@ -35,11 +36,11 @@ class Generator extends AbstractSequence
         ]);
 
         $template = $templateEngine->make(
-            $context->input()->getStubName(),
-            $context->input()->toArray()
+            $this->getStubName(),
+            $context->getVariables()
         );
 
-        $context->output()->set($template);
+        $context->setTemplate($template);
 
         return $context;
     }

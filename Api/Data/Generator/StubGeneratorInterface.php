@@ -2,11 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Api\Data\Context;
+namespace Marsskom\Generator\Api\Data\Generator;
 
-use Marsskom\Generator\Api\Data\ArrayInterface;
-
-interface InputInterface extends ArrayInterface
+interface StubGeneratorInterface
 {
     /**
      * Returns stub name.
