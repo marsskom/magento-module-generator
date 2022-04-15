@@ -1,0 +1,6 @@
+<?php
+{{{ file_annotation }}}
+
+declare(strict_types = 1);
+
+namespace {{{ file_namespace }}};

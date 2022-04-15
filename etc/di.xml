@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Marsskom\Generator\Api\Data\Context\ContextInterface"
+                type="Marsskom\Generator\Model\Context\Context"/>
+
+    <preference for="Marsskom\Generator\Api\Data\TemplateEngineInterface"
+                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Engine"/>
+    <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
+                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generatorDataPatchCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
+        <arguments>
+            <argument name="sequence"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchSequence</argument>
+        </arguments>
+    </type>
+</config>
