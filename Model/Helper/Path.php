@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Helper;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Exception\FileSystemException;
+use Marsskom\Generator\Api\Data\Helper\PathInterface;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use function ltrim;
 use const DIRECTORY_SEPARATOR;
 
-class Path
+class Path implements PathInterface
 {
     private DirectoryList $directoryList;
 
@@ -31,12 +31,7 @@ class Path
     }
 
     /**
-     * Returns path to module.
-     *
-     * @param string $moduleName
-     *
-     * @return string
-     * @throws FileSystemException
+     * @inheritdoc
      */
     public function getModulePath(string $moduleName): string
     {
@@ -56,13 +51,7 @@ class Path
     }
 
     /**
-     * Returns path to file.
-     *
-     * @param string $moduleName
-     * @param string $pathToFile
-     *
-     * @return string
-     * @throws FileSystemException
+     * @inheritdoc
      */
     public function getPathToFile(string $moduleName, string $pathToFile): string
     {

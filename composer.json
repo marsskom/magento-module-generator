@@ -30,5 +30,9 @@
         "psr-4": {
             "Marsskom\\Generator": ""
         }
+    },
+    "scripts": {
+        "phpcs": "php ./vendor/bin/phpcs --standard=Magento2 app/code/Marsskom/Generator/",
+        "test": "php ./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/Marsskom/Generator/Test/Unit"
     }
 }
