@@ -14,4 +14,6 @@ final class TemplateVariable
     public const CLASS_ANNOTATION = 'class_annotation';
 
     public const CLASS_NAME = 'class_name';
+    
+    public const MODULE_NAME = 'module_name';
 }

@@ -68,12 +68,19 @@ abstract class GeneratorCommand extends Command
                     null,
                     InputOption::VALUE_OPTIONAL,
                     'File location',
-                    'Setup/Patch/Data'
+                    $this->getDefaultPathParam()
                 ),
             ],
             $this->optionsList(),
         );
     }
+
+    /**
+     * Returns path to directory where file(s) will be created.
+     *
+     * @return string
+     */
+    abstract protected function getDefaultPathParam(): string;
 
     /**
      * Returns specific command options list.

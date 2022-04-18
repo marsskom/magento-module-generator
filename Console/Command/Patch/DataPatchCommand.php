@@ -24,6 +24,14 @@ class DataPatchCommand extends GeneratorCommand
     /**
      * @inheritdoc
      */
+    protected function getDefaultPathParam(): string
+    {
+        return 'Setup/Patch/Data';
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function optionsList(): array
     {
         return [
