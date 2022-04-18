@@ -26,7 +26,7 @@ class DataPatchCommand extends GeneratorCommand
      */
     protected function getDefaultPathParam(): string
     {
-        return 'Setup2/Patch/Data';
+        return 'Setup/Patch/Data';
     }
 
     /**
