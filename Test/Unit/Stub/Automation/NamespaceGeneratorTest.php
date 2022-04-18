@@ -32,7 +32,7 @@ class NamespaceGeneratorTest extends TestCase
             ]
         );
 
-        $namespaceGenerator = new NamespaceGenerator($this->getMockModuleBuilder());
+        $namespaceGenerator = new NamespaceGenerator($this->getModuleBuilderMockedObject());
         $namespaceGenerator->execute($context);
 
         $this->assertEquals(
@@ -44,7 +44,7 @@ class NamespaceGeneratorTest extends TestCase
     /**
      * Creates module builder mock.
      */
-    protected function getMockModuleBuilder()
+    protected function getModuleBuilderMockedObject()
     {
         $mock = $this->createMock(ModuleBuilder::class);
 

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Stub\Automation;
 
 use Magento\Framework\Exception\FileSystemException;
+use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 use Marsskom\Generator\Model\Context\Context;
 use Marsskom\Generator\Model\Enum\InputParameter;
@@ -18,15 +19,14 @@ use const DIRECTORY_SEPARATOR;
 
 class PathAssignerTest extends TestCase
 {
+    private ContextInterface $context;
+
     /**
-     * Tests path that not changed.
-     *
-     * @return void
-     * @throws FileSystemException
+     * @inheritdoc
      */
-    public function testNonChangeablePath(): void
+    protected function setUp(): void
     {
-        $context = new Context(
+        $this->context = new Context(
             $this->createMock(TemplateInterface::class),
             '',
             '',
@@ -35,10 +35,27 @@ class PathAssignerTest extends TestCase
                 InputParameter::PATH   => 'path/to/file',
             ]
         );
+    }
 
+    /**
+     * @inheritdoc
+     */
+    protected function tearDown(): void
+    {
+        unset($this->context);
+    }
+
+    /**
+     * Tests path that not changed.
+     *
+     * @return void
+     * @throws FileSystemException
+     */
+    public function testNonChangeablePath(): void
+    {
         $pathAssigner = new PathAssigner(new Path());
 
-        $context = $pathAssigner->execute($context);
+        $context = $pathAssigner->execute($this->context);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,
@@ -63,22 +80,12 @@ class PathAssignerTest extends TestCase
      */
     public function testRelativePath(): void
     {
-        $context = new Context(
-            $this->createMock(TemplateInterface::class),
-            '',
-            '',
-            [
-                InputParameter::MODULE => 'Test_test',
-                InputParameter::PATH   => 'path/to/file',
-            ]
-        );
-
         $pathAssigner = new PathAssigner(
             new Path(),
             'one/more/folder'
         );
 
-        $context = $pathAssigner->execute($context);
+        $context = $pathAssigner->execute($this->context);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,
@@ -103,23 +110,13 @@ class PathAssignerTest extends TestCase
      */
     public function testAbsolutePath(): void
     {
-        $context = new Context(
-            $this->createMock(TemplateInterface::class),
-            '',
-            '',
-            [
-                InputParameter::MODULE => 'Test_test',
-                InputParameter::PATH   => 'path/to/file',
-            ]
-        );
-
         $pathAssigner = new PathAssigner(
             new Path(),
             'new/path/to',
             true
         );
 
-        $context = $pathAssigner->execute($context);
+        $context = $pathAssigner->execute($this->context);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,

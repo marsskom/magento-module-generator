@@ -8,7 +8,7 @@ use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use Marsskom\Generator\Test\Unit\Mock\TemplateEngine\TemplateFromArray;
 
-class WriterAsArray extends AbstractSequence
+class WriterIntoTemplateFromArray extends AbstractSequence
 {
     /**
      * @inheritdoc

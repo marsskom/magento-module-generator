@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Mock\Sequence;
 
 use Marsskom\Generator\Model\Foundation\Sequence;
-use Marsskom\Generator\Test\Unit\Mock\Automation\WriterAsArray;
+use Marsskom\Generator\Test\Unit\Mock\Automation\WriterIntoTemplateFromArray;
 use function array_merge;
 use function str_split;
 
@@ -22,7 +22,7 @@ class SimpleSequence extends Sequence
 
         $sequences = array_merge($generators, $sequences);
 
-        $sequences[] = new WriterAsArray();
+        $sequences[] = new WriterIntoTemplateFromArray();
 
         parent::__construct($sequences);
     }
