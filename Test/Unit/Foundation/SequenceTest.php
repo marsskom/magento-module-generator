@@ -4,17 +4,40 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Foundation;
 
-use Marsskom\Generator\Api\Data\Template\TemplateInterface;
-use Marsskom\Generator\Model\Context\Context;
+use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Test\Unit\Mock\Automation\MultiplierGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Sequence\SimpleSequence;
 use Marsskom\Generator\Test\Unit\Mock\TemplateEngine\TemplateFromArray;
+use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
 use PHPUnit\Framework\TestCase;
 use function implode;
 
 class SequenceTest extends TestCase
 {
+    private ContextInterface $context;
+
+    /**
+     * @inheritdoc
+     */
+    protected function setUp(): void
+    {
+        $this->context = (new ContextFactory())->getMockedContext(
+            [
+                InputParameter::MODULE => '',
+                InputParameter::PATH   => '',
+            ]
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function tearDown(): void
+    {
+        unset($this->context);
+    }
+
     /**
      * Tests generator queue.
      *
@@ -24,18 +47,8 @@ class SequenceTest extends TestCase
     {
         $string = '0123456789';
 
-        $context = new Context(
-            $this->createMock(TemplateInterface::class),
-            '',
-            '',
-            [
-                InputParameter::MODULE => '',
-                InputParameter::PATH   => '',
-            ]
-        );
-
         $sequence = new SimpleSequence($string);
-        $context = $sequence->execute($context);
+        $context = $sequence->execute($this->context);
 
         $this->assertEquals(
             $string,
@@ -52,18 +65,10 @@ class SequenceTest extends TestCase
     {
         $string = '9876543210';
 
-        $context = new Context(
-            new TemplateFromArray(),
-            '',
-            '',
-            [
-                InputParameter::MODULE => '',
-                InputParameter::PATH   => '',
-            ]
-        );
-
         $sequence = new SimpleSequence($string);
-        $context = $sequence->execute($context);
+        $context = $sequence->execute(
+            $this->context->setTemplate(new TemplateFromArray())
+        );
 
         $this->assertEquals(
             $string,
@@ -80,21 +85,13 @@ class SequenceTest extends TestCase
     {
         $string = '1234567890';
 
-        $context = new Context(
-            new TemplateFromArray(),
-            '',
-            '',
-            [
-                InputParameter::MODULE => '',
-                InputParameter::PATH   => '',
-            ]
-        );
-
         $sequence = new SimpleSequence(
             $string,
             [new MultiplierGenerator(2)]
         );
-        $context = $sequence->execute($context);
+        $context = $sequence->execute(
+            $this->context->setTemplate(new TemplateFromArray())
+        );
 
         $this->assertEquals(
             '246810121416180',

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Api\Data\Context;
 
+use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 
 interface ContextInterface
@@ -32,7 +33,7 @@ interface ContextInterface
      * @return ContextInterface
      */
     public function setVariables(array $variables): ContextInterface;
-    
+
     /**
      * Returns template variables.
      *
@@ -78,4 +79,11 @@ interface ContextInterface
      * @return array<string, string>
      */
     public function getUserInput(): array;
+
+    /**
+     * Returns interrupt object.
+     *
+     * @return InterruptInterface
+     */
+    public function interrupt(): InterruptInterface;
 }

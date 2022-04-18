@@ -39,19 +39,37 @@ class Writer extends AbstractSequence
     {
         $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
 
-        $stream = $directory->openFile(
-            implode(
-                DIRECTORY_SEPARATOR,
-                [
-                    $context->getPath(),
-                    $context->getFileName(),
-                ]
-            )
+        $fileName = implode(
+            DIRECTORY_SEPARATOR,
+            [
+                $context->getPath(),
+                $context->getFileName(),
+            ]
         );
+        $isFileExists = $directory->isFile($fileName);
+
+        if ($isFileExists
+            && !$context->interrupt()->ask(
+                __("File '%1' already exists, it will be lost. Overwrite? [Y/n]: ", $fileName)
+            )) {
+            $context->interrupt()->info(
+                __("File '%1' was skipped", $fileName)
+            );
+            
+            return $context;
+        }
+
+        $stream = $directory->openFile($fileName);
         $stream->lock();
         $stream->write((string) $context->getTemplate());
         $stream->unlock();
         $stream->close();
+        
+        if ($isFileExists) {
+            $context->interrupt()->info(
+                __("File '%1' was overwrote", $fileName)
+            );
+        }
 
         return $context;
     }
