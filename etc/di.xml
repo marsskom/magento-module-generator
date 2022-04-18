@@ -3,6 +3,8 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Marsskom\Generator\Api\Data\Context\ContextInterface"
                 type="Marsskom\Generator\Model\Context\Context"/>
+    <preference for="Marsskom\Generator\Api\Data\Helper\PathInterface"
+                type="Marsskom\Generator\Model\Helper\Path"/>
 
     <preference for="Marsskom\Generator\Api\Data\TemplateEngineInterface"
                 type="Marsskom\Generator\Model\TemplateEngine\Mustache\Engine"/>

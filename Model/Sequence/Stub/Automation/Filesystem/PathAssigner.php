@@ -4,14 +4,15 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem;
 
+use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Helper\PathInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
-use Marsskom\Generator\Model\Helper\Path;
 
 class PathAssigner extends AbstractSequence
 {
-    private Path $pathHelper;
+    private PathInterface $pathHelper;
 
     private string $path;
 
@@ -20,13 +21,13 @@ class PathAssigner extends AbstractSequence
     /**
      * @inheritdoc
      *
-     * @param Path   $pathHelper
-     * @param string $path
-     * @param bool   $isAbsolute - true if path is calculated from generated module
-     *                           without usage user input into variable `path`
+     * @param PathInterface $pathHelper
+     * @param string        $path
+     * @param bool          $isAbsolute - true if path is calculated from generated module
+     *                                  without usage user input into variable `path`
      */
     public function __construct(
-        Path $pathHelper,
+        PathInterface $pathHelper,
         string $path = '',
         bool $isAbsolute = false,
         array $sequences = []
@@ -39,7 +40,9 @@ class PathAssigner extends AbstractSequence
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
+     *
+     * @throws FileSystemException
      */
     public function execute(ContextInterface $context): ContextInterface
     {

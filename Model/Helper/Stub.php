@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Helper;
 
 use Magento\Framework\Exception\FileSystemException;
+use Marsskom\Generator\Api\Data\Helper\PathInterface;
 use function implode;
 use const DIRECTORY_SEPARATOR;
 
@@ -12,7 +13,7 @@ class Stub
 {
     public const MODULE_NAME = 'Marsskom_Generator';
 
-    private Path $pathHelper;
+    private PathInterface $pathHelper;
 
     private string $directory;
 
@@ -23,13 +24,13 @@ class Stub
     /**
      * Stub helper constructor.
      *
-     * @param Path   $pathHelper
-     * @param string $directory
-     * @param string $partials
-     * @param string $extension
+     * @param PathInterface $pathHelper
+     * @param string        $directory
+     * @param string        $partials
+     * @param string        $extension
      */
     public function __construct(
-        Path $pathHelper,
+        PathInterface $pathHelper,
         string $directory = 'stubs',
         string $partials = 'partials',
         string $extension = '.stub'
@@ -44,6 +45,7 @@ class Stub
      * Returns path to stubs.
      *
      * @return string
+     *
      * @throws FileSystemException
      */
     public function pathToStubs(): string
@@ -58,6 +60,7 @@ class Stub
      * Returns path to partials stubs.
      *
      * @return string
+     *
      * @throws FileSystemException
      */
     public function pathToPartials(): string
