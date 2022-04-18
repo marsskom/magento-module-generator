@@ -1,5 +1,7 @@
 <?php
+{{# file_annotation }}
 {{{ file_annotation }}}
+{{/ file_annotation }}
 
 declare(strict_types = 1);
 
@@ -8,7 +10,9 @@ namespace {{{ file_namespace }}};
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
+{{# class_annotation }}
 {{{ class_annotation }}}
+{{/ class_annotation }}
 class {{{ class_name }}} implements DataPatchInterface
 {
     protected ModuleDataSetupInterface $moduleDataSetup;
