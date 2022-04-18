@@ -6,7 +6,9 @@ namespace Marsskom\Generator\Console\Command;
 
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
+use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\SequenceInterface;
+use Marsskom\Generator\Model\Console\InterruptFactory;
 use Marsskom\Generator\Model\Context\ContextFactory;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Symfony\Component\Console\Command\Command;
@@ -20,22 +22,27 @@ abstract class GeneratorCommand extends Command
 
     protected ContextFactory $contextFactory;
 
+    protected InterruptFactory $interruptFactory;
+
     /**
      * Command constructor.
      *
      * @param SequenceInterface $sequence
      * @param ContextFactory    $contextFactory
+     * @param InterruptFactory  $interruptFactory
      * @param string|null       $name
      */
     public function __construct(
         SequenceInterface $sequence,
         ContextFactory $contextFactory,
+        InterruptFactory $interruptFactory,
         string $name = null
     ) {
         parent::__construct($name);
 
         $this->sequence = $sequence;
         $this->contextFactory = $contextFactory;
+        $this->interruptFactory = $interruptFactory;
     }
 
     /**
@@ -96,9 +103,7 @@ abstract class GeneratorCommand extends Command
     {
         try {
             $this->sequence->execute(
-                $this->contextFactory->create([
-                    'userInput' => $input->getOptions(),
-                ])
+                $this->createContext($input, $output)
             );
         } catch (LocalizedException $exception) {
             $output->writeln($exception->getMessage());
@@ -109,5 +114,26 @@ abstract class GeneratorCommand extends Command
         }
 
         return Cli::RETURN_SUCCESS;
+    }
+
+    /**
+     * Creates and return context.
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return ContextInterface
+     */
+    protected function createContext(InputInterface $input, OutputInterface $output): ContextInterface
+    {
+        $interrupt = $this->interruptFactory->create([
+            'input'  => $input,
+            'output' => $output,
+        ]);
+
+        return $this->contextFactory->create([
+            'userInput' => $input->getOptions(),
+            'interrupt' => $interrupt,
+        ]);
     }
 }

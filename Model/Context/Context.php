@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context;
 
+use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 
 class Context implements ContextInterface
 {
     private TemplateInterface $template;
+
+    private InterruptInterface $interrupt;
 
     private string $path;
 
@@ -22,21 +25,24 @@ class Context implements ContextInterface
     /**
      * Context constructor.
      *
-     * @param TemplateInterface $template
-     * @param string            $path
-     * @param string            $fileName
-     * @param array             $userInput
+     * @param TemplateInterface  $template
+     * @param InterruptInterface $interrupt
+     * @param string             $path
+     * @param string             $fileName
+     * @param array              $userInput
      */
     public function __construct(
         TemplateInterface $template,
+        InterruptInterface $interrupt,
         string $path = '',
         string $fileName = '',
         array $userInput = []
     ) {
+        $this->template = $template;
+        $this->interrupt = $interrupt;
         $this->path = $path;
         $this->fileName = $fileName;
         $this->userInput = $userInput;
-        $this->template = $template;
     }
 
     /**
@@ -117,5 +123,13 @@ class Context implements ContextInterface
     public function getUserInput(): array
     {
         return $this->userInput;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function interrupt(): InterruptInterface
+    {
+        return $this->interrupt;
     }
 }
