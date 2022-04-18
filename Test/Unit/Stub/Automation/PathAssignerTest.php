@@ -6,11 +6,10 @@ namespace Marsskom\Generator\Test\Unit\Stub\Automation;
 
 use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
-use Marsskom\Generator\Api\Data\Template\TemplateInterface;
-use Marsskom\Generator\Model\Context\Context;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathAssigner;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
+use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
 use PHPUnit\Framework\TestCase;
 use function implode;
 use function rtrim;
@@ -26,15 +25,10 @@ class PathAssignerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->context = new Context(
-            $this->createMock(TemplateInterface::class),
-            '',
-            '',
-            [
-                InputParameter::MODULE => 'Test_test',
-                InputParameter::PATH   => 'path/to/file',
-            ]
-        );
+        $this->context = (new ContextFactory())->getMockedContext([
+            InputParameter::MODULE => 'Test_test',
+            InputParameter::PATH   => 'path/to/file',
+        ]);
     }
 
     /**

@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Stub\Automation;
 
-use Marsskom\Generator\Api\Data\Template\TemplateInterface;
-use Marsskom\Generator\Model\Context\Context;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Helper\Module;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
+use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
 use PHPUnit\Framework\TestCase;
 
 class NamespaceGeneratorTest extends TestCase
@@ -22,18 +21,14 @@ class NamespaceGeneratorTest extends TestCase
      */
     public function testExecute(): void
     {
-        $context = new Context(
-            $this->createMock(TemplateInterface::class),
-            '',
-            '',
-            [
+        $namespaceGenerator = new NamespaceGenerator($this->getModuleBuilderMockedObject());
+
+        $context = $namespaceGenerator->execute(
+            (new ContextFactory())->getMockedContext([
                 InputParameter::MODULE => 'Test_test',
                 InputParameter::PATH   => 'path/to/file',
-            ]
+            ])
         );
-
-        $namespaceGenerator = new NamespaceGenerator($this->getModuleBuilderMockedObject());
-        $namespaceGenerator->execute($context);
 
         $this->assertEquals(
             'Test\\test\\path\\to\\file',
