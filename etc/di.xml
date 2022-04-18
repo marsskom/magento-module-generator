@@ -14,6 +14,8 @@
             <argument name="commands" xsi:type="array">
                 <item name="generatorDataPatchCommand"
                       xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+                <item name="generatorModuleCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\ModuleCommand</item>
             </argument>
         </arguments>
     </type>
@@ -22,6 +24,12 @@
         <arguments>
             <argument name="sequence"
                       xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchSequence</argument>
+        </arguments>
+    </type>
+    <type name="Marsskom\Generator\Console\Command\ModuleCommand">
+        <arguments>
+            <argument name="sequence"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Module\ModuleSequence</argument>
         </arguments>
     </type>
 </config>

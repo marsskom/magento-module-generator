@@ -7,7 +7,7 @@ namespace Marsskom\Generator\Api\Data\Generator;
 interface StubGeneratorInterface
 {
     /**
-     * Returns stub name.
+     * Returns stub name (relative path from `stubs` directory).
      *
      * @return string
      */
