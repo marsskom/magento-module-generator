@@ -5,24 +5,10 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Helper\Builder;
 
 use Marsskom\Generator\Model\Helper\Module;
-use Marsskom\Generator\Model\Helper\ModuleFactory;
 use function explode;
 
 class ModuleBuilder
 {
-    private ModuleFactory $moduleFactory;
-
-    /**
-     * Module builder constructor.
-     *
-     * @param ModuleFactory $moduleFactory
-     */
-    public function __construct(
-        ModuleFactory $moduleFactory
-    ) {
-        $this->moduleFactory = $moduleFactory;
-    }
-
     /**
      * Creates module from Magneto 2 module name.
      *
@@ -34,9 +20,6 @@ class ModuleBuilder
     {
         $chunks = explode('_', $moduleName);
 
-        return $this->moduleFactory->create([
-            'vendor' => $chunks[0],
-            'name'   => $chunks[1],
-        ]);
+        return new Module($chunks[0], $chunks[1]);
     }
 }

@@ -13,6 +13,9 @@
     <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
                 type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
 
+    <preference for="Marsskom\Generator\Api\Data\Validator\ValidateResultInterface"
+                type="Marsskom\Generator\Model\Validator\ValidateResult"/>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
