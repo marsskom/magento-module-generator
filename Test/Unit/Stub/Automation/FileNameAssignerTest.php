@@ -8,9 +8,10 @@ use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 use Marsskom\Generator\Model\Context\Context;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\FileNameAssigner;
-use PHPUnit\Framework\TestCase;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class FileNameAssignerTest extends TestCase
+class FileNameAssignerTest extends MockeryTestCase
 {
     /**
      * Tests file name assignment.
@@ -22,8 +23,8 @@ class FileNameAssignerTest extends TestCase
         $fileName = 'file.dot';
 
         $context = new Context(
-            $this->createMock(TemplateInterface::class),
-            $this->createMock(InterruptInterface::class)
+            Mockery::mock(TemplateInterface::class),
+            Mockery::mock(InterruptInterface::class)
         );
         $fileNameAssigner = new FileNameAssigner($fileName);
 
