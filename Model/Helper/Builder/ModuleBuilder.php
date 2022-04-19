@@ -4,39 +4,29 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Helper\Builder;
 
+use Magento\Framework\Exception\LocalizedException;
 use Marsskom\Generator\Model\Helper\Module;
-use Marsskom\Generator\Model\Helper\ModuleFactory;
+use function count;
 use function explode;
 
 class ModuleBuilder
 {
-    private ModuleFactory $moduleFactory;
-
-    /**
-     * Module builder constructor.
-     *
-     * @param ModuleFactory $moduleFactory
-     */
-    public function __construct(
-        ModuleFactory $moduleFactory
-    ) {
-        $this->moduleFactory = $moduleFactory;
-    }
-
     /**
      * Creates module from Magneto 2 module name.
      *
      * @param string $moduleName
      *
      * @return Module
+     *
+     * @throws LocalizedException
      */
     public function fromMagentoModuleName(string $moduleName): Module
     {
         $chunks = explode('_', $moduleName);
+        if (count($chunks) !== 2) {
+            throw new LocalizedException(__("Module name is incorrect."));
+        }
 
-        return $this->moduleFactory->create([
-            'vendor' => $chunks[0],
-            'name'   => $chunks[1],
-        ]);
+        return new Module($chunks[0], $chunks[1]);
     }
 }

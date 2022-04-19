@@ -6,10 +6,9 @@ namespace Marsskom\Generator\Console\Command;
 
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\SequenceInterface;
-use Marsskom\Generator\Model\Console\InterruptFactory;
-use Marsskom\Generator\Model\Context\ContextFactory;
+use Marsskom\Generator\Api\Data\Validator\ValidationObserverInterface;
+use Marsskom\Generator\Model\Context\ContextBuilder;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,29 +19,29 @@ abstract class GeneratorCommand extends Command
 {
     protected SequenceInterface $sequence;
 
-    protected ContextFactory $contextFactory;
+    protected ValidationObserverInterface $validationObserver;
 
-    protected InterruptFactory $interruptFactory;
+    protected ContextBuilder $contextBuilder;
 
     /**
      * Command constructor.
      *
-     * @param SequenceInterface $sequence
-     * @param ContextFactory    $contextFactory
-     * @param InterruptFactory  $interruptFactory
-     * @param string|null       $name
+     * @param SequenceInterface           $sequence
+     * @param ValidationObserverInterface $validationObserver
+     * @param ContextBuilder              $contextBuilder
+     * @param string|null                 $name
      */
     public function __construct(
         SequenceInterface $sequence,
-        ContextFactory $contextFactory,
-        InterruptFactory $interruptFactory,
+        ValidationObserverInterface $validationObserver,
+        ContextBuilder $contextBuilder,
         string $name = null
     ) {
         parent::__construct($name);
 
         $this->sequence = $sequence;
-        $this->contextFactory = $contextFactory;
-        $this->interruptFactory = $interruptFactory;
+        $this->validationObserver = $validationObserver;
+        $this->contextBuilder = $contextBuilder;
     }
 
     /**
@@ -83,6 +82,13 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * Returns event name.
+     *
+     * @return string
+     */
+    abstract protected function getEventName(): string;
+
+    /**
      * Returns path to directory where file(s) will be created.
      *
      * @return string
@@ -101,9 +107,13 @@ abstract class GeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->validate($input, $output)) {
+            return Cli::RETURN_FAILURE;
+        }
+
         try {
             $this->sequence->execute(
-                $this->createContext($input, $output)
+                $this->contextBuilder->create($input, $output)
             );
         } catch (LocalizedException $exception) {
             $output->writeln($exception->getMessage());
@@ -117,23 +127,24 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * Creates and return context.
+     * Validates input params.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return ContextInterface
+     * @return bool
      */
-    protected function createContext(InputInterface $input, OutputInterface $output): ContextInterface
+    protected function validate(InputInterface $input, OutputInterface $output): bool
     {
-        $interrupt = $this->interruptFactory->create([
-            'input'  => $input,
-            'output' => $output,
-        ]);
+        $validateResult = $this->validationObserver->notify(
+            $this->getEventName(),
+            $input->getOptions()
+        );
 
-        return $this->contextFactory->create([
-            'userInput' => $input->getOptions(),
-            'interrupt' => $interrupt,
-        ]);
+        if (!$validateResult->isValid()) {
+            $output->writeln($validateResult->getMessage());
+        }
+
+        return $validateResult->isValid();
     }
 }

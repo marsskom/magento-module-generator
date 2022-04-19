@@ -13,6 +13,11 @@
     <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
                 type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
 
+    <preference for="Marsskom\Generator\Api\Data\Validator\ValidateResultInterface"
+                type="Marsskom\Generator\Model\Validator\ValidateResult"/>
+    <preference for="Marsskom\Generator\Api\Data\Validator\ValidationObserverInterface"
+                type="Marsskom\Generator\Model\Validator\ValidatorObserver"/>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -28,12 +33,16 @@
         <arguments>
             <argument name="sequence"
                       xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchSequence</argument>
+            <argument name="validationObserver"
+                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\Command\DataPatchObserver</argument>
         </arguments>
     </type>
     <type name="Marsskom\Generator\Console\Command\ModuleCommand">
         <arguments>
             <argument name="sequence"
                       xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Module\ModuleSequence</argument>
+            <argument name="validationObserver"
+                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\ModuleObserver</argument>
         </arguments>
     </type>
 </config>

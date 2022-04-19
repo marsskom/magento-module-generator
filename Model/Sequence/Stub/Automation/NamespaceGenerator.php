@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation;
 
+use Magento\Framework\Exception\LocalizedException;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
@@ -49,6 +50,8 @@ class NamespaceGenerator extends AbstractSequence
      * @param string $path
      *
      * @return string
+     *
+     * @throws LocalizedException
      */
     protected function getNamespace(string $moduleName, string $path = ''): string
     {

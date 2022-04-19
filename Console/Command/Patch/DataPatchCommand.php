@@ -10,6 +10,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class DataPatchCommand extends GeneratorCommand
 {
+    public const EVENT_NAME = 'console_command_data-patch-command';
+
     /**
      * @inheritdoc
      */
@@ -19,6 +21,14 @@ class DataPatchCommand extends GeneratorCommand
         $this->setDescription("Generates data patch class.");
 
         parent::configure();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getEventName(): string
+    {
+        return self::EVENT_NAME;
     }
 
     /**
