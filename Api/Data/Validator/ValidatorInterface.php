@@ -16,6 +16,13 @@ interface ValidatorInterface
     public function setNext(ValidatorInterface $validator): ValidatorInterface;
 
     /**
+     * Returns next validator.
+     *
+     * @return null|ValidatorInterface
+     */
+    public function getNext(): ?ValidatorInterface;
+
+    /**
      * Validates user input.
      *
      * @param array $userInput

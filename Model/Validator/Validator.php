@@ -41,6 +41,14 @@ abstract class Validator implements ValidatorInterface
     /**
      * @inheritdoc
      */
+    public function getNext(): ?ValidatorInterface
+    {
+        return $this->next;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function validate(array $userInput): ValidateResultInterface
     {
         try {

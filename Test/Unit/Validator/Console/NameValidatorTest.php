@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Validator\Console;
 
 use Marsskom\Generator\Model\Enum\InputParameter;
-use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
-use Marsskom\Generator\Model\Validator\Console\ModuleValidator;
 use Marsskom\Generator\Model\Validator\Console\NameValidator;
 use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -82,6 +80,20 @@ class NameValidatorTest extends MockeryTestCase
     {
         $validateResult = $this->validator->validate([
             InputParameter::NAME => 'In%valid.N^ame',
+        ]);
+
+        $this->assertFalse($validateResult->isValid());
+    }
+
+    /**
+     * Tests failed validation.
+     *
+     * @return void
+     */
+    public function testFailedValidationOnFirstNumberCharacter(): void
+    {
+        $validateResult = $this->validator->validate([
+            InputParameter::NAME => '3ClasTest',
         ]);
 
         $this->assertFalse($validateResult->isValid());

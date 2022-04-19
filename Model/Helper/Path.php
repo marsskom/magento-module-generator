@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Helper;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\LocalizedException;
 use Marsskom\Generator\Api\Data\Helper\PathInterface;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use function ltrim;
@@ -32,6 +33,8 @@ class Path implements PathInterface
 
     /**
      * @inheritdoc
+     *
+     * @throws LocalizedException
      */
     public function getModulePath(string $moduleName): string
     {
@@ -52,6 +55,8 @@ class Path implements PathInterface
 
     /**
      * @inheritdoc
+     *
+     * @throws LocalizedException
      */
     public function getPathToFile(string $moduleName, string $pathToFile): string
     {

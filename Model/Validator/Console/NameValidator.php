@@ -22,8 +22,10 @@ class NameValidator extends Validator
             throw new ValidateException(__("Name is required."));
         }
 
-        if (false === (bool) preg_match('/^[\w_-]+?$/', $name)) {
-            throw new ValidateException(__("Name may contain characters, underscore (_) and minus (-) only."));
+        if (false === (bool) preg_match('/^[A-Za-z][\w_-]+?$/', $name)) {
+            throw new ValidateException(
+                __("Name may contain letters, numbers (cannot be first character), underscore (_) and minus (-) only.")
+            );
         }
     }
 }

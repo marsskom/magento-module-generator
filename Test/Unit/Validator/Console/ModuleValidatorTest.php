@@ -9,7 +9,6 @@ use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Validator\Console\ModuleValidator;
 use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use PHPUnit\Framework\Exception;
 
 class ModuleValidatorTest extends MockeryTestCase
 {
@@ -60,19 +59,5 @@ class ModuleValidatorTest extends MockeryTestCase
         ]);
 
         $this->assertFalse($validateResult->isValid());
-    }
-
-    /**
-     * Tests exception.
-     *
-     * @return void
-     */
-    public function testException(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->validator->validate([
-            InputParameter::MODULE => 'TestTest',
-        ]);
     }
 }
