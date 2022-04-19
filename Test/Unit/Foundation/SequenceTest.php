@@ -10,17 +10,17 @@ use Marsskom\Generator\Test\Unit\Mock\Automation\MultiplierGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Sequence\SimpleSequence;
 use Marsskom\Generator\Test\Unit\Mock\TemplateEngine\TemplateFromArray;
 use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
-use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
 
-class SequenceTest extends TestCase
+class SequenceTest extends MockeryTestCase
 {
     private ContextInterface $context;
 
     /**
      * @inheritdoc
      */
-    protected function setUp(): void
+    protected function mockeryTestSetUp(): void
     {
         $this->context = (new ContextFactory())->getMockedContext(
             [
@@ -33,7 +33,7 @@ class SequenceTest extends TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown(): void
+    protected function mockeryTestTearDown(): void
     {
         unset($this->context);
     }

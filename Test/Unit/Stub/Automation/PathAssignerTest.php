@@ -10,20 +10,20 @@ use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathAssigner;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
 use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
-use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
 use function rtrim;
 use function sys_get_temp_dir;
 use const DIRECTORY_SEPARATOR;
 
-class PathAssignerTest extends TestCase
+class PathAssignerTest extends MockeryTestCase
 {
     private ContextInterface $context;
 
     /**
      * @inheritdoc
      */
-    protected function setUp(): void
+    protected function mockeryTestSetUp(): void
     {
         $this->context = (new ContextFactory())->getMockedContext([
             InputParameter::MODULE => 'Test_test',
@@ -34,7 +34,7 @@ class PathAssignerTest extends TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown(): void
+    protected function mockeryTestTearDown(): void
     {
         unset($this->context);
     }

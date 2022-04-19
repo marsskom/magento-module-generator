@@ -23,6 +23,9 @@
         "php": "~7.4.0",
         "mustache/mustache": "^2.14"
     },
+    "require-dev": {
+        "mockery/mockery": "^1.5"
+    },
     "autoload": {
         "files": [
             "registration.php"

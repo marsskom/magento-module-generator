@@ -10,9 +10,10 @@ use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Helper\Module;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
-use PHPUnit\Framework\TestCase;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class NamespaceGeneratorTest extends TestCase
+class NamespaceGeneratorTest extends MockeryTestCase
 {
     /**
      * Tests namespace.
@@ -41,11 +42,12 @@ class NamespaceGeneratorTest extends TestCase
      */
     protected function getModuleBuilderMockedObject()
     {
-        $mock = $this->createMock(ModuleBuilder::class);
+        $mock = Mockery::mock(ModuleBuilder::class);
 
-        $mock->expects($this->once())
-             ->method('fromMagentoModuleName')
-             ->willReturn(new Module('Test', 'test'));
+        $mock->shouldReceive('fromMagentoModuleName')
+             ->with('Test_test')
+             ->once()
+             ->andReturn(new Module('Test', 'test'));
 
         return $mock;
     }

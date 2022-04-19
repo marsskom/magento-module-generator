@@ -8,9 +8,9 @@ use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 use Marsskom\Generator\Model\Context\Context;
-use PHPUnit\Framework\TestCase;
+use Mockery;
 
-class ContextFactory extends TestCase
+class ContextFactory
 {
     /**
      * Returns mocked context.
@@ -22,8 +22,8 @@ class ContextFactory extends TestCase
     public function getMockedContext(array $userInput): ContextInterface
     {
         return new Context(
-            $this->createMock(TemplateInterface::class),
-            $this->createMock(InterruptInterface::class),
+            Mockery::mock(TemplateInterface::class),
+            Mockery::mock(InterruptInterface::class),
             '',
             '',
             $userInput
