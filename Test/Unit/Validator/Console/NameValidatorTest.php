@@ -90,7 +90,7 @@ class NameValidatorTest extends MockeryTestCase
      *
      * @return void
      */
-    public function testFailedValidationOnFirstNumberCharacter(): void
+    public function testFailedValidationWhereFirstCharacterIsNumber(): void
     {
         $validateResult = $this->validator->validate([
             InputParameter::NAME => '3ClasTest',

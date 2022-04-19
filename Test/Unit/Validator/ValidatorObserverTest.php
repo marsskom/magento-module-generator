@@ -64,7 +64,7 @@ class ValidatorObserverTest extends MockeryTestCase
     }
 
     /**
-     * Test validators order.
+     * Tests validators order.
      *
      * @return void
      */
@@ -87,13 +87,13 @@ class ValidatorObserverTest extends MockeryTestCase
             new EmptyValidator(new ValidatorResultBuilder())
         );
 
-        $this->assertEquals(EmptyValidator::class, get_class($emptyValidator));
+        $this->assertInstanceOf(EmptyValidator::class, $emptyValidator);
 
         $validator = $emptyValidator->getNext();
-        $this->assertEquals(NonEmptyValidator::class, get_class($validator));
+        $this->assertInstanceOf(NonEmptyValidator::class, $validator);
 
         $validator = $validator->getNext();
-        $this->assertEquals(EmptyValidator::class, get_class($validator));
+        $this->assertInstanceOf(EmptyValidator::class, $validator);
 
         $validator = $validator->getNext();
         $this->assertNull($validator);

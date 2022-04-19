@@ -18,7 +18,7 @@ class NameValidator extends Validator
     {
         $name = $userInput[InputParameter::NAME] ?? '';
 
-        if (empty($userInput[InputParameter::NAME])) {
+        if (empty($name)) {
             throw new ValidateException(__("Name is required."));
         }
 
