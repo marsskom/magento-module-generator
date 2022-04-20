@@ -18,6 +18,9 @@
     <preference for="Marsskom\Generator\Api\Data\Validator\ValidationObserverInterface"
                 type="Marsskom\Generator\Model\Validator\ValidatorObserver"/>
 
+    <type name="Marsskom\Generator\Model\Validator\Console\ModuleValidator" shared="false"/>
+    <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
