@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Console\Command\Console;
 
 use Marsskom\Generator\Console\Command\GeneratorCommand;
-use Marsskom\Generator\Model\Enum\InputParameter;
-use Symfony\Component\Console\Input\InputOption;
 
 class ConsoleCommandCommand extends GeneratorCommand
 {
@@ -33,40 +31,5 @@ class ConsoleCommandCommand extends GeneratorCommand
     protected function getEventName(): string
     {
         return self::EVENT_NAME;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getDefaultPathParam(): string
-    {
-        return 'Console/Command';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function optionsList(): array
-    {
-        return [
-            new InputOption(
-                InputParameter::NAME,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Class name'
-            ),
-            new InputOption(
-                self::COMMAND_NAME_PARAMETER,
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Command name'
-            ),
-            new InputOption(
-                self::COMMAND_DESC_PARAMETER,
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Command description'
-            ),
-        ];
     }
 }

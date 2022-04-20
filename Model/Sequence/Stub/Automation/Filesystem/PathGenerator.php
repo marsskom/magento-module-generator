@@ -38,7 +38,7 @@ class PathGenerator extends AbstractSequence
         return $context->setPath(
             $this->pathHelper->getPathToFile(
                 $context->getUserInput()[InputParameter::MODULE],
-                $context->getUserInput()[InputParameter::PATH]
+                $context->getUserInput()[InputParameter::PATH] ?? ''
             )
         );
     }

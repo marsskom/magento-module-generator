@@ -6,7 +6,6 @@ namespace Marsskom\Generator\Test\Unit\Validator\Console;
 
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Validator\Console\NameValidator;
-use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class NameValidatorTest extends MockeryTestCase
@@ -18,7 +17,7 @@ class NameValidatorTest extends MockeryTestCase
      */
     protected function mockeryTestSetUp(): void
     {
-        $this->validator = new NameValidator(new ValidatorResultBuilder());
+        $this->validator = new NameValidator();
     }
 
     /**

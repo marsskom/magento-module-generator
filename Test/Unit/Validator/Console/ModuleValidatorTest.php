@@ -7,7 +7,6 @@ namespace Marsskom\Generator\Test\Unit\Validator\Console;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Validator\Console\ModuleValidator;
-use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class ModuleValidatorTest extends MockeryTestCase
@@ -21,7 +20,6 @@ class ModuleValidatorTest extends MockeryTestCase
     {
         $this->validator = new ModuleValidator(
             new ModuleBuilder(),
-            new ValidatorResultBuilder(),
         );
     }
 

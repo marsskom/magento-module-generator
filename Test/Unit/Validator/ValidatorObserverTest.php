@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Validator;
 
 use Marsskom\Generator\Model\Validator\ValidatorObserver;
-use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Marsskom\Generator\Test\Unit\Mock\Console\Command;
 use Marsskom\Generator\Test\Unit\Mock\Validator\EmptyValidator;
 use Marsskom\Generator\Test\Unit\Mock\Validator\NonEmptyValidator;
@@ -21,7 +20,7 @@ class ValidatorObserverTest extends MockeryTestCase
      */
     protected function mockeryTestSetUp()
     {
-        $this->validatorObserver = new ValidatorObserver(new ValidatorResultBuilder());
+        $this->validatorObserver = new ValidatorObserver();
     }
 
     /**
@@ -55,7 +54,7 @@ class ValidatorObserverTest extends MockeryTestCase
     {
         $command = new Command($this->validatorObserver);
 
-        $validator = new EmptyValidator(new ValidatorResultBuilder());
+        $validator = new EmptyValidator();
         $this->validatorObserver->attach(get_class($command), $validator);
 
         $validateResult = $command->execute([1, 2, 3]);
@@ -72,7 +71,7 @@ class ValidatorObserverTest extends MockeryTestCase
     {
         $command = new Command($this->validatorObserver);
 
-        $emptyValidator = new EmptyValidator(new ValidatorResultBuilder());
+        $emptyValidator = new EmptyValidator();
 
         $this->validatorObserver->attach(
             get_class($command),
@@ -80,11 +79,11 @@ class ValidatorObserverTest extends MockeryTestCase
         );
         $this->validatorObserver->attach(
             get_class($command),
-            new NonEmptyValidator(new ValidatorResultBuilder())
+            new NonEmptyValidator()
         );
         $this->validatorObserver->attach(
             get_class($command),
-            new EmptyValidator(new ValidatorResultBuilder())
+            new EmptyValidator()
         );
 
         $this->assertInstanceOf(EmptyValidator::class, $emptyValidator);
@@ -116,11 +115,11 @@ class ValidatorObserverTest extends MockeryTestCase
 
         $this->validatorObserver->attach(
             get_class($command),
-            new NonEmptyValidator(new ValidatorResultBuilder())
+            new NonEmptyValidator()
         );
         $this->validatorObserver->attach(
             get_class($command),
-            new EmptyValidator(new ValidatorResultBuilder())
+            new EmptyValidator()
         );
 
         $validateResult = $command->execute($userInput);

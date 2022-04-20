@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Console;
 
 use Marsskom\Generator\Model\Foundation\Sequence;
+use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ClassNameGenerator;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathGenerator;
@@ -17,32 +18,20 @@ class CommandSequence extends Sequence
     /**
      * @inheritdoc
      *
-     * @param PathGenerator        $path
-     * @param PhpFileNameGenerator $fileName
-     * @param NamespaceGenerator   $namespace
-     * @param ClassNameGenerator   $className
-     * @param CommandGenerator     $commandGenerator
-     * @param CommandStubGenerator $commandStubGenerator
-     * @param Writer               $writer
+     * @param GlobalFactory $globalFactory
      */
     public function __construct(
-        PathGenerator $path,
-        PhpFileNameGenerator $fileName,
-        NamespaceGenerator $namespace,
-        ClassNameGenerator $className,
-        CommandGenerator $commandGenerator,
-        CommandStubGenerator $commandStubGenerator,
-        Writer $writer,
+        GlobalFactory $globalFactory,
         array $sequences = []
     ) {
         parent::__construct(array_merge([
-            $path,
-            $fileName,
-            $namespace,
-            $className,
-            $commandGenerator,
-            $commandStubGenerator,
-            $writer,
+            $globalFactory->create(PathGenerator::class),
+            $globalFactory->create(PhpFileNameGenerator::class),
+            $globalFactory->create(NamespaceGenerator::class),
+            $globalFactory->create(ClassNameGenerator::class),
+            $globalFactory->create(CommandGenerator::class),
+            $globalFactory->create(CommandStubGenerator::class),
+            $globalFactory->create(Writer::class),
         ], $sequences));
     }
 }
