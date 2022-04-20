@@ -24,14 +24,24 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="generatorDataPatchCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
                 <item name="generatorModuleCommand"
                       xsi:type="object">Marsskom\Generator\Console\Command\ModuleCommand</item>
+                <item name="generatorDataPatchCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+                <item name="generatorConsoleCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand</item>
             </argument>
         </arguments>
     </type>
 
+    <type name="Marsskom\Generator\Console\Command\ModuleCommand">
+        <arguments>
+            <argument name="sequence"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Module\ModuleSequence</argument>
+            <argument name="validationObserver"
+                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\ModuleObserver</argument>
+        </arguments>
+    </type>
     <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
         <arguments>
             <argument name="sequence"
@@ -40,12 +50,12 @@
                       xsi:type="object">Marsskom\Generator\Model\Validator\Observer\Command\DataPatchObserver</argument>
         </arguments>
     </type>
-    <type name="Marsskom\Generator\Console\Command\ModuleCommand">
+    <type name="Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand">
         <arguments>
             <argument name="sequence"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Module\ModuleSequence</argument>
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Console\CommandSequence</argument>
             <argument name="validationObserver"
-                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\ModuleObserver</argument>
+                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\Console\CommandObserver</argument>
         </arguments>
     </type>
 </config>
