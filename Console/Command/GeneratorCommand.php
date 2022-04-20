@@ -6,42 +6,34 @@ namespace Marsskom\Generator\Console\Command;
 
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
-use Marsskom\Generator\Api\Data\SequenceInterface;
-use Marsskom\Generator\Api\Data\Validator\ValidationObserverInterface;
+use Marsskom\Generator\Api\Data\ComponentManagerInterface;
 use Marsskom\Generator\Model\Context\ContextBuilder;
-use Marsskom\Generator\Model\Enum\InputParameter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class GeneratorCommand extends Command
 {
-    protected SequenceInterface $sequence;
-
-    protected ValidationObserverInterface $validationObserver;
+    protected ComponentManagerInterface $componentManager;
 
     protected ContextBuilder $contextBuilder;
 
     /**
      * Command constructor.
      *
-     * @param SequenceInterface           $sequence
-     * @param ValidationObserverInterface $validationObserver
-     * @param ContextBuilder              $contextBuilder
-     * @param string|null                 $name
+     * @param ComponentManagerInterface $componentManager
+     * @param ContextBuilder            $contextBuilder
+     * @param string|null               $name
      */
     public function __construct(
-        SequenceInterface $sequence,
-        ValidationObserverInterface $validationObserver,
+        ComponentManagerInterface $componentManager,
         ContextBuilder $contextBuilder,
         string $name = null
     ) {
-        parent::__construct($name);
-
-        $this->sequence = $sequence;
-        $this->validationObserver = $validationObserver;
+        $this->componentManager = $componentManager;
         $this->contextBuilder = $contextBuilder;
+
+        parent::__construct($name);
     }
 
     /**
@@ -49,36 +41,9 @@ abstract class GeneratorCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDefinition($this->getOptionsList());
+        $this->setDefinition($this->componentManager->inputDefinition());
 
         parent::configure();
-    }
-
-    /**
-     * Returns options list.
-     *
-     * @return array
-     */
-    protected function getOptionsList(): array
-    {
-        return array_merge(
-            [
-                new InputOption(
-                    InputParameter::MODULE,
-                    null,
-                    InputOption::VALUE_REQUIRED,
-                    'Module name (Vendor_Module)'
-                ),
-                new InputOption(
-                    InputParameter::PATH,
-                    null,
-                    InputOption::VALUE_OPTIONAL,
-                    'File location',
-                    $this->getDefaultPathParam()
-                ),
-            ],
-            $this->optionsList(),
-        );
     }
 
     /**
@@ -87,20 +52,6 @@ abstract class GeneratorCommand extends Command
      * @return string
      */
     abstract protected function getEventName(): string;
-
-    /**
-     * Returns path to directory where file(s) will be created.
-     *
-     * @return string
-     */
-    abstract protected function getDefaultPathParam(): string;
-
-    /**
-     * Returns specific command options list.
-     *
-     * @return array
-     */
-    abstract protected function optionsList(): array;
 
     /**
      * @inheritdoc
@@ -112,7 +63,7 @@ abstract class GeneratorCommand extends Command
         }
 
         try {
-            $this->sequence->execute(
+            $this->componentManager->sequence()->execute(
                 $this->contextBuilder->create($input, $output)
             );
         } catch (LocalizedException $exception) {
@@ -136,10 +87,12 @@ abstract class GeneratorCommand extends Command
      */
     protected function validate(InputInterface $input, OutputInterface $output): bool
     {
-        $validateResult = $this->validationObserver->notify(
-            $this->getEventName(),
-            $input->getOptions()
-        );
+        $validateResult = $this->componentManager
+            ->validationObserver()
+            ->notify(
+                $this->getEventName(),
+                $input->getOptions()
+            );
 
         if (!$validateResult->isValid()) {
             $output->writeln($validateResult->getMessage());

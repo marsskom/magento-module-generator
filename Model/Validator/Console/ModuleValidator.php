@@ -10,7 +10,6 @@ use Marsskom\Generator\Exception\ValidateException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Validator\Validator;
-use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 
 class ModuleValidator extends Validator
 {
@@ -23,10 +22,9 @@ class ModuleValidator extends Validator
      */
     public function __construct(
         ModuleBuilder $moduleBuilder,
-        ValidatorResultBuilder $resultBuilder,
         ?ValidatorInterface $next = null
     ) {
-        parent::__construct($resultBuilder, $next);
+        parent::__construct($next);
 
         $this->moduleBuilder = $moduleBuilder;
     }

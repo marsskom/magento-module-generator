@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Validator;
 
-use Marsskom\Generator\Model\Validator\ValidatorResultBuilder;
 use Marsskom\Generator\Test\Unit\Mock\Validator\EmptyValidator;
 use Marsskom\Generator\Test\Unit\Mock\Validator\NonEmptyValidator;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -18,7 +17,7 @@ class ValidatorTest extends MockeryTestCase
      */
     public function testPassedValidation(): void
     {
-        $validator = new EmptyValidator(new ValidatorResultBuilder());
+        $validator = new EmptyValidator();
 
         $validateResult = $validator->validate([1, 2, 3]);
 
@@ -32,7 +31,7 @@ class ValidatorTest extends MockeryTestCase
      */
     public function testFailedValidation(): void
     {
-        $validator = new EmptyValidator(new ValidatorResultBuilder());
+        $validator = new EmptyValidator();
 
         $validateResult = $validator->validate([]);
 
@@ -51,8 +50,8 @@ class ValidatorTest extends MockeryTestCase
      */
     public function testNextValidator(): void
     {
-        $validator = new EmptyValidator(new ValidatorResultBuilder());
-        $validator->setNext(new NonEmptyValidator(new ValidatorResultBuilder()));
+        $validator = new EmptyValidator();
+        $validator->setNext(new NonEmptyValidator());
 
         $validateResult = $validator->validate([1, 2, 3]);
 

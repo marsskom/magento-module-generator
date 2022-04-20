@@ -36,26 +36,20 @@
 
     <type name="Marsskom\Generator\Console\Command\ModuleCommand">
         <arguments>
-            <argument name="sequence"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Module\ModuleSequence</argument>
-            <argument name="validationObserver"
-                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\ModuleObserver</argument>
+            <argument name="componentManager"
+                      xsi:type="object">Marsskom\Generator\Model\Manager\ModuleManager</argument>
         </arguments>
     </type>
     <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
         <arguments>
-            <argument name="sequence"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchSequence</argument>
-            <argument name="validationObserver"
-                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\Command\DataPatchObserver</argument>
+            <argument name="componentManager"
+                      xsi:type="object">Marsskom\Generator\Model\Manager\Patch\DataPatchManager</argument>
         </arguments>
     </type>
     <type name="Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand">
         <arguments>
-            <argument name="sequence"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Stub\Console\CommandSequence</argument>
-            <argument name="validationObserver"
-                      xsi:type="object">Marsskom\Generator\Model\Validator\Observer\Console\CommandObserver</argument>
+            <argument name="componentManager"
+                      xsi:type="object">Marsskom\Generator\Model\Manager\Console\CommandManager</argument>
         </arguments>
     </type>
 </config>

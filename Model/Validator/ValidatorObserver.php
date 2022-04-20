@@ -15,17 +15,19 @@ class ValidatorObserver implements ValidationObserverInterface
      */
     private array $observers = [];
 
-    private ValidatorResultBuilder $resultBuilder;
-
     /**
-     * Validator observer constructor.
+     * Observer constructor.
      *
-     * @param ValidatorResultBuilder $resultBuilder
+     * @param string               $eventName
+     * @param ValidatorInterface[] $attachValidators
      */
     public function __construct(
-        ValidatorResultBuilder $resultBuilder
+        string $eventName = '',
+        array $attachValidators = []
     ) {
-        $this->resultBuilder = $resultBuilder;
+        foreach ($attachValidators as $class) {
+            $this->attach($eventName, $class);
+        }
     }
 
     /**
@@ -56,7 +58,7 @@ class ValidatorObserver implements ValidationObserverInterface
         $concreteValidator = $this->observers[$eventName] ?? null;
 
         if (null === $concreteValidator) {
-            return $this->resultBuilder->createPassed();
+            return (new ValidatorResultBuilder())->createPassed();
         }
 
         return $concreteValidator->validate($userInput);

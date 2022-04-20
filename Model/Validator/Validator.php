@@ -10,21 +10,16 @@ use Marsskom\Generator\Exception\ValidateException;
 
 abstract class Validator implements ValidatorInterface
 {
-    protected ValidatorResultBuilder $resultBuilder;
-
     protected ?ValidatorInterface $next = null;
 
     /**
      * Validator constructor.
      *
-     * @param ValidatorResultBuilder  $resultBuilder
      * @param null|ValidatorInterface $next
      */
     public function __construct(
-        ValidatorResultBuilder $resultBuilder,
         ?ValidatorInterface $next = null
     ) {
-        $this->resultBuilder = $resultBuilder;
         $this->next = $next;
     }
 
@@ -54,7 +49,7 @@ abstract class Validator implements ValidatorInterface
         try {
             $this->concreteValidate($userInput);
         } catch (ValidateException $exception) {
-            return $this->resultBuilder->createFailed(
+            return (new ValidatorResultBuilder())->createFailed(
                 $exception->getMessage(),
                 $exception->getTrace()
             );
@@ -64,7 +59,7 @@ abstract class Validator implements ValidatorInterface
             return $this->next->validate($userInput);
         }
 
-        return $this->resultBuilder->createPassed();
+        return (new ValidatorResultBuilder())->createPassed();
     }
 
     /**

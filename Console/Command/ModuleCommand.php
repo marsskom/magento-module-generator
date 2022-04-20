@@ -26,21 +26,4 @@ class ModuleCommand extends GeneratorCommand
     {
         return self::EVENT_NAME;
     }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getDefaultPathParam(): string
-    {
-        // Module name already is represented as path.
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function optionsList(): array
-    {
-        return [];
-    }
 }
