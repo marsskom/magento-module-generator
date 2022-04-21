@@ -9,7 +9,7 @@ use Marsskom\Generator\Console\Command\EntityCommand;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
-class ClassExtendsGenerator extends AbstractSequence
+class DataObjectExtendsGenerator extends AbstractSequence
 {
     /**
      * @inheritdoc

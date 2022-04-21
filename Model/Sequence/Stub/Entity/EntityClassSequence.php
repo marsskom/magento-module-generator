@@ -33,7 +33,7 @@ class EntityClassSequence extends BufferedSequence
                 $globalFactory->create(PhpFileNameGenerator::class),
                 $globalFactory->create(NamespaceGenerator::class),
                 $globalFactory->create(ClassNameGenerator::class),
-                $globalFactory->create(ClassExtendsGenerator::class),
+                $globalFactory->create(DataObjectExtendsGenerator::class),
                 $globalFactory->create(PropertiesGenerator::class),
                 $globalFactory->create(MethodGenerator::class),
                 $globalFactory->create(EntityStubGenerator::class),
