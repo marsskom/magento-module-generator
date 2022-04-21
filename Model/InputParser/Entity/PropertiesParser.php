@@ -143,6 +143,10 @@ class PropertiesParser implements ParserInterface
      */
     protected function validate(string $inputString): bool
     {
+        if ('?' === $inputString) {
+            return true;
+        }
+
         return (bool) preg_match('/^[A-Za-z]\w+?$/', $inputString);
     }
 }

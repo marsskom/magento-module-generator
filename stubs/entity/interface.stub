@@ -2,7 +2,7 @@
 {{# interface_annotation }}
 {{{ interface_annotation }}}
 {{/ interface_annotation }}
-interface {{{ interface_name }}}{{{ interface_extends }}}
+interface {{{ interface_name }}}
 {
     {{# methods }}
     {{# annotation }}

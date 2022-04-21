@@ -58,6 +58,12 @@ class EntityManager implements ComponentManagerInterface
                 'File location',
                 'Model'
             ),
+            new InputOption(
+                InputParameter::NAME,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Class name'
+            ),
             PropertiesOption::create(),
             new InputOption(
                 EntityCommand::COMMAND_HAS_INTERFACE_PARAMETER,

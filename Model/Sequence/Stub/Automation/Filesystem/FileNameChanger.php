@@ -15,6 +15,8 @@ class FileNameChanger extends AbstractSequence
 
     private string $suffix;
 
+    private string $extension;
+
     private ?Closure $callback;
 
     /**
@@ -22,11 +24,13 @@ class FileNameChanger extends AbstractSequence
      *
      * @param string        $prefix
      * @param string        $suffix
+     * @param string        $extension
      * @param null|callable $callback
      */
     public function __construct(
         string $prefix = '',
         string $suffix = '',
+        string $extension = 'php',
         ?Closure $callback = null,
         array $sequences = []
     ) {
@@ -34,6 +38,7 @@ class FileNameChanger extends AbstractSequence
 
         $this->prefix = $prefix;
         $this->suffix = $suffix;
+        $this->extension = $extension;
         $this->callback = $callback ??
             static function (ContextInterface $context) {
                 return $context->getUserInput()[InputParameter::NAME] ?? '';
@@ -57,6 +62,6 @@ class FileNameChanger extends AbstractSequence
      */
     protected function getFileName(ContextInterface $context): string
     {
-        return $this->prefix . $this->callback($context) . $this->suffix;
+        return $this->prefix . ($this->callback)($context) . $this->suffix . '.' . $this->extension;
     }
 }

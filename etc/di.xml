@@ -30,6 +30,8 @@
                       xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
                 <item name="generatorConsoleCommand"
                       xsi:type="object">Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand</item>
+                <item name="generatorEntityCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\EntityCommand</item>
             </argument>
         </arguments>
     </type>

@@ -4,11 +4,11 @@
 {{/ class_annotation }}
 class {{{ class_name }}}{{{ class_extends }}}{{{ class_implements }}}
 {
-    {{# properties }}
+    {{# class_properties }}
     {{{ . }}}
-
-    {{/ properties }}
+    {{/ class_properties }}
     {{# methods }}
+
     {{# annotation }}
     {{{ annotation }}}
     {{/ annotation }}

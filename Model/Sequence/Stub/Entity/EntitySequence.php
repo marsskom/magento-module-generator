@@ -21,6 +21,7 @@ class EntitySequence extends Sequence
     ) {
         parent::__construct(array_merge([
             $globalFactory->create(InterfaceSequence::class),
+            $globalFactory->create(EntityClassSequence::class),
         ], $sequences));
     }
 }

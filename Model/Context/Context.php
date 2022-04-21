@@ -132,4 +132,15 @@ class Context implements ContextInterface
     {
         return $this->interrupt;
     }
+
+    /**
+     * Clone method.
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        $this->template = clone $this->template;
+        $this->interrupt = clone $this->interrupt;
+    }
 }
