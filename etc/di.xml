@@ -20,6 +20,7 @@
 
     <type name="Marsskom\Generator\Model\Validator\Console\ModuleValidator" shared="false"/>
     <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
+    <type name="Marsskom\Generator\Model\Validator\Entity\PropertiesValidator" shared="false"/>
 
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
