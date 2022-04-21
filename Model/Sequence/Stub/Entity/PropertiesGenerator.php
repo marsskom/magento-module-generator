@@ -6,6 +6,7 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Model\Entity\Property;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
@@ -43,12 +44,24 @@ class PropertiesGenerator extends AbstractSequence
 
         $properties = [];
         foreach ($propsObjects as $property) {
-            $properties[] = 'private ' . implode('|', $property->getTypes()) . ' $' . $property->getName() . ';';
+            $properties[] = $this->getPropertyString($property);
         }
 
         $variables = $context->getVariables();
         $variables[TemplateVariable::CLASS_PROPERTIES] = $properties;
 
         return $context->setVariables($variables);
+    }
+
+    /**
+     * Returns property as string.
+     *
+     * @param Property $property
+     *
+     * @return string
+     */
+    protected function getPropertyString(Property $property): string
+    {
+        return 'private ' . implode('|', $property->getTypes()) . ' $' . $property->getName() . ';';
     }
 }

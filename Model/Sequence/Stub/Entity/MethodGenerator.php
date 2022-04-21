@@ -52,6 +52,7 @@ class MethodGenerator extends AbstractSequence
         }
 
         $variables = $context->getVariables();
+        // `array_values` is required here for reindex the keys that is important for mustache template engine.
         $variables[TemplateVariable::METHODS] = array_values(array_filter($methods));
 
         return $context->setVariables($variables);

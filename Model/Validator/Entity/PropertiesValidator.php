@@ -36,7 +36,6 @@ class PropertiesValidator extends Validator
     protected function concreteValidate(array $userInput): void
     {
         $propertiesString = $userInput[InputParameter::PROPERTIES] ?? '';
-
         if (empty($propertiesString)) {
             return;
         }
