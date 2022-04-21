@@ -1,0 +1,13 @@
+{{> php_file_header }}
+{{# interface_annotation }}
+{{{ interface_annotation }}}
+{{/ interface_annotation }}
+interface {{{ interface_name }}}{{{ interface_extends }}}
+{
+    {{# methods }}
+    {{# annotation }}
+    {{{ annotation }}}
+    {{/ annotation }}
+    public function {{{ name }}}({{{ parameters }}}): {{{ return_type }}};
+    {{/ methods }}
+}

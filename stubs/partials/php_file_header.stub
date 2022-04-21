@@ -1,6 +1,14 @@
 <?php
+{{# file_annotation }}
 {{{ file_annotation }}}
+{{/ file_annotation }}
+
 
 declare(strict_types = 1);
 
 namespace {{{ file_namespace }}};
+
+{{# file_uses }}
+{{{ . }}}
+
+{{/ file_uses }}

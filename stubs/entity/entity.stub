@@ -1,0 +1,20 @@
+{{> php_file_header }}
+{{# class_annotation }}
+{{{ class_annotation }}}
+{{/ class_annotation }}
+class {{{ class_name }}}{{{ class_extends }}}{{{ class_implements }}}
+{
+    {{# properties }}
+    {{{ . }}}
+
+    {{/ properties }}
+    {{# methods }}
+    {{# annotation }}
+    {{{ annotation }}}
+    {{/ annotation }}
+    public function {{{ name }}}({{{ parameters }}}): {{{ return_type }}}
+    {
+        {{{ body }}}
+    }
+    {{/ methods }}
+}
