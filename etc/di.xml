@@ -35,23 +35,4 @@
             </argument>
         </arguments>
     </type>
-
-    <type name="Marsskom\Generator\Console\Command\ModuleCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\ModuleManager</argument>
-        </arguments>
-    </type>
-    <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\Patch\DataPatchManager</argument>
-        </arguments>
-    </type>
-    <type name="Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\Console\CommandManager</argument>
-        </arguments>
-    </type>
 </config>

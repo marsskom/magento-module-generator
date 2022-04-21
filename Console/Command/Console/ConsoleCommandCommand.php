@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Console\Command\Console;
 
 use Marsskom\Generator\Console\Command\GeneratorCommand;
+use Marsskom\Generator\Model\Context\ContextBuilder;
+use Marsskom\Generator\Model\Manager\Console\CommandManager;
 
 class ConsoleCommandCommand extends GeneratorCommand
 {
@@ -13,6 +15,19 @@ class ConsoleCommandCommand extends GeneratorCommand
     public const COMMAND_NAME_PARAMETER = 'cname';
 
     public const COMMAND_DESC_PARAMETER = 'cdesc';
+
+    /**
+     * @inheritdoc
+     *
+     * @param CommandManager $commandManager
+     */
+    public function __construct(
+        CommandManager $commandManager,
+        ContextBuilder $contextBuilder,
+        string $name = null
+    ) {
+        parent::__construct($commandManager, $contextBuilder, $name);
+    }
 
     /**
      * @inheritdoc
