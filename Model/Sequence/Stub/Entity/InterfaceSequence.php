@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
+use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Console\Command\EntityCommand;
 use Marsskom\Generator\Model\Context\BufferBuilder;
 use Marsskom\Generator\Model\Foundation\BufferedSequence;
 use Marsskom\Generator\Model\GlobalFactory;
@@ -42,5 +44,17 @@ class InterfaceSequence extends BufferedSequence
                 $globalFactory->create(Writer::class),
             ], $sequences)
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function execute(ContextInterface $context): ContextInterface
+    {
+        if (empty($context->getUserInput()[EntityCommand::COMMAND_HAS_INTERFACE_PARAMETER])) {
+            return $context;
+        }
+
+        return parent::execute($context);
     }
 }
