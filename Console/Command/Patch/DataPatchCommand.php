@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Console\Command\Patch;
 
 use Marsskom\Generator\Console\Command\GeneratorCommand;
-use Marsskom\Generator\Model\Context\ContextBuilder;
 use Marsskom\Generator\Model\Manager\Patch\DataPatchManager;
+use Marsskom\Generator\Model\Scope\ScopeBuilder;
 
 class DataPatchCommand extends GeneratorCommand
 {
@@ -16,13 +16,15 @@ class DataPatchCommand extends GeneratorCommand
      * @inheritdoc
      *
      * @param DataPatchManager $dataPatchManager
+     *
+     * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod
      */
     public function __construct(
         DataPatchManager $dataPatchManager,
-        ContextBuilder $contextBuilder,
+        ScopeBuilder $scopeBuilder,
         string $name = null
     ) {
-        parent::__construct($dataPatchManager, $contextBuilder, $name);
+        parent::__construct($dataPatchManager, $scopeBuilder, $name);
     }
 
     /**

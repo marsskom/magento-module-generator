@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Mock\Automation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
+use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
 class MultiplierGenerator extends AbstractSequence
@@ -22,14 +24,22 @@ class MultiplierGenerator extends AbstractSequence
 
     /**
      * @inheritdoc
+     *
+     * @throws VariableAlreadySetException
+     * @throws VariableNotExistsException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $variables = $context->getVariables();
-        foreach ($variables as $key => $value) {
+        $variables = [];
+        foreach ($scope->var()->get('simple_generator') as $key => $value) {
             $variables[$key] = $value * $this->multiplier;
         }
 
-        return $context->setVariables($variables);
+        $scope->var()->set(
+            'simple_generator',
+            $variables
+        );
+
+        return $scope;
     }
 }

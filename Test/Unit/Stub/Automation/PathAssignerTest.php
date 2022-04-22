@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Stub\Automation;
 
 use Magento\Framework\Exception\FileSystemException;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathAssigner;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
-use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
+use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
 use function rtrim;
@@ -18,14 +18,14 @@ use const DIRECTORY_SEPARATOR;
 
 class PathAssignerTest extends MockeryTestCase
 {
-    private ContextInterface $context;
+    private ScopeInterface $scope;
 
     /**
      * @inheritdoc
      */
     protected function mockeryTestSetUp(): void
     {
-        $this->context = (new ContextFactory())->getMockedContext([
+        $this->scope = (new ScopeFactory())->create([
             InputParameter::MODULE => 'Test_test',
             InputParameter::PATH   => 'path/to/file',
         ]);
@@ -36,7 +36,7 @@ class PathAssignerTest extends MockeryTestCase
      */
     protected function mockeryTestTearDown(): void
     {
-        unset($this->context);
+        unset($this->scope);
     }
 
     /**
@@ -49,7 +49,7 @@ class PathAssignerTest extends MockeryTestCase
     {
         $pathAssigner = new PathAssigner(new Path());
 
-        $context = $pathAssigner->execute($this->context);
+        $scope = $pathAssigner->execute($this->scope);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,
@@ -62,7 +62,7 @@ class PathAssignerTest extends MockeryTestCase
         );
         $this->assertEquals(
             rtrim($expectedPath, DIRECTORY_SEPARATOR),
-            rtrim($context->getPath(), DIRECTORY_SEPARATOR)
+            rtrim($scope->context()->getPath(), DIRECTORY_SEPARATOR)
         );
     }
 
@@ -79,7 +79,7 @@ class PathAssignerTest extends MockeryTestCase
             'one/more/folder'
         );
 
-        $context = $pathAssigner->execute($this->context);
+        $scope = $pathAssigner->execute($this->scope);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,
@@ -92,7 +92,7 @@ class PathAssignerTest extends MockeryTestCase
         );
         $this->assertEquals(
             rtrim($expectedPath, DIRECTORY_SEPARATOR),
-            rtrim($context->getPath(), DIRECTORY_SEPARATOR)
+            rtrim($scope->context()->getPath(), DIRECTORY_SEPARATOR)
         );
     }
 
@@ -110,7 +110,7 @@ class PathAssignerTest extends MockeryTestCase
             true
         );
 
-        $context = $pathAssigner->execute($this->context);
+        $scope = $pathAssigner->execute($this->scope);
 
         $expectedPath = implode(
             DIRECTORY_SEPARATOR,
@@ -123,7 +123,7 @@ class PathAssignerTest extends MockeryTestCase
         );
         $this->assertEquals(
             rtrim($expectedPath, DIRECTORY_SEPARATOR),
-            rtrim($context->getPath(), DIRECTORY_SEPARATOR)
+            rtrim($scope->context()->getPath(), DIRECTORY_SEPARATOR)
         );
     }
 }

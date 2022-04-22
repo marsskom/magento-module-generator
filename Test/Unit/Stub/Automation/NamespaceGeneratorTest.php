@@ -10,7 +10,7 @@ use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
-use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
+use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class NamespaceGeneratorTest extends MockeryTestCase
@@ -26,8 +26,8 @@ class NamespaceGeneratorTest extends MockeryTestCase
     {
         $namespaceGenerator = new NamespaceGenerator(new Path(), new ModuleBuilder());
 
-        $context = $namespaceGenerator->execute(
-            (new ContextFactory())->getMockedContext([
+        $scope = $namespaceGenerator->execute(
+            (new ScopeFactory())->create([
                 InputParameter::MODULE => 'Test_test',
                 InputParameter::PATH   => 'path/to/file',
             ])
@@ -35,7 +35,7 @@ class NamespaceGeneratorTest extends MockeryTestCase
 
         $this->assertEquals(
             'Test\\test\\path\\to\\file',
-            $context->getVariables()[TemplateVariable::FILE_NAMESPACE]
+            $scope->var()->get(TemplateVariable::FILE_NAMESPACE)
         );
     }
 }

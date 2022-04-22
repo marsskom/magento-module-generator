@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Console\Command\Console;
 
 use Marsskom\Generator\Console\Command\GeneratorCommand;
-use Marsskom\Generator\Model\Context\ContextBuilder;
 use Marsskom\Generator\Model\Manager\Console\CommandManager;
+use Marsskom\Generator\Model\Scope\ScopeBuilder;
 
 class ConsoleCommandCommand extends GeneratorCommand
 {
@@ -20,13 +20,15 @@ class ConsoleCommandCommand extends GeneratorCommand
      * @inheritdoc
      *
      * @param CommandManager $commandManager
+     *
+     * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod
      */
     public function __construct(
         CommandManager $commandManager,
-        ContextBuilder $contextBuilder,
+        ScopeBuilder $scopeBuilder,
         string $name = null
     ) {
-        parent::__construct($commandManager, $contextBuilder, $name);
+        parent::__construct($commandManager, $scopeBuilder, $name);
     }
 
     /**

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation;
 
 use Magento\Framework\Exception\LocalizedException;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Helper\PathInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
@@ -41,22 +41,21 @@ class NamespaceGenerator extends AbstractSequence
      *
      * @throws LocalizedException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $moduleName = $context->getUserInput()[InputParameter::MODULE];
-        $path = $context->getUserInput()[InputParameter::PATH];
+        $moduleName = $scope->input()->get(InputParameter::MODULE);
+        $path = $scope->input()->get(InputParameter::PATH);
 
-        if (!empty($context->getPath())) {
+        if (!empty($scope->context()->getPath())) {
             $modulePath = $this->pathHelper->getModulePath($moduleName);
-            $path = str_replace($modulePath, '', $context->getPath());
+            $path = str_replace($modulePath, '', $scope->context()->getPath());
         }
 
         $namespace = $this->getNamespace($moduleName, $path);
 
-        $variables = $context->getVariables();
-        $variables[TemplateVariable::FILE_NAMESPACE] = str_replace('\\\\', '\\', $namespace);
+        $scope->var()->set(TemplateVariable::FILE_NAMESPACE, str_replace('\\\\', '\\', $namespace));
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 
     /**

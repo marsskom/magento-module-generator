@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Console\Command;
 
-use Marsskom\Generator\Model\Context\ContextBuilder;
 use Marsskom\Generator\Model\Manager\EntityManager;
+use Marsskom\Generator\Model\Scope\ScopeBuilder;
 
 class EntityCommand extends GeneratorCommand
 {
@@ -19,13 +19,15 @@ class EntityCommand extends GeneratorCommand
      * @inheritdoc
      *
      * @param EntityManager $entityManager
+     *
+     * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod
      */
     public function __construct(
         EntityManager $entityManager,
-        ContextBuilder $contextBuilder,
+        ScopeBuilder $scopeBuilder,
         string $name = null
     ) {
-        parent::__construct($entityManager, $contextBuilder, $name);
+        parent::__construct($entityManager, $scopeBuilder, $name);
     }
 
     /**

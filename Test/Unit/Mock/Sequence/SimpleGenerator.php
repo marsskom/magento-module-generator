@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Mock\Sequence;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
+use Marsskom\Generator\Exception\Scope\VariableIsNotMultipleException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
 class SimpleGenerator extends AbstractSequence
@@ -27,12 +29,17 @@ class SimpleGenerator extends AbstractSequence
 
     /**
      * @inheritdoc
+     *
+     * @throws VariableIsNotMultipleException
+     * @throws VariableNotExistsException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $variables = $context->getVariables();
-        $variables[] = $this->value;
+        $scope->var()->add(
+            'simple_generator',
+            $this->value
+        );
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 }

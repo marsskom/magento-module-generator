@@ -8,7 +8,7 @@ use Magento\Framework\Exception\FileSystemException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
-use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
+use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use PHPUnit\Framework\TestCase;
 use function implode;
 use function rtrim;
@@ -28,8 +28,8 @@ class PathGeneratorTest extends TestCase
     {
         $pathGenerator = new PathGenerator(new Path());
 
-        $context = $pathGenerator->execute(
-            (new ContextFactory())->getMockedContext([
+        $scope = $pathGenerator->execute(
+            (new ScopeFactory())->create([
                 InputParameter::MODULE => 'Test_test',
                 InputParameter::PATH   => '',
             ])
@@ -45,7 +45,7 @@ class PathGeneratorTest extends TestCase
         );
         $this->assertEquals(
             rtrim($expectedPath, DIRECTORY_SEPARATOR),
-            rtrim($context->getPath(), DIRECTORY_SEPARATOR)
+            rtrim($scope->context()->getPath(), DIRECTORY_SEPARATOR)
         );
     }
 
@@ -60,8 +60,8 @@ class PathGeneratorTest extends TestCase
     {
         $pathGenerator = new PathGenerator(new Path());
 
-        $context = $pathGenerator->execute(
-            (new ContextFactory())->getMockedContext([
+        $scope = $pathGenerator->execute(
+            (new ScopeFactory())->create([
                 InputParameter::MODULE => 'Test_test',
                 InputParameter::PATH   => 'path/to/file',
             ])
@@ -78,7 +78,7 @@ class PathGeneratorTest extends TestCase
         );
         $this->assertEquals(
             rtrim($expectedPath, DIRECTORY_SEPARATOR),
-            rtrim($context->getPath(), DIRECTORY_SEPARATOR)
+            rtrim($scope->context()->getPath(), DIRECTORY_SEPARATOR)
         );
     }
 }

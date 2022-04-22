@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Entity\Property;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
@@ -35,11 +37,13 @@ class PropertiesGenerator extends AbstractSequence
      * @inheritdoc
      *
      * @throws PropertyStringIsInvalid
+     * @throws VariableAlreadySetException
+     * @throws VariableNotExistsException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
         $propsObjects = $this->parser->parse(
-            $context->getUserInput()[InputParameter::PROPERTIES] ?? ''
+            $scope->input()->get(InputParameter::PROPERTIES) ?? ''
         );
 
         $properties = [];
@@ -47,10 +51,12 @@ class PropertiesGenerator extends AbstractSequence
             $properties[] = $this->getPropertyString($property);
         }
 
-        $variables = $context->getVariables();
-        $variables[TemplateVariable::CLASS_PROPERTIES] = $properties;
+        $scope->var()->set(
+            TemplateVariable::CLASS_PROPERTIES,
+            $properties
+        );
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 
     /**

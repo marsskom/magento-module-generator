@@ -4,25 +4,25 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Foundation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Context\BufferBuilder;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\BufferedSequence;
 use Marsskom\Generator\Test\Unit\Mock\Sequence\SimpleSequence;
-use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
+use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function spl_object_id;
 
 class BufferedSequenceTest extends MockeryTestCase
 {
-    private ContextInterface $context;
+    private ScopeInterface $scope;
 
     /**
      * @inheritdoc
      */
     protected function mockeryTestSetUp(): void
     {
-        $this->context = (new ContextFactory())->getMockedContext(
+        $this->scope = (new ScopeFactory())->create(
             [
                 InputParameter::MODULE => '',
                 InputParameter::PATH   => '',
@@ -35,7 +35,7 @@ class BufferedSequenceTest extends MockeryTestCase
      */
     protected function mockeryTestTearDown(): void
     {
-        unset($this->context);
+        unset($this->scope);
     }
 
     /**
@@ -47,11 +47,11 @@ class BufferedSequenceTest extends MockeryTestCase
     {
         $string = '0123456789';
         $sequence = new SimpleSequence($string);
-        $context = $sequence->execute($this->context);
+        $scope = $sequence->execute($this->scope);
 
         $this->assertEquals(
-            spl_object_id($this->context),
-            spl_object_id($context),
+            spl_object_id($this->scope),
+            spl_object_id($scope),
         );
     }
 
@@ -63,11 +63,11 @@ class BufferedSequenceTest extends MockeryTestCase
     public function testBufferedSequenceObjectIds(): void
     {
         $sequence = new BufferedSequence(new BufferBuilder());
-        $context = $sequence->execute($this->context);
+        $scope = $sequence->execute($this->scope);
 
         $this->assertNotEquals(
-            spl_object_id($this->context),
-            spl_object_id($context),
+            spl_object_id($this->scope),
+            spl_object_id($scope),
         );
     }
 }

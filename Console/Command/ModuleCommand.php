@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Console\Command;
 
-use Marsskom\Generator\Model\Context\ContextBuilder;
 use Marsskom\Generator\Model\Manager\ModuleManager;
+use Marsskom\Generator\Model\Scope\ScopeBuilder;
 
 class ModuleCommand extends GeneratorCommand
 {
@@ -15,13 +15,15 @@ class ModuleCommand extends GeneratorCommand
      * @inheritdoc
      *
      * @param ModuleManager $moduleManager
+     *
+     * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod
      */
     public function __construct(
         ModuleManager $moduleManager,
-        ContextBuilder $contextBuilder,
+        ScopeBuilder $scopeBuilder,
         string $name = null
     ) {
-        parent::__construct($moduleManager, $contextBuilder, $name);
+        parent::__construct($moduleManager, $scopeBuilder, $name);
     }
 
     /**

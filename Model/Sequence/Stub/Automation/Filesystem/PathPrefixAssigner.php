@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem;
 
 use Magento\Framework\Exception\FileSystemException;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Helper\PathInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use const DIRECTORY_SEPARATOR;
@@ -39,13 +39,16 @@ class PathPrefixAssigner extends AbstractSequence
      *
      * @throws FileSystemException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        return $context->setPath(
-            $this->pathHelper->getPathToFile(
-                $context->getUserInput()[InputParameter::MODULE],
-                $this->prefix . DIRECTORY_SEPARATOR . $context->getUserInput()[InputParameter::PATH]
-            )
+        $newPath = $this->prefix . DIRECTORY_SEPARATOR . $scope->input()->get(InputParameter::PATH);
+        $pathToFile = $this->pathHelper->getPathToFile(
+            $scope->input()->get(InputParameter::MODULE),
+            $newPath
         );
+
+        $scope->context()->setPath($pathToFile);
+
+        return $scope;
     }
 }

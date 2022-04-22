@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Foundation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Context\BufferBuilder;
 
 class BufferedSequence extends Sequence
@@ -29,11 +29,11 @@ class BufferedSequence extends Sequence
     /**
      * @inheritdoc
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $buffer = $this->bufferBuilder->create($context);
+        $buffer = $this->bufferBuilder->create($scope);
 
-        parent::execute($context);
+        parent::execute($scope);
 
         return $buffer->restore();
     }

@@ -4,30 +4,30 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 
 class Buffer
 {
-    private ContextInterface $originalContext;
+    private ScopeInterface $originalScope;
 
     /**
      * Buffer constructor.
      *
-     * @param ContextInterface $context
+     * @param ScopeInterface $scope
      */
     public function __construct(
-        ContextInterface $context
+        ScopeInterface $scope
     ) {
-        $this->originalContext = clone $context;
+        $this->originalScope = clone $scope;
     }
 
     /**
-     * Returns original context.
+     * Returns original scope.
      *
-     * @return ContextInterface
+     * @return ScopeInterface
      */
-    public function restore(): ContextInterface
+    public function restore(): ScopeInterface
     {
-        return $this->originalContext;
+        return $this->originalScope;
     }
 }

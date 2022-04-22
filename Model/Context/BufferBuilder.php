@@ -4,19 +4,19 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 
 class BufferBuilder
 {
     /**
      * Returns buffer.
      *
-     * @param ContextInterface $context
+     * @param ScopeInterface $scope
      *
      * @return Buffer
      */
-    public function create(ContextInterface $context): Buffer
+    public function create(ScopeInterface $scope): Buffer
     {
-        return new Buffer($context);
+        return new Buffer($scope);
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Entity\Property;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
@@ -38,11 +40,13 @@ class MethodGenerator extends AbstractSequence
      * @inheritdoc
      *
      * @throws PropertyStringIsInvalid
+     * @throws VariableAlreadySetException
+     * @throws VariableNotExistsException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
         $propsObjects = $this->parser->parse(
-            $context->getUserInput()[InputParameter::PROPERTIES] ?? ''
+            $scope->input()->get(InputParameter::PROPERTIES) ?? ''
         );
 
         $methods = [];
@@ -51,11 +55,12 @@ class MethodGenerator extends AbstractSequence
             $methods[] = $this->createGetter($property);
         }
 
-        $variables = $context->getVariables();
-        // `array_values` is required here for reindex the keys that is important for mustache template engine.
-        $variables[TemplateVariable::METHODS] = array_values(array_filter($methods));
+        $scope->var()->set(
+            TemplateVariable::METHODS,
+            array_values(array_filter($methods))
+        );
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 
     /**
