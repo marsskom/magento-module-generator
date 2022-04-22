@@ -24,11 +24,11 @@ class RegistrationSequence extends Sequence
     ) {
         parent::__construct(array_merge([
             $globalFactory->create(PathGenerator::class),
-            $globalFactory->create(ModuleNameGenerator::class),
             $globalFactory->create(FileNameAssigner::class, [
                 'name' => 'registration.php',
             ]),
-            $globalFactory->create(RegistrationGenerator::class),
+            $globalFactory->create(ModuleNameGenerator::class),
+            $globalFactory->create(RegistrationStubGenerator::class),
             $globalFactory->create(Writer::class),
         ], $sequences));
     }

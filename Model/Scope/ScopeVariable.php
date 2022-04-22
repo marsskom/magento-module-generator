@@ -4,27 +4,52 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Scope;
 
-use Marsskom\Generator\Api\Data\CloneableInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeVariableInterface;
+use Marsskom\Generator\Api\Data\Variable\VariableInterface;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableIsNotMultipleException;
-use Marsskom\Generator\Model\Scope\Variable\Collection;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
+use Marsskom\Generator\Model\Scope\Variable\Registry;
 use Marsskom\Generator\Model\Variable\Variable;
 use function array_merge;
 
-class ScopeVariable implements ScopeVariableInterface, CloneableInterface
+class ScopeVariable implements ScopeVariableInterface
 {
-    private Collection $collection;
+    private Registry $registry;
+
+    /**
+     * @var VariableInterface[]
+     */
+    private array $variables = [];
 
     /**
      * Scope variables constructor.
      *
-     * @param Collection $collection
+     * @param Registry $registry
      */
     public function __construct(
-        Collection $collection
+        Registry $registry
     ) {
-        $this->collection = $collection;
+        $this->registry = $registry;
+
+        $this->initVariables();
+    }
+
+    /**
+     * Initializes variables according to registry.
+     *
+     * @return void
+     */
+    private function initVariables(): void
+    {
+        foreach ($this->registry->getAll() as $varRegistry) {
+            $varName = $varRegistry->getName();
+
+            $this->variables[$varName] = new Variable(
+                $varName,
+                $varRegistry->getOptions()
+            );
+        }
     }
 
     /**
@@ -32,17 +57,21 @@ class ScopeVariable implements ScopeVariableInterface, CloneableInterface
      */
     public function set(string $name, $value): ScopeVariableInterface
     {
-        $variable = $this->collection->find($name);
+        if (!$this->registry->has($name)) {
+            throw new VariableNotExistsException(__("Variable '%1' not exists", $name));
+        }
+
+        $variable = $this->variables[$name];
 
         if (!$variable->isRewritable() && null !== $variable->getValue()) {
             throw new VariableAlreadySetException(__("Variable '%1' already was set", $name));
         }
 
-        $this->collection->replace($name, new Variable(
+        $this->variables[$name] = new Variable(
             $variable->getName(),
             $variable->getOptions(),
             $value
-        ));
+        );
 
         return $this;
     }
@@ -52,20 +81,24 @@ class ScopeVariable implements ScopeVariableInterface, CloneableInterface
      */
     public function add(string $name, $value): ScopeVariableInterface
     {
-        $variable = $this->collection->find($name);
+        if (!$this->registry->has($name)) {
+            throw new VariableNotExistsException(__("Variable '%1' not exists", $name));
+        }
+
+        $variable = $this->variables[$name];
 
         if ($variable->isSimple()) {
             throw new VariableIsNotMultipleException(__("Variable '%1' cannot has multiple values", $name));
         }
 
-        $this->collection->replace($name, new Variable(
+        $this->variables[$name] = new Variable(
             $variable->getName(),
             $variable->getOptions(),
             array_merge(
                 $variable->getValue() ?? [],
                 [$value]
             )
-        ));
+        );
 
         return $this;
     }
@@ -75,12 +108,16 @@ class ScopeVariable implements ScopeVariableInterface, CloneableInterface
      */
     public function clean(string $name): ScopeVariableInterface
     {
-        $variable = $this->collection->find($name);
+        if (!$this->registry->has($name)) {
+            throw new VariableNotExistsException(__("Variable '%1' not exists", $name));
+        }
 
-        $this->collection->replace($name, new Variable(
+        $variable = $this->variables[$name];
+
+        $this->variables[$name] = new Variable(
             $variable->getName(),
             $variable->getOptions()
-        ));
+        );
 
         return $this;
     }
@@ -90,7 +127,11 @@ class ScopeVariable implements ScopeVariableInterface, CloneableInterface
      */
     public function get(string $name)
     {
-        return $this->collection->find($name)->getValue();
+        if (!$this->registry->has($name)) {
+            throw new VariableNotExistsException(__("Variable '%1' not exists", $name));
+        }
+
+        return $this->variables[$name]->getValue();
     }
 
     /**
@@ -98,19 +139,13 @@ class ScopeVariable implements ScopeVariableInterface, CloneableInterface
      */
     public function getAll(): array
     {
-        $result = [];
-        foreach ($this->collection->get() as $variable) {
-            $result[$variable->getName()] = $variable->getValue();
+        $variables = [];
+        foreach ($this->variables as $var) {
+            // TODO: maybe it needs to be converted into string
+            // and don't forget about array to string conversion.
+            $variables[$var->getName()] = $var->getValue();
         }
 
-        return $result;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function __clone()
-    {
-        $this->collection = clone $this->collection;
+        return $variables;
     }
 }

@@ -9,7 +9,6 @@ use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterfaceFactory;
 use Marsskom\Generator\Model\Console\InterruptFactory;
 use Marsskom\Generator\Model\Context\ContextFactory;
-use Marsskom\Generator\Model\Scope\ScopeVariableFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,8 +20,6 @@ class ScopeBuilder
 
     private ScopeInputFactory $scopeInputFactory;
 
-    private ScopeVariableFactory $scopeVariableFactory;
-
     private InterruptFactory $interruptFactory;
 
     /**
@@ -31,20 +28,17 @@ class ScopeBuilder
      * @param ScopeInterfaceFactory $scopeFactory
      * @param ContextFactory        $contextFactory
      * @param ScopeInputFactory     $scopeInputFactory
-     * @param ScopeVariableFactory  $scopeVariableFactory
      * @param InterruptFactory      $interruptFactory
      */
     public function __construct(
         ScopeInterfaceFactory $scopeFactory,
         ContextFactory $contextFactory,
         ScopeInputFactory $scopeInputFactory,
-        ScopeVariableFactory $scopeVariableFactory,
         InterruptFactory $interruptFactory
     ) {
         $this->scopeFactory = $scopeFactory;
         $this->contextFactory = $contextFactory;
         $this->scopeInputFactory = $scopeInputFactory;
-        $this->scopeVariableFactory = $scopeVariableFactory;
         $this->interruptFactory = $interruptFactory;
     }
 
@@ -63,7 +57,6 @@ class ScopeBuilder
             'input'     => $this->scopeInputFactory->create([
                 'userInput' => $input->getOptions(),
             ]),
-            'variable'  => $this->scopeVariableFactory->create(),
             'interrupt' => $this->interruptFactory->create([
                 'input'  => $input,
                 'output' => $output,

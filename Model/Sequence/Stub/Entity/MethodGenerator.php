@@ -57,6 +57,7 @@ class MethodGenerator extends AbstractSequence
 
         $scope->var()->set(
             TemplateVariable::METHODS,
+            // `array_values` is required here for reindex the keys that is important for mustache template engine.
             array_values(array_filter($methods))
         );
 

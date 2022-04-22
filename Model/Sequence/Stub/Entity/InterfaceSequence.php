@@ -6,8 +6,7 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Console\Command\EntityCommand;
-use Marsskom\Generator\Model\Context\BufferBuilder;
-use Marsskom\Generator\Model\Foundation\BufferedSequence;
+use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\FileNameChanger;
@@ -15,7 +14,7 @@ use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathPrefixAssig
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use function array_merge;
 
-class InterfaceSequence extends BufferedSequence
+class InterfaceSequence extends Sequence
 {
     /**
      * @inheritdoc
@@ -24,11 +23,9 @@ class InterfaceSequence extends BufferedSequence
      */
     public function __construct(
         GlobalFactory $globalFactory,
-        BufferBuilder $bufferBuilder,
         array $sequences = []
     ) {
         parent::__construct(
-            $bufferBuilder,
             array_merge([
                 $globalFactory->create(PathPrefixAssigner::class, [
                     'prefix' => 'Api/Data',

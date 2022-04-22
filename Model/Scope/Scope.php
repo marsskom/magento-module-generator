@@ -10,6 +10,7 @@ use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Scope\InputInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeVariableInterface;
+use Marsskom\Generator\Model\Helper\Context\IdHelper;
 
 class Scope implements ScopeInterface, CloneableInterface
 {
@@ -17,28 +18,38 @@ class Scope implements ScopeInterface, CloneableInterface
 
     private InputInterface $input;
 
-    private ScopeVariableInterface $variable;
-
     private InterruptInterface $interrupt;
+
+    private ScopeVariableBuilder $scopeVariableBuilder;
+
+    private IdHelper $idHelper;
+
+    /**
+     * @var ScopeVariableInterface[]
+     */
+    private array $variables = [];
 
     /**
      * Scope constructor.
      *
-     * @param ContextInterface       $context
-     * @param InputInterface         $input
-     * @param ScopeVariableInterface $variable
-     * @param InterruptInterface     $interrupt
+     * @param ContextInterface     $context
+     * @param InputInterface       $input
+     * @param InterruptInterface   $interrupt
+     * @param ScopeVariableBuilder $scopeVariableBuilder
+     * @param IdHelper             $idHelper
      */
     public function __construct(
         ContextInterface $context,
         InputInterface $input,
-        ScopeVariableInterface $variable,
-        InterruptInterface $interrupt
+        InterruptInterface $interrupt,
+        ScopeVariableBuilder $scopeVariableBuilder,
+        IdHelper $idHelper
     ) {
         $this->context = $context;
         $this->input = $input;
-        $this->variable = $variable;
         $this->interrupt = $interrupt;
+        $this->scopeVariableBuilder = $scopeVariableBuilder;
+        $this->idHelper = $idHelper;
     }
 
     /**
@@ -60,17 +71,30 @@ class Scope implements ScopeInterface, CloneableInterface
     /**
      * @inheritdoc
      */
-    public function var(): ScopeVariableInterface
-    {
-        return $this->variable;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function interrupt(): InterruptInterface
     {
         return $this->interrupt;
+    }
+
+    /**
+     * Magic `__call` method.
+     *
+     * @param string|mixed $name
+     * @param array|mixed  $arguments
+     *
+     * @return ScopeVariableInterface|void
+     */
+    public function __call($name, $arguments)
+    {
+        if ('var' === $name) {
+            $contextId = $this->idHelper->getId($this->context);
+
+            if (!isset($this->variables[$contextId])) {
+                $this->variables[$contextId] = $this->scopeVariableBuilder->create();
+            }
+
+            return $this->variables[$contextId];
+        }
     }
 
     /**
@@ -80,7 +104,12 @@ class Scope implements ScopeInterface, CloneableInterface
     {
         $this->context = clone $this->context;
         $this->input = clone $this->input;
-        $this->variable = clone $this->variable;
         $this->interrupt = clone $this->interrupt;
+
+        $variables = [];
+        foreach ($this->variables as $var) {
+            $variables[] = clone $var;
+        }
+        $this->variables = $variables;
     }
 }

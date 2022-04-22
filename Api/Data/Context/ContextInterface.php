@@ -55,11 +55,4 @@ interface ContextInterface
      * @return TemplateInterface
      */
     public function getTemplate(): TemplateInterface;
-
-    /**
-     * Returns context identity.
-     *
-     * @return string
-     */
-    public function getContextID(): string;
 }

@@ -7,7 +7,6 @@ namespace Marsskom\Generator\Model\Context;
 use Marsskom\Generator\Api\Data\CloneableInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
-use function sha1;
 
 class Context implements ContextInterface, CloneableInterface
 {
@@ -86,14 +85,6 @@ class Context implements ContextInterface, CloneableInterface
     public function getFileName(): string
     {
         return $this->fileName;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContextID(): string
-    {
-        return sha1($this->path . $this->fileName);
     }
 
     /**

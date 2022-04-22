@@ -20,7 +20,6 @@ class CommandGenerator extends AbstractSequence
      */
     public function execute(ScopeInterface $scope): ScopeInterface
     {
-        // TODO: Vars names should be registered in Collection
         $scope->var()->set(
             'command_name',
             $scope->input()->get(ConsoleCommandCommand::COMMAND_NAME_PARAMETER)

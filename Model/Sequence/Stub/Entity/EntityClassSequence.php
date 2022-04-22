@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Model\Context\BufferBuilder;
-use Marsskom\Generator\Model\Foundation\BufferedSequence;
+use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ClassNameGenerator;
@@ -14,7 +14,7 @@ use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PhpFileNameGene
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use function array_merge;
 
-class EntityClassSequence extends BufferedSequence
+class EntityClassSequence extends Sequence
 {
     /**
      * @inheritdoc
@@ -23,11 +23,9 @@ class EntityClassSequence extends BufferedSequence
      */
     public function __construct(
         GlobalFactory $globalFactory,
-        BufferBuilder $bufferBuilder,
         array $sequences = []
     ) {
         parent::__construct(
-            $bufferBuilder,
             array_merge([
                 $globalFactory->create(PathGenerator::class),
                 $globalFactory->create(PhpFileNameGenerator::class),

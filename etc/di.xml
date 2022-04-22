@@ -33,11 +33,13 @@
     <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
     <type name="Marsskom\Generator\Model\Validator\Entity\PropertiesValidator" shared="false"/>
 
-    <type name="Marsskom\Generator\Model\Scope\Variable\Collection">
+    <type name="Marsskom\Generator\Model\Scope\Variable\Registry">
         <arguments>
-            <argument name="variablesCollections" xsi:type="array">
+            <argument name="registriesCollections" xsi:type="array">
                 <item name="0"
-                      xsi:type="object">Marsskom\Generator\Model\Variable\Collection\DefaultCollection</item>
+                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\DefaultRegistryCollection</item>
+                <item name="1"
+                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CommandRegistryCollection</item>
             </argument>
         </arguments>
     </type>

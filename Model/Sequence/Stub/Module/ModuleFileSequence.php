@@ -23,7 +23,7 @@ class ModuleFileSequence extends Sequence
         array $sequences = []
     ) {
         parent::__construct(array_merge([
-            $globalFactory->create(ModuleNameGenerator::class),
+            // TODO: separate path and name assigners into ContextChangeSequenceInterface???
             $globalFactory->create(PathAssigner::class, [
                 'path'       => 'etc',
                 'isAbsolute' => true,
@@ -31,7 +31,9 @@ class ModuleFileSequence extends Sequence
             $globalFactory->create(FileNameAssigner::class, [
                 'name' => 'module.xml',
             ]),
-            $globalFactory->create(ModuleFileGenerator::class),
+            // end TODO:
+            $globalFactory->create(ModuleNameGenerator::class),
+            $globalFactory->create(ModuleFileStubGenerator::class),
             $globalFactory->create(Writer::class),
         ], $sequences));
     }
