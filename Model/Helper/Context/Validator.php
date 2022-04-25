@@ -21,11 +21,11 @@ class Validator
     public function validate(ContextInterface $context): void
     {
         if (empty($context->getFileName())) {
-            throw new ContextIncorrectException(__("Context file name is empty. Did you register context?"));
+            throw new ContextIncorrectException(__("Context file name is empty. Did you register the context?"));
         }
 
         if (empty($context->getPath())) {
-            throw new ContextIncorrectException(__("Context path is empty. Did you register context?"));
+            throw new ContextIncorrectException(__("Context path is empty. Did you register the context?"));
         }
     }
 }

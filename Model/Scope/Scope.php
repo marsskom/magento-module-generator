@@ -175,7 +175,7 @@ class Scope implements ScopeInterface, CloneableInterface
 
         $contextId = $this->idHelper->getId($this->aliases[$contextAlias]);
         if (!isset($this->variables[$contextId])) {
-            throw new ContextNotFound(__("Context not found"));
+            throw new ContextNotFound(__("Context not found although the alias '%1' is present", [$contextAlias]));
         }
 
         return $this->variables[$contextId];

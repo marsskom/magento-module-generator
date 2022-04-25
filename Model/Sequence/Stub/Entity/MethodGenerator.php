@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
-use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalidException;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Entity\Property;
@@ -40,7 +40,7 @@ class MethodGenerator extends AbstractSequence
     /**
      * @inheritdoc
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      * @throws VariableAlreadySetException
      * @throws VariableNotExistsException
      */
@@ -61,7 +61,8 @@ class MethodGenerator extends AbstractSequence
 
         $scope->var()->set(
             TemplateVariable::METHODS,
-            // `array_values` is required here for reindex the keys that is important for mustache template engine.
+            // `array_values` is required here for reindex the keys
+            // 'cause it is important for mustache template engine.
             array_values(array_filter($methods))
         );
 

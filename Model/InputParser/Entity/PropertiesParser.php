@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\InputParser\Entity;
 
 use Marsskom\Generator\Api\Data\Input\ParserInterface;
-use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalidException;
 use Marsskom\Generator\Model\Entity\Property;
 use function array_filter;
 use function array_map;
@@ -31,7 +31,7 @@ class PropertiesParser implements ParserInterface
      *
      * @return Property[]
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     public function parse(string $inputValue): array
     {
@@ -76,17 +76,17 @@ class PropertiesParser implements ParserInterface
      *
      * @return array
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     protected function getChunks(string $propertyString): array
     {
         if (false === strpos($propertyString, self::PROPERTY_OPTION_DELIMITER)) {
-            throw new PropertyStringIsInvalid(__("Property string '%1' is invalid", $propertyString));
+            throw new PropertyStringIsInvalidException(__("Property string '%1' is invalid", $propertyString));
         }
 
         $chunks = explode(self::PROPERTY_OPTION_DELIMITER, $propertyString);
         if (count($chunks) < 2) {
-            throw new PropertyStringIsInvalid(__("Property string '%1' is invalid", $propertyString));
+            throw new PropertyStringIsInvalidException(__("Property string '%1' is invalid", $propertyString));
         }
 
         return $chunks;
@@ -99,12 +99,12 @@ class PropertiesParser implements ParserInterface
      *
      * @return string
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     protected function validateName(string $name): string
     {
         if (!$this->validate($name)) {
-            throw new PropertyStringIsInvalid(__("Property name '%1' is invalid", $name));
+            throw new PropertyStringIsInvalidException(__("Property name '%1' is invalid", $name));
         }
 
         return $name;
@@ -117,7 +117,7 @@ class PropertiesParser implements ParserInterface
      *
      * @return array
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     protected function validateTypes(string $types): array
     {
@@ -130,7 +130,7 @@ class PropertiesParser implements ParserInterface
 
         array_map(function ($type) {
             if (!$this->validate($type)) {
-                throw new PropertyStringIsInvalid(__("Property's type '%2' is invalid", $type));
+                throw new PropertyStringIsInvalidException(__("Property's type '%2' is invalid", $type));
             }
         }, $filteredTypes);
 

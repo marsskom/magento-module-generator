@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
-use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalidException;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Entity\Property;
@@ -36,7 +36,7 @@ class PropertiesGenerator extends AbstractSequence
     /**
      * @inheritdoc
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      * @throws VariableAlreadySetException
      * @throws VariableNotExistsException
      */

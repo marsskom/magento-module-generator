@@ -6,6 +6,6 @@ namespace Marsskom\Generator\Exception\Entity;
 
 use Magento\Framework\Exception\LocalizedException;
 
-class PropertyStringIsInvalid extends LocalizedException
+class PropertyStringIsInvalidException extends LocalizedException
 {
 }

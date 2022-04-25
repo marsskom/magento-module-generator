@@ -50,10 +50,14 @@ abstract class ContextRegister extends AbstractSequence implements ContextRegist
                 $defaultContext = clone $scope->context();
             }
 
-            $originalScope->registerContext(clone $scope->context(), $alias);
+            $originalScope = $originalScope->registerContext(clone $scope->context(), $alias);
         }
 
-        $originalScope->setCurrentContext($defaultContext ?? $firstContext);
+        $originalScope = $originalScope->setCurrentContext($defaultContext ?? $firstContext);
+        if (null === $defaultContext) {
+            // Register first context as default
+            $originalScope = $originalScope->registerContext($firstContext);
+        }
 
         return $originalScope;
     }

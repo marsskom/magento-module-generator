@@ -23,11 +23,13 @@ class VariableTest extends MockeryTestCase
      */
     protected function mockeryTestSetUp()
     {
-        $this->scope = (new FakeContextRegister())->execute((new ScopeFactory())->create([
-            InputParameter::MODULE => 'Test_test',
-            InputParameter::PATH   => './',
-            InputParameter::NAME   => 'test.php',
-        ]));
+        $this->scope = (new FakeContextRegister())->execute(
+            (new ScopeFactory())->create([
+                InputParameter::MODULE => 'Test_test',
+                InputParameter::PATH   => './',
+                InputParameter::NAME   => 'test.php',
+            ])
+        );
     }
 
     /**

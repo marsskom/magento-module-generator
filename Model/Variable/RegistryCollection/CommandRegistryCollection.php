@@ -18,11 +18,11 @@ class CommandRegistryCollection implements VariableRegistryCollectionInterface
         return [
             new VariableRegistry(
                 'command_name',
-                VariableInterface::IS_SIMPLE
+                VariableInterface::IS_SIMPLE | VariableInterface::IS_REWRITABLE
             ),
             new VariableRegistry(
                 'command_description',
-                VariableInterface::IS_SIMPLE
+                VariableInterface::IS_SIMPLE | VariableInterface::IS_REWRITABLE
             ),
         ];
     }

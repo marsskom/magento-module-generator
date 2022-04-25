@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\InputParser;
 
-use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalidException;
 use Marsskom\Generator\Model\InputParser\Entity\PropertiesParser;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
@@ -15,7 +15,7 @@ class PropertiesParserTest extends MockeryTestCase
      *
      * @return void
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     public function testSimpleProperty(): void
     {
@@ -39,7 +39,7 @@ class PropertiesParserTest extends MockeryTestCase
      *
      * @return void
      *
-     * @throws PropertyStringIsInvalid
+     * @throws PropertyStringIsInvalidException
      */
     public function testMultipleProperties(): void
     {
@@ -81,7 +81,7 @@ class PropertiesParserTest extends MockeryTestCase
      */
     public function testException(string $inputString): void
     {
-        $this->expectException(PropertyStringIsInvalid::class);
+        $this->expectException(PropertyStringIsInvalidException::class);
 
         (new PropertiesParser())->parse($inputString);
     }

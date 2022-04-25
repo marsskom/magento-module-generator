@@ -44,7 +44,7 @@ class PropertiesOption extends InputOption
             It converts into two properties `id` and `name`.
             `id` with type **int** or **null** and `name` - **NameInterface**
 
-            Also for `id` parameter getter and setter will be created. Moreover `id` will use in `__constructor`.
+            Also for `id` parameter getter and setter will be created. Moreover `id` will use in `__construct`.
             For `name` - only getter. If you need only setter, set `s` after property type.
             TEXT
         );

@@ -50,7 +50,7 @@ class Registry
     }
 
     /**
-     * Returns variable by name.
+     * Returns variable registry by name.
      *
      * @param string $name
      *

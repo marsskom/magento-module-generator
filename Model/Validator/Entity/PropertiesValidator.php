@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Validator\Entity;
 
 use Marsskom\Generator\Api\Data\Validator\ValidatorInterface;
-use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalid;
+use Marsskom\Generator\Exception\Entity\PropertyStringIsInvalidException;
 use Marsskom\Generator\Exception\ValidateException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\InputParser\Entity\PropertiesParser;
@@ -42,7 +42,7 @@ class PropertiesValidator extends Validator
 
         try {
             $this->parser->parse($propertiesString);
-        } catch (PropertyStringIsInvalid $exception) {
+        } catch (PropertyStringIsInvalidException $exception) {
             throw new ValidateException(__($exception->getMessage()));
         }
     }
