@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
-use Marsskom\Generator\Model\Context\BufferBuilder;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Context\ContextUsageGenerator;
-use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ClassNameGenerator;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use function array_merge;
@@ -36,7 +34,6 @@ class EntityClassSequence extends Sequence
                 $globalFactory->create(PropertiesGenerator::class),
                 $globalFactory->create(MethodGenerator::class),
                 $globalFactory->create(EntityStubGenerator::class),
-                $globalFactory->create(Writer::class),
             ], $sequences)
         );
     }

@@ -6,6 +6,7 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
+use Marsskom\Generator\Model\Sequence\Automation\Writer\ScopeWriter;
 use function array_merge;
 
 class EntitySequence extends Sequence
@@ -23,6 +24,7 @@ class EntitySequence extends Sequence
             $globalFactory->create(EntityContextRegister::class),
             $globalFactory->create(InterfaceSequence::class),
             $globalFactory->create(EntityClassSequence::class),
+            $globalFactory->create(ScopeWriter::class),
         ], $sequences));
     }
 }
