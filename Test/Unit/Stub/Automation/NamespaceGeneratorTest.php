@@ -10,6 +10,7 @@ use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Helper\Path;
+use Marsskom\Generator\Test\Unit\Mock\Sequence\FakeContextRegister;
 use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
@@ -24,13 +25,17 @@ class NamespaceGeneratorTest extends MockeryTestCase
      */
     public function testExecute(): void
     {
+        $scope = (new ScopeFactory())->create([
+            InputParameter::MODULE => 'Test_test',
+            InputParameter::PATH   => 'path/to/file',
+            InputParameter::NAME   => 'test.php',
+        ]);
+
+        $fakeContextRegister = new FakeContextRegister();
         $namespaceGenerator = new NamespaceGenerator(new Path(), new ModuleBuilder());
 
         $scope = $namespaceGenerator->execute(
-            (new ScopeFactory())->create([
-                InputParameter::MODULE => 'Test_test',
-                InputParameter::PATH   => 'path/to/file',
-            ])
+            $fakeContextRegister->execute($scope)
         );
 
         $this->assertEquals(

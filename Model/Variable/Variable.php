@@ -111,6 +111,7 @@ class Variable implements VariableInterface, TemplateInterface
             return (string) $this->value;
         }
 
+        // @codingStandardsIgnoreLine
         return call_user_func($this->stringRepresentationClosure, $this->value);
     }
 }

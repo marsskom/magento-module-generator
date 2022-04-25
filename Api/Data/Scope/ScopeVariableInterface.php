@@ -7,6 +7,7 @@ namespace Marsskom\Generator\Api\Data\Scope;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableIsNotMultipleException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
+use Marsskom\Generator\Exception\Scope\VariableTypeException;
 
 interface ScopeVariableInterface
 {
@@ -20,6 +21,7 @@ interface ScopeVariableInterface
      *
      * @throws VariableNotExistsException
      * @throws VariableAlreadySetException
+     * @throws VariableTypeException
      */
     public function set(string $name, $value): ScopeVariableInterface;
 

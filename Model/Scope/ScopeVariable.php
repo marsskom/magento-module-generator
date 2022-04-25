@@ -9,9 +9,11 @@ use Marsskom\Generator\Api\Data\Variable\VariableInterface;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableIsNotMultipleException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
+use Marsskom\Generator\Exception\Scope\VariableTypeException;
 use Marsskom\Generator\Model\Scope\Variable\Registry;
 use Marsskom\Generator\Model\Variable\Variable;
 use function array_merge;
+use function is_array;
 
 class ScopeVariable implements ScopeVariableInterface
 {
@@ -66,6 +68,10 @@ class ScopeVariable implements ScopeVariableInterface
 
         if (!$variable->isRewritable() && null !== $variable->getValue()) {
             throw new VariableAlreadySetException(__("Variable '%1' already was set", $name));
+        }
+
+        if (!$variable->isSimple() && !is_array($value)) {
+            throw new VariableTypeException(__("Variable '%1' is array, but passed value's not", $name));
         }
 
         $this->variables[$name] = new Variable(
@@ -153,7 +159,12 @@ class ScopeVariable implements ScopeVariableInterface
     {
         $variables = [];
         foreach ($this->variables as $var) {
-            $variables[$var->getName()] = $var->hasStringRepresentation() ? (string) $var : $var->getValue();
+            $value = $var->hasStringRepresentation() ? (string) $var : $var->getValue();
+            if (null === $value) {
+                continue;
+            }
+
+            $variables[$var->getName()] = $value;
         }
 
         return $variables;

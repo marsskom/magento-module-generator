@@ -25,8 +25,9 @@ class SequenceTest extends MockeryTestCase
     {
         $this->scope = (new ScopeFactory())->create(
             [
-                InputParameter::MODULE => '',
-                InputParameter::PATH   => '',
+                InputParameter::MODULE => 'Test_test',
+                InputParameter::PATH   => 'path/',
+                InputParameter::NAME   => 'test.php',
             ]
         );
     }

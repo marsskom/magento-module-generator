@@ -16,6 +16,8 @@ class SimpleSequence extends Sequence
         array $sequences = []
     ) {
         $generators = [];
+        $generators[] = new FakeContextRegister();
+
         foreach (str_split($value) as $v) {
             $generators[] = new SimpleGenerator($v);
         }
