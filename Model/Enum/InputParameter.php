@@ -13,12 +13,17 @@ final class InputParameter
     public const MODULE = 'module';
 
     /**
+     * File location.
+     */
+    public const PATH = 'path';
+
+    /**
      * Filename or/and classname.
      */
     public const NAME = 'name';
 
     /**
-     * File location.
+     * Class properties.
      */
-    public const PATH = 'path';
+    public const PROPERTIES = 'props';
 }

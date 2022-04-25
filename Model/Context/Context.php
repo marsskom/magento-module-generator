@@ -4,45 +4,33 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Context;
 
-use Marsskom\Generator\Api\Data\Command\InterruptInterface;
+use Marsskom\Generator\Api\Data\CloneableInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 
-class Context implements ContextInterface
+class Context implements ContextInterface, CloneableInterface
 {
     private TemplateInterface $template;
-
-    private InterruptInterface $interrupt;
 
     private string $path;
 
     private string $fileName;
 
-    private array $userInput;
-
-    private array $variables = [];
-
     /**
      * Context constructor.
      *
-     * @param TemplateInterface  $template
-     * @param InterruptInterface $interrupt
-     * @param string             $path
-     * @param string             $fileName
-     * @param array              $userInput
+     * @param TemplateInterface $template
+     * @param string            $path
+     * @param string            $fileName
      */
     public function __construct(
         TemplateInterface $template,
-        InterruptInterface $interrupt,
         string $path = '',
-        string $fileName = '',
-        array $userInput = []
+        string $fileName = ''
     ) {
         $this->template = $template;
-        $this->interrupt = $interrupt;
         $this->path = $path;
         $this->fileName = $fileName;
-        $this->userInput = $userInput;
     }
 
     /**
@@ -61,24 +49,6 @@ class Context implements ContextInterface
     public function getTemplate(): TemplateInterface
     {
         return $this->template;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setVariables(array $variables): ContextInterface
-    {
-        $this->variables = $variables;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
     }
 
     /**
@@ -120,16 +90,8 @@ class Context implements ContextInterface
     /**
      * @inheritdoc
      */
-    public function getUserInput(): array
+    public function __clone()
     {
-        return $this->userInput;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function interrupt(): InterruptInterface
-    {
-        return $this->interrupt;
+        $this->template = clone $this->template;
     }
 }

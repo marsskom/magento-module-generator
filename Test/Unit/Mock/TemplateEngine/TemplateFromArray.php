@@ -22,6 +22,6 @@ class TemplateFromArray implements TemplateInterface
      */
     public function __toString(): string
     {
-        return implode('', $this->variables);
+        return implode('', $this->variables['simple_generator']);
     }
 }

@@ -4,42 +4,25 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Api\Data\Context;
 
-use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 
 interface ContextInterface
 {
     /**
-     * Sets template.
+     * Sets file name.
      *
-     * @param TemplateInterface $template
-     *
-     * @return ContextInterface
-     */
-    public function setTemplate(TemplateInterface $template): ContextInterface;
-
-    /**
-     * Returns template.
-     *
-     * @return TemplateInterface
-     */
-    public function getTemplate(): TemplateInterface;
-
-    /**
-     * Sets template variables.
-     *
-     * @param array $variables
+     * @param string $fileName
      *
      * @return ContextInterface
      */
-    public function setVariables(array $variables): ContextInterface;
+    public function setFileName(string $fileName): ContextInterface;
 
     /**
-     * Returns template variables.
+     * Returns file name with extension.
      *
-     * @return array
+     * @return string
      */
-    public function getVariables(): array;
+    public function getFileName(): string;
 
     /**
      * Sets path.
@@ -58,32 +41,18 @@ interface ContextInterface
     public function getPath(): string;
 
     /**
-     * Sets file name.
+     * Sets template.
      *
-     * @param string $fileName
+     * @param TemplateInterface $template
      *
      * @return ContextInterface
      */
-    public function setFileName(string $fileName): ContextInterface;
+    public function setTemplate(TemplateInterface $template): ContextInterface;
 
     /**
-     * Returns file name with extension.
+     * Returns template.
      *
-     * @return string
+     * @return TemplateInterface
      */
-    public function getFileName(): string;
-
-    /**
-     * Returns user input.
-     *
-     * @return array<string, string>
-     */
-    public function getUserInput(): array;
-
-    /**
-     * Returns interrupt object.
-     *
-     * @return InterruptInterface
-     */
-    public function interrupt(): InterruptInterface;
+    public function getTemplate(): TemplateInterface;
 }

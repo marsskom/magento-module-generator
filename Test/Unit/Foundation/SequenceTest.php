@@ -4,28 +4,30 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Foundation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Test\Unit\Mock\Automation\MultiplierGenerator;
 use Marsskom\Generator\Test\Unit\Mock\Sequence\SimpleSequence;
 use Marsskom\Generator\Test\Unit\Mock\TemplateEngine\TemplateFromArray;
-use Marsskom\Generator\Test\Unit\MockHelper\ContextFactory;
+use Marsskom\Generator\Test\Unit\MockHelper\ScopeFactory;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
 
 class SequenceTest extends MockeryTestCase
 {
-    private ContextInterface $context;
+    private ScopeInterface $scope;
 
     /**
      * @inheritdoc
      */
     protected function mockeryTestSetUp(): void
     {
-        $this->context = (new ContextFactory())->getMockedContext(
+        $this->scope = (new ScopeFactory())->create(
             [
-                InputParameter::MODULE => '',
-                InputParameter::PATH   => '',
+                InputParameter::MODULE => 'Test_test',
+                InputParameter::PATH   => 'path/',
+                InputParameter::NAME   => 'test.php',
             ]
         );
     }
@@ -35,24 +37,26 @@ class SequenceTest extends MockeryTestCase
      */
     protected function mockeryTestTearDown(): void
     {
-        unset($this->context);
+        unset($this->scope);
     }
 
     /**
      * Tests generator queue.
      *
      * @return void
+     *
+     * @throws VariableNotExistsException
      */
     public function testQueueWithContextVariables(): void
     {
         $string = '0123456789';
 
         $sequence = new SimpleSequence($string);
-        $context = $sequence->execute($this->context);
+        $scope = $sequence->execute($this->scope);
 
         $this->assertEquals(
             $string,
-            implode('', $context->getVariables())
+            implode('', $scope->var()->get('simple_generator') ?? [])
         );
     }
 
@@ -66,13 +70,13 @@ class SequenceTest extends MockeryTestCase
         $string = '9876543210';
 
         $sequence = new SimpleSequence($string);
-        $context = $sequence->execute(
-            $this->context->setTemplate(new TemplateFromArray())
-        );
+
+        $this->scope->context()->setTemplate(new TemplateFromArray());
+        $scope = $sequence->execute($this->scope);
 
         $this->assertEquals(
             $string,
-            (string) $context->getTemplate()
+            (string) $scope->context()->getTemplate()
         );
     }
 
@@ -89,13 +93,13 @@ class SequenceTest extends MockeryTestCase
             $string,
             [new MultiplierGenerator(2)]
         );
-        $context = $sequence->execute(
-            $this->context->setTemplate(new TemplateFromArray())
-        );
+
+        $this->scope->context()->setTemplate(new TemplateFromArray());
+        $scope = $sequence->execute($this->scope);
 
         $this->assertEquals(
             '246810121416180',
-            (string) $context->getTemplate()
+            (string) $scope->context()->getTemplate()
         );
     }
 }

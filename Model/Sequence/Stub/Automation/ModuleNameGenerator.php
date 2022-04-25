@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
+use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
@@ -13,12 +15,17 @@ class ModuleNameGenerator extends AbstractSequence
 {
     /**
      * @inheritdoc
+     *
+     * @throws VariableNotExistsException
+     * @throws VariableAlreadySetException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $variables = $context->getVariables();
-        $variables[TemplateVariable::MODULE_NAME] = $context->getUserInput()[InputParameter::MODULE];
+        $scope->var()->set(
+            TemplateVariable::MODULE_NAME,
+            $scope->input()->get(InputParameter::MODULE)
+        );
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 }

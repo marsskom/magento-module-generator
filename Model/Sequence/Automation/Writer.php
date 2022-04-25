@@ -7,7 +7,7 @@ namespace Marsskom\Generator\Model\Sequence\Automation;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use function implode;
 use const DIRECTORY_SEPARATOR;
@@ -35,42 +35,42 @@ class Writer extends AbstractSequence
      *
      * @throws FileSystemException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
         $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
 
         $fileName = implode(
             DIRECTORY_SEPARATOR,
             [
-                $context->getPath(),
-                $context->getFileName(),
+                $scope->context()->getPath(),
+                $scope->context()->getFileName(),
             ]
         );
         $isFileExists = $directory->isFile($fileName);
 
         if ($isFileExists
-            && !$context->interrupt()->ask(
+            && !$scope->interrupt()->ask(
                 __("File '%1' already exists, it will be lost. Overwrite? [Y/n]: ", $fileName)
             )) {
-            $context->interrupt()->info(
+            $scope->interrupt()->info(
                 __("File '%1' was skipped", $fileName)
             );
-            
-            return $context;
+
+            return $scope;
         }
 
         $stream = $directory->openFile($fileName);
         $stream->lock();
-        $stream->write((string) $context->getTemplate());
+        $stream->write((string) $scope->context()->getTemplate());
         $stream->unlock();
         $stream->close();
-        
+
         if ($isFileExists) {
-            $context->interrupt()->info(
+            $scope->interrupt()->info(
                 __("File '%1' was overwrote", $fileName)
             );
         }
 
-        return $context;
+        return $scope;
     }
 }

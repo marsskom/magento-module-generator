@@ -6,9 +6,8 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Module;
 
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
+use Marsskom\Generator\Model\Sequence\Automation\Context\ContextUsageGenerator;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\FileNameAssigner;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathAssigner;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ModuleNameGenerator;
 
 class ModuleFileSequence extends Sequence
@@ -23,15 +22,11 @@ class ModuleFileSequence extends Sequence
         array $sequences = []
     ) {
         parent::__construct(array_merge([
+            $globalFactory->create(ContextUsageGenerator::class, [
+                'contextAlias' => 'module.xml',
+            ]),
             $globalFactory->create(ModuleNameGenerator::class),
-            $globalFactory->create(PathAssigner::class, [
-                'path'       => 'etc',
-                'isAbsolute' => true,
-            ]),
-            $globalFactory->create(FileNameAssigner::class, [
-                'name' => 'module.xml',
-            ]),
-            $globalFactory->create(ModuleFileGenerator::class),
+            $globalFactory->create(ModuleFileStubGenerator::class),
             $globalFactory->create(Writer::class),
         ], $sequences));
     }

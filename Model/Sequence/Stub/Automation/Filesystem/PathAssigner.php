@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem;
 
 use Magento\Framework\Exception\FileSystemException;
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Helper\PathInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
@@ -23,7 +23,7 @@ class PathAssigner extends AbstractSequence
      *
      * @param PathInterface $pathHelper
      * @param string        $path
-     * @param bool          $isAbsolute - true if path is calculated from generated module
+     * @param bool          $isAbsolute - true if path will be calculated from generated module
      *                                  without usage user input into variable `path`
      */
     public function __construct(
@@ -44,29 +44,32 @@ class PathAssigner extends AbstractSequence
      *
      * @throws FileSystemException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        return $context->setPath(
+        $scope->context()->setPath(
             $this->pathHelper->getPathToFile(
-                $context->getUserInput()[InputParameter::MODULE],
-                $this->getPath($context)
+                $scope->input()->get(InputParameter::MODULE),
+                $this->getPath($scope)
             )
         );
+
+        return $scope;
     }
 
     /**
      * Returns generated path.
      *
-     * @param ContextInterface $context
+     * @param ScopeInterface $scope
      *
      * @return string
      */
-    protected function getPath(ContextInterface $context): string
+    protected function getPath(ScopeInterface $scope): string
     {
         if ($this->isAbsolute) {
             return $this->path;
         }
 
-        return $context->getUserInput()[InputParameter::PATH] . DIRECTORY_SEPARATOR . $this->path;
+        return $scope->input()->get(InputParameter::PATH)
+            . DIRECTORY_SEPARATOR . $this->path;
     }
 }

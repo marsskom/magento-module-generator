@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
 class FileNameAssigner extends AbstractSequence
@@ -28,8 +28,10 @@ class FileNameAssigner extends AbstractSequence
     /**
      * @inheritdoc
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        return $context->setFileName($this->fileName);
+        $scope->context()->setFileName($this->fileName);
+
+        return $scope;
     }
 }

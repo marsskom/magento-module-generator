@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Foundation;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Generator\StubGeneratorInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Api\Data\TemplateEngineInterfaceFactory;
 
 abstract class StubGenerator extends AbstractSequence implements StubGeneratorInterface
@@ -15,33 +15,31 @@ abstract class StubGenerator extends AbstractSequence implements StubGeneratorIn
     /**
      * @inheritdoc
      *
-     * @param TemplateEngineInterfaceFactory $templateFactory
+     * @param TemplateEngineInterfaceFactory $tplEngineFactory
      */
     public function __construct(
-        TemplateEngineInterfaceFactory $templateFactory,
+        TemplateEngineInterfaceFactory $tplEngineFactory,
         array $sequences = []
     ) {
         parent::__construct($sequences);
 
-        $this->templateFactory = $templateFactory;
+        $this->templateFactory = $tplEngineFactory;
     }
 
     /**
      * @inheritdoc
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $templateEngine = $this->templateFactory->create([
-            'context' => $context,
-        ]);
+        $templateEngine = $this->templateFactory->create();
 
         $template = $templateEngine->make(
             $this->getStubName(),
-            $context->getVariables()
+            $scope->var()->getAll()
         );
 
-        $context->setTemplate($template);
+        $scope->context()->setTemplate($template);
 
-        return $context;
+        return $scope;
     }
 }

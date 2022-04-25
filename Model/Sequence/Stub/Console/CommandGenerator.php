@@ -4,23 +4,32 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Sequence\Stub\Console;
 
-use Marsskom\Generator\Api\Data\Context\ContextInterface;
+use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand;
+use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
+use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 
 class CommandGenerator extends AbstractSequence
 {
     /**
      * @inheritdoc
+     *
+     * @throws VariableNotExistsException
+     * @throws VariableAlreadySetException
      */
-    public function execute(ContextInterface $context): ContextInterface
+    public function execute(ScopeInterface $scope): ScopeInterface
     {
-        $userInput = $context->getUserInput();
-        $variables = $context->getVariables();
+        $scope->var()->set(
+            'command_name',
+            $scope->input()->get(ConsoleCommandCommand::COMMAND_NAME_PARAMETER)
+        );
 
-        $variables['command_name'] = $userInput[ConsoleCommandCommand::COMMAND_NAME_PARAMETER];
-        $variables['command_description'] = $userInput[ConsoleCommandCommand::COMMAND_DESC_PARAMETER];
+        $scope->var()->set(
+            'command_description',
+            $scope->input()->get(ConsoleCommandCommand::COMMAND_DESC_PARAMETER)
+        );
 
-        return $context->setVariables($variables);
+        return $scope;
     }
 }

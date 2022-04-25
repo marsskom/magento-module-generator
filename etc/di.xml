@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Marsskom\Generator\Api\Data\Scope\ScopeInterface"
+                type="Marsskom\Generator\Model\Scope\Scope"/>
+
     <preference for="Marsskom\Generator\Api\Data\Context\ContextInterface"
                 type="Marsskom\Generator\Model\Context\Context"/>
+    <preference for="Marsskom\Generator\Api\Data\Scope\InputInterface"
+                type="Marsskom\Generator\Model\Scope\Input"/>
+    <preference for="Marsskom\Generator\Api\Data\Scope\ScopeVariableInterface"
+                type="Marsskom\Generator\Model\Scope\ScopeVariable"/>
     <preference for="Marsskom\Generator\Api\Data\Command\InterruptInterface"
                 type="Marsskom\Generator\Model\Console\Interrupt"/>
+
+    <preference for="Marsskom\Generator\Api\Data\Variable\VariableInterface"
+                type="Marsskom\Generator\Model\Variable\Variable"/>
+
     <preference for="Marsskom\Generator\Api\Data\Helper\PathInterface"
                 type="Marsskom\Generator\Model\Helper\Path"/>
 
@@ -20,6 +31,18 @@
 
     <type name="Marsskom\Generator\Model\Validator\Console\ModuleValidator" shared="false"/>
     <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
+    <type name="Marsskom\Generator\Model\Validator\Entity\PropertiesValidator" shared="false"/>
+
+    <type name="Marsskom\Generator\Model\Scope\Variable\Registry">
+        <arguments>
+            <argument name="registriesCollections" xsi:type="array">
+                <item name="0"
+                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\DefaultRegistryCollection</item>
+                <item name="1"
+                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CommandRegistryCollection</item>
+            </argument>
+        </arguments>
+    </type>
 
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
@@ -30,26 +53,9 @@
                       xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
                 <item name="generatorConsoleCommand"
                       xsi:type="object">Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand</item>
+                <item name="generatorEntityCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\EntityCommand</item>
             </argument>
-        </arguments>
-    </type>
-
-    <type name="Marsskom\Generator\Console\Command\ModuleCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\ModuleManager</argument>
-        </arguments>
-    </type>
-    <type name="Marsskom\Generator\Console\Command\Patch\DataPatchCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\Patch\DataPatchManager</argument>
-        </arguments>
-    </type>
-    <type name="Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand">
-        <arguments>
-            <argument name="componentManager"
-                      xsi:type="object">Marsskom\Generator\Model\Manager\Console\CommandManager</argument>
         </arguments>
     </type>
 </config>

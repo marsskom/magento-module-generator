@@ -7,7 +7,7 @@ namespace Marsskom\Generator\Console\Command;
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Exception\LocalizedException;
 use Marsskom\Generator\Api\Data\ComponentManagerInterface;
-use Marsskom\Generator\Model\Context\ContextBuilder;
+use Marsskom\Generator\Model\Scope\ScopeBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,22 +16,22 @@ abstract class GeneratorCommand extends Command
 {
     protected ComponentManagerInterface $componentManager;
 
-    protected ContextBuilder $contextBuilder;
+    protected ScopeBuilder $scopeBuilder;
 
     /**
      * Command constructor.
      *
      * @param ComponentManagerInterface $componentManager
-     * @param ContextBuilder            $contextBuilder
+     * @param ScopeBuilder              $scopeBuilder
      * @param string|null               $name
      */
     public function __construct(
         ComponentManagerInterface $componentManager,
-        ContextBuilder $contextBuilder,
+        ScopeBuilder $scopeBuilder,
         string $name = null
     ) {
         $this->componentManager = $componentManager;
-        $this->contextBuilder = $contextBuilder;
+        $this->scopeBuilder = $scopeBuilder;
 
         parent::__construct($name);
     }
@@ -64,7 +64,7 @@ abstract class GeneratorCommand extends Command
 
         try {
             $this->componentManager->sequence()->execute(
-                $this->contextBuilder->create($input, $output)
+                $this->scopeBuilder->create($input, $output)
             );
         } catch (LocalizedException $exception) {
             $output->writeln($exception->getMessage());
