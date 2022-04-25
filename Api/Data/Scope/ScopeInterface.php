@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Api\Data\Scope;
 
+use Generator;
 use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
 
@@ -81,4 +82,11 @@ interface ScopeInterface
      * @return ScopeVariableInterface
      */
     public function for(string $contextAlias): ScopeVariableInterface;
+
+    /**
+     * Walks through all context, returns scope with each context and doesn't change original scope.
+     *
+     * @return Generator
+     */
+    public function walk(): Generator;
 }

@@ -8,7 +8,6 @@ use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Context\ContextUsageGenerator;
-use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ModuleNameGenerator;
 
 class RegistrationSequence extends Sequence
@@ -28,7 +27,6 @@ class RegistrationSequence extends Sequence
             ]),
             $globalFactory->create(ModuleNameGenerator::class),
             $globalFactory->create(RegistrationStubGenerator::class),
-            $globalFactory->create(Writer::class),
         ], $sequences));
     }
 }

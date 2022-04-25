@@ -9,7 +9,6 @@ use Marsskom\Generator\Console\Command\EntityCommand;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Context\ContextUsageGenerator;
-use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use function array_merge;
 
@@ -34,7 +33,6 @@ class InterfaceSequence extends Sequence
                 $globalFactory->create(InterfaceGenerator::class),
                 $globalFactory->create(MethodGenerator::class),
                 $globalFactory->create(InterfaceStubGenerator::class),
-                $globalFactory->create(Writer::class),
             ], $sequences)
         );
     }

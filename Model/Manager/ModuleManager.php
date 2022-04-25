@@ -11,6 +11,7 @@ use Marsskom\Generator\Console\Command\ModuleCommand;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
+use Marsskom\Generator\Model\Sequence\Automation\Writer\ScopeWriter;
 use Marsskom\Generator\Model\Sequence\Stub\Module\ModuleContextRegister;
 use Marsskom\Generator\Model\Sequence\Stub\Module\ModuleFileSequence;
 use Marsskom\Generator\Model\Sequence\Stub\Module\RegistrationSequence;
@@ -71,6 +72,7 @@ class ModuleManager implements ComponentManagerInterface
             $this->globalFactory->create(ModuleContextRegister::class),
             $this->globalFactory->create(RegistrationSequence::class),
             $this->globalFactory->create(ModuleFileSequence::class),
+            $this->globalFactory->create(ScopeWriter::class),
         ]);
     }
 }

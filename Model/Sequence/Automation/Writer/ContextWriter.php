@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Model\Sequence\Automation;
+namespace Marsskom\Generator\Model\Sequence\Automation\Writer;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -12,7 +12,7 @@ use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use function implode;
 use const DIRECTORY_SEPARATOR;
 
-class Writer extends AbstractSequence
+class ContextWriter extends AbstractSequence
 {
     private Filesystem $filesystem;
 

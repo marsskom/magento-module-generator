@@ -11,7 +11,7 @@ use Marsskom\Generator\Console\Command\Patch\DataPatchCommand;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
-use Marsskom\Generator\Model\Sequence\Automation\Writer;
+use Marsskom\Generator\Model\Sequence\Automation\Writer\ContextWriter;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ClassNameGenerator;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchContextRegister;
@@ -92,7 +92,7 @@ class DataPatchManager implements ComponentManagerInterface
             $this->globalFactory->create(NamespaceGenerator::class),
             $this->globalFactory->create(ClassNameGenerator::class),
             $this->globalFactory->create(DataPatchGenerator::class),
-            $this->globalFactory->create(Writer::class),
+            $this->globalFactory->create(ContextWriter::class),
         ]);
     }
 }

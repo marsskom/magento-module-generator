@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Scope;
 
+use Generator;
 use Marsskom\Generator\Api\Data\CloneableInterface;
 use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Marsskom\Generator\Api\Data\Context\ContextInterface;
@@ -179,6 +180,31 @@ class Scope implements ScopeInterface, CloneableInterface
         }
 
         return $this->variables[$contextId];
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws ContextNotFound
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    public function walk(): Generator
+    {
+        $clonedScope = clone $this;
+
+        foreach ($clonedScope->aliases as $alias => $context) {
+            if (ScopeInterface::DEFAULT_CONTEXT === $alias) {
+                // Skips default scope that will set as last.
+                continue;
+            }
+
+            $clonedScope->setCurrentContextFromAlias($alias);
+            yield $clonedScope;
+        }
+
+        $clonedScope->setCurrentContextFromAlias(ScopeInterface::DEFAULT_CONTEXT);
+        yield $clonedScope;
     }
 
     /**
