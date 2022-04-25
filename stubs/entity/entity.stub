@@ -12,7 +12,7 @@ class {{{ class_name }}}{{{ class_extends }}}{{{ class_implements }}}
     {{# annotation }}
     {{{ annotation }}}
     {{/ annotation }}
-    public function {{{ name }}}({{{ parameters }}}): {{{ return_type }}}
+    public function {{{ name }}}({{{ parameters }}}){{# return_type }}: {{{ return_type }}}{{/ return_type }}
     {
         {{{ body }}}
     }

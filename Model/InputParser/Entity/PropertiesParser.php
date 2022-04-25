@@ -24,6 +24,8 @@ class PropertiesParser implements ParserInterface
 
     public const GETTER_CHAR = 'g';
 
+    public const CONSTRUCTOR_CHAR = 'c';
+
     /**
      * @inheritdoc
      *
@@ -42,7 +44,8 @@ class PropertiesParser implements ParserInterface
                 $this->validateName($chunks[0]),
                 $this->validateTypes($chunks[1]),
                 false !== strpos($settersGetters, self::SETTER_CHAR),
-                false !== strpos($settersGetters, self::GETTER_CHAR)
+                false !== strpos($settersGetters, self::GETTER_CHAR),
+                false !== strpos($settersGetters, self::CONSTRUCTOR_CHAR),
             );
         }
 

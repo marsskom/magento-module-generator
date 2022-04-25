@@ -51,6 +51,9 @@ class MethodGenerator extends AbstractSequence
         );
 
         $methods = [];
+
+        $methods[] = $this->createConstructor($scope, $propsObjects);
+
         foreach ($propsObjects as $property) {
             $methods[] = $this->createSetter($scope, $property);
             $methods[] = $this->createGetter($scope, $property);
@@ -66,6 +69,58 @@ class MethodGenerator extends AbstractSequence
     }
 
     /**
+     * Creates constructor method.
+     *
+     * @param ScopeInterface $scope
+     * @param Property[]     $properties
+     *
+     * @return array
+     *
+     * @throws VariableNotExistsException
+     */
+    protected function createConstructor(ScopeInterface $scope, array $properties): array
+    {
+        if ($scope->var()->has(TemplateVariable::INTERFACE_NAME)) {
+            return [];
+        }
+
+        $props = array_filter($properties, static function (Property $property) {
+            return $property->useInConstructor();
+        });
+        if (empty($props)) {
+            return [];
+        }
+
+        $className = $scope->var()->get(TemplateVariable::CLASS_NAME);
+        $annotation = <<<TEXT
+/**
+     * $className constructor.
+     *
+TEXT;
+        $parameters = [];
+        $bodyLines = [];
+
+        foreach ($props as $property) {
+            $name = $property->getName();
+            $parameter = implode('|', $property->getTypes()) . ' $' . $name;
+
+            $parameters[] = $parameter;
+            $annotation .= "\n     * @param " . $parameter;
+            $bodyLines[] = (!empty($bodyLines) ? '        ' : '')
+                . "\$this->" . $name . ' = $' . $name . ';';
+        }
+
+        $annotation .= "\n     */";
+
+        return [
+            'annotation' => $annotation,
+            'name'       => '__construct',
+            'parameters' => implode(', ', $parameters),
+            'body'       => implode("\n", $bodyLines),
+        ];
+    }
+
+    /**
      * Creates set method.
      *
      * @param ScopeInterface $scope
@@ -75,7 +130,7 @@ class MethodGenerator extends AbstractSequence
      *
      * @throws VariableNotExistsException
      */
-    private function createSetter(ScopeInterface $scope, Property $property): array
+    protected function createSetter(ScopeInterface $scope, Property $property): array
     {
         if (!$property->hasSetter()) {
             return [];
@@ -131,7 +186,7 @@ PHP,
      *
      * @return array
      */
-    private function createGetter(ScopeInterface $scope, Property $property): array
+    protected function createGetter(ScopeInterface $scope, Property $property): array
     {
         if (!$property->hasGetter()) {
             return [];

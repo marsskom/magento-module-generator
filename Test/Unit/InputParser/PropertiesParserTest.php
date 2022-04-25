@@ -19,7 +19,7 @@ class PropertiesParserTest extends MockeryTestCase
      */
     public function testSimpleProperty(): void
     {
-        $string = "id:?|int:sg";
+        $string = "id:?|int:sgc";
         $properties = (new PropertiesParser())->parse($string);
         $idProperty = $properties[0];
 
@@ -31,6 +31,7 @@ class PropertiesParserTest extends MockeryTestCase
 
         $this->assertTrue($idProperty->hasGetter());
         $this->assertTrue($idProperty->hasSetter());
+        $this->assertTrue($idProperty->useInConstructor());
     }
 
     /**

@@ -22,7 +22,7 @@ class PropertiesOption extends InputOption
             null,
             InputOption::VALUE_OPTIONAL,
             <<<TEXT
-            Example value: "id:int|null:sg;name:NameInterface:g"
+            Example value: "id:int|null:sgc;name:NameInterface:g"
 
             ---
 
@@ -34,17 +34,17 @@ class PropertiesOption extends InputOption
             | - type delimiter
             %another_type% - optional
             : - delimiter
-            sg - s is setter; g - getter; both are optional
+            sgc - c - is an usage in constructor; s is setter; g - getter; all are optional
             ; - delimiter between properties
-            
-            ... etc, same from the start ...
-            
+
+            ... etc, goto: %property_name% ...
+
             ---
 
             It converts into two properties `id` and `name`.
             `id` with type **int** or **null** and `name` - **NameInterface**
 
-            Also for `id` parameter getter and setter will be created.
+            Also for `id` parameter getter and setter will be created. Moreover `id` will use in `__constructor`.
             For `name` - only getter. If you need only setter, set `s` after property type.
             TEXT
         );

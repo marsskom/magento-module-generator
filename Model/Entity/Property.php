@@ -17,6 +17,8 @@ class Property
 
     private bool $hasGetter;
 
+    private bool $useInConstructor;
+
     /**
      * Property constructor.
      *
@@ -24,17 +26,20 @@ class Property
      * @param string[] $types
      * @param bool     $hasSetter
      * @param bool     $hasGetter
+     * @param bool     $useInConstructor
      */
     public function __construct(
         string $name,
         array $types,
         bool $hasSetter,
-        bool $hasGetter
+        bool $hasGetter,
+        bool $useInConstructor
     ) {
         $this->name = $name;
         $this->types = $types;
         $this->hasSetter = $hasSetter;
         $this->hasGetter = $hasGetter;
+        $this->useInConstructor = $useInConstructor;
     }
 
     /**
@@ -75,5 +80,15 @@ class Property
     public function hasGetter(): bool
     {
         return $this->hasGetter;
+    }
+
+    /**
+     * Returns true if property is used in constructor.
+     *
+     * @return bool
+     */
+    public function useInConstructor(): bool
+    {
+        return $this->useInConstructor;
     }
 }
