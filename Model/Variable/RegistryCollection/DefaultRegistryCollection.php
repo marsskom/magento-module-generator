@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Variable\RegistryCollection;
 
-use Marsskom\Generator\Api\Data\Variable\VariableRegistryCollectionInterface;
 use Marsskom\Generator\Api\Data\Variable\VariableInterface;
+use Marsskom\Generator\Api\Data\Variable\VariableRegistryCollectionInterface;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
+use Marsskom\Generator\Model\Variable\Closures\DefaultClosures;
 use Marsskom\Generator\Model\Variable\VariableRegistry;
 
 class DefaultRegistryCollection implements VariableRegistryCollectionInterface
@@ -30,7 +31,9 @@ class DefaultRegistryCollection implements VariableRegistryCollectionInterface
                 VariableInterface::IS_SIMPLE
             ),
             new VariableRegistry(
-                TemplateVariable::FILE_USES
+                TemplateVariable::FILE_USES,
+                VariableInterface::DEFAULT,
+                [DefaultClosures::class, 'implodeByNewLine'],
             ),
             new VariableRegistry(
                 TemplateVariable::CLASS_ANNOTATION,
@@ -41,13 +44,17 @@ class DefaultRegistryCollection implements VariableRegistryCollectionInterface
                 VariableInterface::IS_SIMPLE
             ),
             new VariableRegistry(
-                TemplateVariable::CLASS_EXTENDS
+                TemplateVariable::CLASS_EXTENDS,
+                VariableInterface::DEFAULT,
+                [DefaultClosures::class, 'implodeExtends'],
             ),
             new VariableRegistry(
-                TemplateVariable::CLASS_IMPLEMENTS
+                TemplateVariable::CLASS_IMPLEMENTS,
+                VariableInterface::DEFAULT,
+                [DefaultClosures::class, 'implodeImplements'],
             ),
             new VariableRegistry(
-                TemplateVariable::CLASS_PROPERTIES
+                TemplateVariable::CLASS_PROPERTIES,
             ),
             new VariableRegistry(
                 TemplateVariable::INTERFACE_ANNOTATION,

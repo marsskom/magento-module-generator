@@ -10,7 +10,12 @@ use Marsskom\Generator\Api\Data\Context\ContextInterface;
 use Marsskom\Generator\Api\Data\Scope\InputInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeVariableInterface;
+use Marsskom\Generator\Exception\Context\ContextAliasAlreadyExistsException;
+use Marsskom\Generator\Exception\Context\ContextAlreadyRegisteredException;
+use Marsskom\Generator\Exception\Context\ContextIncorrectException;
+use Marsskom\Generator\Exception\Context\ContextNotFound;
 use Marsskom\Generator\Model\Helper\Context\IdHelper;
+use Marsskom\Generator\Model\Helper\Context\Validator;
 
 class Scope implements ScopeInterface, CloneableInterface
 {
@@ -24,10 +29,19 @@ class Scope implements ScopeInterface, CloneableInterface
 
     private IdHelper $idHelper;
 
+    private Validator $validator;
+
     /**
      * @var ScopeVariableInterface[]
      */
     private array $variables = [];
+
+    /**
+     * Context aliases as keys and ids in values.
+     *
+     * @var array<string, string>
+     */
+    private array $aliases = [];
 
     /**
      * Scope constructor.
@@ -37,19 +51,73 @@ class Scope implements ScopeInterface, CloneableInterface
      * @param InterruptInterface   $interrupt
      * @param ScopeVariableBuilder $scopeVariableBuilder
      * @param IdHelper             $idHelper
+     * @param Validator            $validator
      */
     public function __construct(
         ContextInterface $context,
         InputInterface $input,
         InterruptInterface $interrupt,
         ScopeVariableBuilder $scopeVariableBuilder,
-        IdHelper $idHelper
+        IdHelper $idHelper,
+        Validator $validator
     ) {
         $this->context = $context;
         $this->input = $input;
         $this->interrupt = $interrupt;
         $this->scopeVariableBuilder = $scopeVariableBuilder;
         $this->idHelper = $idHelper;
+        $this->validator = $validator;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws ContextAlreadyRegisteredException
+     * @throws ContextAliasAlreadyExistsException
+     */
+    public function registerContext(
+        ContextInterface $context,
+        string $alias = ScopeInterface::DEFAULT_CONTEXT
+    ): ScopeInterface {
+        $contextId = $this->idHelper->getId($context);
+
+        if (isset($this->variables[$contextId])) {
+            throw new ContextAlreadyRegisteredException(__("Context already registered"));
+        }
+        if (isset($this->aliases[$alias])) {
+            throw new ContextAliasAlreadyExistsException(__("Context alias '%1' already in use", [$alias]));
+        }
+
+        $this->variables[$contextId] = $this->scopeVariableBuilder->create();
+        $this->aliases[$alias] = $context;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCurrentContext(ContextInterface $context): ScopeInterface
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws ContextNotFound
+     */
+    public function setCurrentContextFromAlias(string $alias): ScopeInterface
+    {
+        if (!isset($this->aliases[$alias])) {
+            throw new ContextNotFound(__("Context not found by alias '%1'", [$alias]));
+        }
+
+        $this->context = $this->aliases[$alias];
+
+        return $this;
     }
 
     /**
@@ -77,24 +145,40 @@ class Scope implements ScopeInterface, CloneableInterface
     }
 
     /**
-     * Magic `__call` method.
+     * @inheritdoc
      *
-     * @param string|mixed $name
-     * @param array|mixed  $arguments
-     *
-     * @return ScopeVariableInterface|void
+     * @throws ContextIncorrectException
      */
-    public function __call($name, $arguments)
+    public function var(): ScopeVariableInterface
     {
-        if ('var' === $name) {
-            $contextId = $this->idHelper->getId($this->context);
+        $this->validator->validate($this->context);
 
-            if (!isset($this->variables[$contextId])) {
-                $this->variables[$contextId] = $this->scopeVariableBuilder->create();
-            }
+        $contextId = $this->idHelper->getId($this->context);
 
-            return $this->variables[$contextId];
+        if (!isset($this->variables[$contextId])) {
+            $this->variables[$contextId] = $this->scopeVariableBuilder->create();
         }
+
+        return $this->variables[$contextId];
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws ContextNotFound
+     */
+    public function for(string $contextAlias): ScopeVariableInterface
+    {
+        if (!isset($this->aliases[$contextAlias])) {
+            throw new ContextNotFound(__("Context not found by alias '%1'", [$contextAlias]));
+        }
+
+        $contextId = $this->idHelper->getId($this->aliases[$contextAlias]);
+        if (!isset($this->variables[$contextId])) {
+            throw new ContextNotFound(__("Context not found"));
+        }
+
+        return $this->variables[$contextId];
     }
 
     /**
@@ -111,5 +195,11 @@ class Scope implements ScopeInterface, CloneableInterface
             $variables[] = clone $var;
         }
         $this->variables = $variables;
+
+        $aliases = [];
+        foreach ($this->aliases as $alias => $context) {
+            $aliases[$alias] = clone $context;
+        }
+        $this->aliases = $aliases;
     }
 }

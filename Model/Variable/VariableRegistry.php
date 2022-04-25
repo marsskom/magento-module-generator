@@ -13,17 +13,27 @@ class VariableRegistry
     private int $options;
 
     /**
+     * Callback for `call_user_func`
+     *
+     * @var null|callable|mixed
+     */
+    private $stringRepresentationClosure;
+
+    /**
      * Variable registry constructor.
      *
-     * @param string $name
-     * @param int    $options
+     * @param string              $name
+     * @param int                 $options
+     * @param null|callback|mixed $stringRepresentationClosure - `call_user_func` callback
      */
     public function __construct(
         string $name,
-        int $options = VariableInterface::DEFAULT
+        int $options = VariableInterface::DEFAULT,
+        $stringRepresentationClosure = null
     ) {
         $this->name = $name;
         $this->options = $options;
+        $this->stringRepresentationClosure = $stringRepresentationClosure;
     }
 
     /**
@@ -44,5 +54,15 @@ class VariableRegistry
     public function getOptions(): int
     {
         return $this->options;
+    }
+
+    /**
+     * Returns string representation closure.
+     *
+     * @return null|callable|mixed
+     */
+    public function getStringRepresentation()
+    {
+        return $this->stringRepresentationClosure;
     }
 }

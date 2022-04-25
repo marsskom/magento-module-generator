@@ -4,13 +4,22 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Model\Variable;
 
+use Marsskom\Generator\Api\Data\Template\TemplateInterface;
 use Marsskom\Generator\Api\Data\Variable\VariableInterface;
+use function call_user_func;
 
-class Variable implements VariableInterface
+class Variable implements VariableInterface, TemplateInterface
 {
     private string $name;
 
     private int $options;
+
+    /**
+     * Callback for `call_user_func`
+     *
+     * @var null|callable|mixed
+     */
+    private $stringRepresentationClosure;
 
     /**
      * @var mixed
@@ -20,17 +29,20 @@ class Variable implements VariableInterface
     /**
      * Variable constructor.
      *
-     * @param string $name
-     * @param int    $options
-     * @param mixed  $value
+     * @param string              $name
+     * @param int                 $options
+     * @param null|callback|mixed $stringRepresentationClosure - `call_user_func` callback
+     * @param mixed               $value
      */
     public function __construct(
         string $name,
         int $options = VariableInterface::DEFAULT,
+        $stringRepresentationClosure = null,
         $value = null
     ) {
         $this->name = $name;
         $this->options = $options;
+        $this->stringRepresentationClosure = $stringRepresentationClosure;
         $this->value = $value;
     }
 
@@ -72,5 +84,33 @@ class Variable implements VariableInterface
     public function isRewritable(): bool
     {
         return VariableInterface::IS_REWRITABLE === (VariableInterface::IS_REWRITABLE & $this->options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getStringRepresentation()
+    {
+        return $this->stringRepresentationClosure;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasStringRepresentation(): bool
+    {
+        return null !== $this->stringRepresentationClosure;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __toString(): string
+    {
+        if (!$this->hasStringRepresentation()) {
+            return (string) $this->value;
+        }
+
+        return call_user_func($this->stringRepresentationClosure, $this->value);
     }
 }

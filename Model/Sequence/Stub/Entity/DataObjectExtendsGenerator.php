@@ -6,7 +6,6 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Entity;
 
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Console\Command\EntityCommand;
-use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableIsNotMultipleException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
@@ -17,7 +16,6 @@ class DataObjectExtendsGenerator extends AbstractSequence
     /**
      * @inheritdoc
      *
-     * @throws VariableAlreadySetException
      * @throws VariableIsNotMultipleException
      * @throws VariableNotExistsException
      */
@@ -31,10 +29,9 @@ class DataObjectExtendsGenerator extends AbstractSequence
             TemplateVariable::FILE_USES,
             'use Magento\Framework\DataObject;'
         );
-        // TODO: should be an array. And should be concatenated before to be assigned to template.
-        $scope->var()->set(
+        $scope->var()->add(
             TemplateVariable::CLASS_EXTENDS,
-            ' extends DataObject'
+            'DataObject'
         );
 
         return $scope;

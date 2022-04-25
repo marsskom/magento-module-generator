@@ -13,9 +13,8 @@ use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\ClassNameGenerator;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathGenerator;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PhpFileNameGenerator;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
+use Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchContextRegister;
 use Marsskom\Generator\Model\Sequence\Stub\Patch\DataPatchGenerator;
 use Marsskom\Generator\Model\Validator\Console\ModuleValidator;
 use Marsskom\Generator\Model\Validator\Console\NameValidator;
@@ -89,8 +88,7 @@ class DataPatchManager implements ComponentManagerInterface
     public function sequence(): SequenceInterface
     {
         return new Sequence([
-            $this->globalFactory->create(PathGenerator::class),
-            $this->globalFactory->create(PhpFileNameGenerator::class),
+            $this->globalFactory->create(DataPatchContextRegister::class),
             $this->globalFactory->create(NamespaceGenerator::class),
             $this->globalFactory->create(ClassNameGenerator::class),
             $this->globalFactory->create(DataPatchGenerator::class),

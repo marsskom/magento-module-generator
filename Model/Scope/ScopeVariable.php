@@ -47,7 +47,8 @@ class ScopeVariable implements ScopeVariableInterface
 
             $this->variables[$varName] = new Variable(
                 $varName,
-                $varRegistry->getOptions()
+                $varRegistry->getOptions(),
+                $varRegistry->getStringRepresentation()
             );
         }
     }
@@ -70,6 +71,7 @@ class ScopeVariable implements ScopeVariableInterface
         $this->variables[$name] = new Variable(
             $variable->getName(),
             $variable->getOptions(),
+            $variable->getStringRepresentation(),
             $value
         );
 
@@ -94,6 +96,7 @@ class ScopeVariable implements ScopeVariableInterface
         $this->variables[$name] = new Variable(
             $variable->getName(),
             $variable->getOptions(),
+            $variable->getStringRepresentation(),
             array_merge(
                 $variable->getValue() ?? [],
                 [$value]
@@ -116,7 +119,8 @@ class ScopeVariable implements ScopeVariableInterface
 
         $this->variables[$name] = new Variable(
             $variable->getName(),
-            $variable->getOptions()
+            $variable->getOptions(),
+            $variable->getStringRepresentation()
         );
 
         return $this;
@@ -137,13 +141,19 @@ class ScopeVariable implements ScopeVariableInterface
     /**
      * @inheritdoc
      */
+    public function has(string $name): bool
+    {
+        return $this->registry->has($name) && null !== $this->get($name);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAll(): array
     {
         $variables = [];
         foreach ($this->variables as $var) {
-            // TODO: maybe it needs to be converted into string
-            // and don't forget about array to string conversion.
-            $variables[$var->getName()] = $var->getValue();
+            $variables[$var->getName()] = $var->hasStringRepresentation() ? (string) $var : $var->getValue();
         }
 
         return $variables;

@@ -46,4 +46,18 @@ interface VariableInterface
      * @return bool
      */
     public function isRewritable(): bool;
+
+    /**
+     * Returns string representation closure.
+     *
+     * @return mixed
+     */
+    public function getStringRepresentation();
+
+    /**
+     * Returns true if string representation closure exists.
+     *
+     * @return bool
+     */
+    public function hasStringRepresentation(): bool;
 }

@@ -8,9 +8,8 @@ use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Console\Command\EntityCommand;
 use Marsskom\Generator\Model\Foundation\Sequence;
 use Marsskom\Generator\Model\GlobalFactory;
+use Marsskom\Generator\Model\Sequence\Automation\Context\ContextUsageGenerator;
 use Marsskom\Generator\Model\Sequence\Automation\Writer;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\FileNameChanger;
-use Marsskom\Generator\Model\Sequence\Stub\Automation\Filesystem\PathPrefixAssigner;
 use Marsskom\Generator\Model\Sequence\Stub\Automation\NamespaceGenerator;
 use function array_merge;
 
@@ -27,16 +26,13 @@ class InterfaceSequence extends Sequence
     ) {
         parent::__construct(
             array_merge([
-                $globalFactory->create(PathPrefixAssigner::class, [
-                    'prefix' => 'Api/Data',
-                ]),
-                $globalFactory->create(FileNameChanger::class, [
-                    'suffix' => 'Interface',
+                $globalFactory->create(ContextUsageGenerator::class, [
+                    'contextAlias' => 'interface',
                 ]),
                 $globalFactory->create(NamespaceGenerator::class),
                 $globalFactory->create(PropertiesGenerator::class),
-                $globalFactory->create(MethodGenerator::class),
                 $globalFactory->create(InterfaceGenerator::class),
+                $globalFactory->create(MethodGenerator::class),
                 $globalFactory->create(InterfaceStubGenerator::class),
                 $globalFactory->create(Writer::class),
             ], $sequences)

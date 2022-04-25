@@ -59,6 +59,15 @@ interface ScopeVariableInterface
     public function get(string $name);
 
     /**
+     * Returns true if variable exists and its value is not null.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function has(string $name): bool;
+
+    /**
      * Returns variables as array.
      *
      * @return array<string, string>

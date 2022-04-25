@@ -20,6 +20,7 @@ class EntitySequence extends Sequence
         array $sequences = []
     ) {
         parent::__construct(array_merge([
+            $globalFactory->create(EntityContextRegister::class),
             $globalFactory->create(InterfaceSequence::class),
             $globalFactory->create(EntityClassSequence::class),
         ], $sequences));
