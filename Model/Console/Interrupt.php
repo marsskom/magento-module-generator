@@ -9,6 +9,7 @@ use Marsskom\Generator\Api\Data\Command\InterruptInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Interrupt implements InterruptInterface
@@ -46,5 +47,20 @@ class Interrupt implements InterruptInterface
     public function info(Phrase $information): void
     {
         $this->output->writeln((string) $information);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function choose(Phrase $question, array $choices, $default = null): string
+    {
+        $choiceQuestion = new ChoiceQuestion(
+            (string) $question,
+            $choices,
+            $default
+        );
+
+        return (new QuestionHelper())
+            ->ask($this->input, $this->output, $choiceQuestion);
     }
 }

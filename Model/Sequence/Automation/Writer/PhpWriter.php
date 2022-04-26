@@ -7,12 +7,13 @@ namespace Marsskom\Generator\Model\Sequence\Automation\Writer;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
+use Marsskom\Generator\Api\Data\Generator\Writer\FileExtensionSeparatorInterface;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
 use function implode;
 use const DIRECTORY_SEPARATOR;
 
-class ContextWriter extends AbstractSequence
+class PhpWriter extends AbstractSequence implements FileExtensionSeparatorInterface
 {
     private Filesystem $filesystem;
 
@@ -67,10 +68,18 @@ class ContextWriter extends AbstractSequence
 
         if ($isFileExists) {
             $scope->interrupt()->info(
-                __("File '%1' was overwrote", $fileName)
+                __("File '%1' was overwritten", $fileName)
             );
         }
 
         return $scope;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validExtensions(): array
+    {
+        return ['php'];
     }
 }
