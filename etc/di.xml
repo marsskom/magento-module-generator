@@ -33,6 +33,25 @@
     <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
     <type name="Marsskom\Generator\Model\Validator\Entity\PropertiesValidator" shared="false"/>
 
+    <type name="Marsskom\Generator\Model\Sequence\Automation\Writer\BasedOnExtensionWriter">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="0"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\PhpWriter</item>
+                <item name="1"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\XmlWriter</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Marsskom\Generator\Model\Sequence\Automation\Writer\ScopeWriter">
+        <arguments>
+            <argument name="sequences" xsi:type="array">
+                <item name="0"
+                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\BasedOnExtensionWriter</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Marsskom\Generator\Model\Scope\Variable\Registry">
         <arguments>
             <argument name="registriesCollections" xsi:type="array">

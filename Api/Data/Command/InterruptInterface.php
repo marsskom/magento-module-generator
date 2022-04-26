@@ -25,4 +25,15 @@ interface InterruptInterface
      * @return void
      */
     public function info(Phrase $information): void;
+
+    /**
+     * Sends choose question and interrupts stream for user answer.
+     *
+     * @param Phrase $question
+     * @param array  $choices
+     * @param mixed  $default
+     *
+     * @return string
+     */
+    public function choose(Phrase $question, array $choices, $default = null): string;
 }

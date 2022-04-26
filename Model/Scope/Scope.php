@@ -208,7 +208,7 @@ class Scope implements ScopeInterface, CloneableInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function __clone()
     {
