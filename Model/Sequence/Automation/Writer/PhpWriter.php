@@ -46,6 +46,11 @@ class PhpWriter extends AbstractSequence implements FileExtensionSeparatorInterf
      */
     public function execute(ScopeInterface $scope): ScopeInterface
     {
+        $content = (string) $scope->context()->getTemplate();
+        if (empty($content)) {
+            return $scope;
+        }
+
         $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
 
         $fileName = implode(
@@ -70,7 +75,7 @@ class PhpWriter extends AbstractSequence implements FileExtensionSeparatorInterf
 
         $stream = $directory->openFile($fileName);
         $stream->lock();
-        $stream->write((string) $scope->context()->getTemplate());
+        $stream->write($content);
         $stream->unlock();
         $stream->close();
 

@@ -29,7 +29,7 @@ class PathAssigner extends AbstractSequence
     public function __construct(
         PathInterface $pathHelper,
         string $path = '',
-        bool $isAbsolute = false,
+        bool $isAbsolute = true,
         array $sequences = []
     ) {
         parent::__construct($sequences);

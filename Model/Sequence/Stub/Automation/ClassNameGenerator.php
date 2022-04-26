@@ -7,6 +7,7 @@ namespace Marsskom\Generator\Model\Sequence\Stub\Automation;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Exception\Scope\VariableAlreadySetException;
 use Marsskom\Generator\Exception\Scope\VariableNotExistsException;
+use Marsskom\Generator\Exception\Scope\VariableTypeException;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
@@ -18,6 +19,7 @@ class ClassNameGenerator extends AbstractSequence
      *
      * @throws VariableNotExistsException
      * @throws VariableAlreadySetException
+     * @throws VariableTypeException
      */
     public function execute(ScopeInterface $scope): ScopeInterface
     {

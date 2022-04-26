@@ -8,6 +8,7 @@ use Closure;
 use Marsskom\Generator\Api\Data\Scope\ScopeInterface;
 use Marsskom\Generator\Model\Enum\InputParameter;
 use Marsskom\Generator\Model\Foundation\AbstractSequence;
+use function call_user_func;
 
 class FileNameChanger extends AbstractSequence
 {
@@ -17,21 +18,26 @@ class FileNameChanger extends AbstractSequence
 
     private string $extension;
 
-    private ?Closure $callback;
+    /**
+     * Closure for `call_user_func`.
+     *
+     * @var callable|Closure|mixed
+     */
+    private $callback;
 
     /**
      * @inheritdoc
      *
-     * @param string        $prefix
-     * @param string        $suffix
-     * @param string        $extension
-     * @param null|callable $callback
+     * @param string              $prefix
+     * @param string              $suffix
+     * @param string              $extension
+     * @param null|mixed|callable $callback
      */
     public function __construct(
         string $prefix = '',
         string $suffix = '',
         string $extension = 'php',
-        ?Closure $callback = null,
+        $callback = null,
         array $sequences = []
     ) {
         parent::__construct($sequences);
@@ -64,6 +70,10 @@ class FileNameChanger extends AbstractSequence
      */
     protected function getFileName(ScopeInterface $scope): string
     {
-        return $this->prefix . ($this->callback)($scope) . $this->suffix . '.' . $this->extension;
+        return $this->prefix
+            // @codingStandardsIgnoreLine
+            . call_user_func($this->callback, $scope)
+            . $this->suffix
+            . '.' . $this->extension;
     }
 }
