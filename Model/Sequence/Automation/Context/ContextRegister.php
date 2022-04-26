@@ -29,7 +29,7 @@ abstract class ContextRegister extends AbstractSequence implements ContextRegist
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function execute(ScopeInterface $scope): ScopeInterface
     {

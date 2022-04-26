@@ -31,7 +31,7 @@ class ValidatorObserver implements ValidationObserverInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function attach(string $eventName, ValidatorInterface $validator): void
     {
@@ -51,7 +51,7 @@ class ValidatorObserver implements ValidationObserverInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function notify(string $eventName, array $userInput): ValidateResultInterface
     {

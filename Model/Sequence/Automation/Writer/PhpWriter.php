@@ -33,6 +33,14 @@ class PhpWriter extends AbstractSequence implements FileExtensionSeparatorInterf
 
     /**
      * @inheritdoc
+     */
+    public function validExtensions(): array
+    {
+        return ['php'];
+    }
+
+    /**
+     * @inheritdoc
      *
      * @throws FileSystemException
      */
@@ -73,13 +81,5 @@ class PhpWriter extends AbstractSequence implements FileExtensionSeparatorInterf
         }
 
         return $scope;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validExtensions(): array
-    {
-        return ['php'];
     }
 }

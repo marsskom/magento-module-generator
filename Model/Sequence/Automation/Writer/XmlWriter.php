@@ -38,6 +38,14 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
 
     /**
      * @inheritdoc
+     */
+    public function validExtensions(): array
+    {
+        return ['xml'];
+    }
+
+    /**
+     * @inheritdoc
      *
      * @throws FileSystemException
      */
@@ -54,7 +62,7 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
         );
         $isFileExists = $directory->isFile($fileName);
         if (!$isFileExists) {
-            $this->write($scope, $fileName);
+            $this->write($fileName, (string) $scope->context()->getTemplate());
 
             return $scope;
         }
@@ -82,27 +90,6 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
     }
 
     /**
-     * Writes content into file.
-     *
-     * @param ScopeInterface $scope
-     * @param string         $fileName
-     *
-     * @return void
-     *
-     * @throws FileSystemException
-     */
-    protected function write(ScopeInterface $scope, string $fileName): void
-    {
-        $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
-
-        $stream = $directory->openFile($fileName);
-        $stream->lock();
-        $stream->write((string) $scope->context()->getTemplate());
-        $stream->unlock();
-        $stream->close();
-    }
-
-    /**
      * Overwrites file.
      *
      * @param ScopeInterface $scope
@@ -114,7 +101,7 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
      */
     protected function overwrite(ScopeInterface $scope, string $fileName): void
     {
-        $this->write($scope, $fileName);
+        $this->write($fileName, (string) $scope->context()->getTemplate());
 
         $scope->interrupt()->info(
             __("File '%1' was overwritten", $fileName)
@@ -139,11 +126,7 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
         $xmlContent = $this->xmlWriteHelper->extract((string) $scope->context()->getTemplate());
         $documentString = $this->xmlWriteHelper->append($xmlString, $xmlContent);
 
-        $stream = $directory->openFile($fileName);
-        $stream->lock();
-        $stream->write($documentString);
-        $stream->unlock();
-        $stream->close();
+        $this->write($fileName, $documentString);
 
         $scope->interrupt()->info(
             __("File '%1' was updated", $fileName)
@@ -151,10 +134,23 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
     }
 
     /**
-     * @inheritDoc
+     * Writes content into file.
+     *
+     * @param string $fileName
+     * @param string $content
+     *
+     * @return void
+     *
+     * @throws FileSystemException
      */
-    public function validExtensions(): array
+    protected function write(string $fileName, string $content): void
     {
-        return ['xml'];
+        $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
+
+        $stream = $directory->openFile($fileName);
+        $stream->lock();
+        $stream->write($content);
+        $stream->unlock();
+        $stream->close();
     }
 }
