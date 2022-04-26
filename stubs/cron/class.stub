@@ -1,0 +1,13 @@
+{{> php_file_header }}
+{{# class_annotation }}
+{{{ class_annotation }}}
+{{/ class_annotation }}
+class {{{ class_name }}}
+{
+    /**
+     * Common execute method.
+     */
+    public function execute(): void
+    {
+    }
+}

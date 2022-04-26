@@ -59,6 +59,8 @@
                       xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\DefaultRegistryCollection</item>
                 <item name="1"
                       xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CommandRegistryCollection</item>
+                <item name="2"
+                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CronRegistryCollection</item>
             </argument>
         </arguments>
     </type>
@@ -74,6 +76,8 @@
                       xsi:type="object">Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand</item>
                 <item name="generatorEntityCommand"
                       xsi:type="object">Marsskom\Generator\Console\Command\EntityCommand</item>
+                <item name="generatorCronCommand"
+                      xsi:type="object">Marsskom\Generator\Console\Command\Crontab\CronCommand</item>
             </argument>
         </arguments>
     </type>

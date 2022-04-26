@@ -18,6 +18,10 @@ class XmlWriteHelper
      */
     public function extract(string $xmlDocument): string
     {
+        if (empty($xmlDocument)) {
+            return '';
+        }
+
         $document = new DOMDocument();
         $document->loadXML($xmlDocument);
 
@@ -39,6 +43,10 @@ class XmlWriteHelper
      */
     public function append(string $xmlDocument, string $xmlContent): string
     {
+        if (empty($xmlDocument) || empty($xmlContent)) {
+            return '';
+        }
+
         $document = new DOMDocument();
         $document->loadXML($xmlDocument);
 

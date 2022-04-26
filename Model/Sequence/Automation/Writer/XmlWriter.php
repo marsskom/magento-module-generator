@@ -51,6 +51,11 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
      */
     public function execute(ScopeInterface $scope): ScopeInterface
     {
+        $content = (string) $scope->context()->getTemplate();
+        if (empty($content)) {
+            return $scope;
+        }
+
         $directory = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
 
         $fileName = implode(
@@ -62,7 +67,7 @@ class XmlWriter extends AbstractSequence implements FileExtensionSeparatorInterf
         );
         $isFileExists = $directory->isFile($fileName);
         if (!$isFileExists) {
-            $this->write($fileName, (string) $scope->context()->getTemplate());
+            $this->write($fileName, $content);
 
             return $scope;
         }
