@@ -5,7 +5,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="generatorModuleCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\ModuleCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\ModuleCommand</item>
             </argument>
         </arguments>
     </type>

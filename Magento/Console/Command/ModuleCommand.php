@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Console\Command;
+namespace Marsskom\Generator\Magento\Console\Command;
 
 class ModuleCommand extends GeneratorCommand
 {

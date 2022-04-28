@@ -2,11 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Model;
+namespace Marsskom\Generator\Infrastructure\Model\Factories;
 
 use Magento\Framework\ObjectManagerInterface;
+use Marsskom\Generator\Domain\Interfaces\DiFactoryInterface;
 
-class GlobalFactory
+class GlobalFactory implements DiFactoryInterface
 {
     private ObjectManagerInterface $objectManager;
 
@@ -22,12 +23,7 @@ class GlobalFactory
     }
 
     /**
-     * Creates class instance with specified parameters.
-     *
-     * @param string $instanceName
-     * @param array  $data
-     *
-     * @return object
+     * @inheritdoc
      */
     public function create(string $instanceName, array $data = []): object
     {
