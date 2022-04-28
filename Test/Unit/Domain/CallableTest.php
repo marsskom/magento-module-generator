@@ -20,7 +20,7 @@ class CallableTest extends MockeryTestCase
     {
         $mock = Mockery::mock(CallableInterface::class);
         $mock->shouldReceive('__invoke')
-            ->andReturnUsing(fn ($a, $b) => $a + $b);
+             ->andReturnUsing(fn($a, $b) => $a + $b);
 
         $this->assertSame(
             5,
@@ -37,11 +37,11 @@ class CallableTest extends MockeryTestCase
     {
         $mock = Mockery::mock(CallableInterface::class);
         $mock->shouldReceive('__invoke')
-             ->andReturnUsing(fn ($a, $b) => $a + $b);
+             ->andReturnUsing(fn($a, $b) => $a + $b);
 
         $obj = new SumPipeline([
             fn($a, $b) => $a * $b,
-            $mock
+            $mock,
         ]);
 
         $this->assertSame(
@@ -59,7 +59,7 @@ class CallableTest extends MockeryTestCase
     {
         $mock = Mockery::mock(CallableInterface::class);
         $mock->shouldReceive('__invoke')
-             ->andReturnUsing(fn ($a, $b) => $a + $b);
+             ->andReturnUsing(fn($a, $b) => $a + $b);
 
         $obj = new SumPipeline([
             fn($a, $b) => $a * $b,
@@ -67,7 +67,7 @@ class CallableTest extends MockeryTestCase
                 $mock,
                 fn($a, $b) => $a - $b,
             ]),
-            $mock
+            $mock,
         ]);
 
         $this->assertSame(
