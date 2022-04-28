@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Infrastructure\Model\Factories;
 
 use Magento\Framework\ObjectManagerInterface;
-use Marsskom\Generator\Domain\Interfaces\DiFactoryInterface;
+use Marsskom\Generator\Infrastructure\Api\DiFactoryInterface;
 
 class GlobalFactory implements DiFactoryInterface
 {
