@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Interfaces;
 
+use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
+
 interface ContextInterface
 {
     /**
@@ -23,6 +25,8 @@ interface ContextInterface
      * @param mixed  $value
      *
      * @return ContextInterface
+     *
+     * @throws VariableNotExistsException
      */
     public function add(string $name, $value): ContextInterface;
 
@@ -32,6 +36,8 @@ interface ContextInterface
      * @param string $name
      *
      * @return ContextInterface
+     *
+     * @throws VariableNotExistsException
      */
     public function unset(string $name): ContextInterface;
 
@@ -41,6 +47,8 @@ interface ContextInterface
      * @param string $name
      *
      * @return mixed
+     *
+     * @throws VariableNotExistsException
      */
     public function get(string $name);
 

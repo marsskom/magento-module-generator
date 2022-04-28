@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope;
 
+use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
 use Marsskom\Generator\Domain\Interfaces\ContextInterface;
@@ -11,6 +12,7 @@ use Marsskom\Generator\Domain\Scope\Context\Variable;
 use function array_key_exists;
 use function array_merge;
 use function is_array;
+use function sprintf;
 
 class Context implements ContextInterface, CloneableInterface
 {
@@ -60,6 +62,12 @@ class Context implements ContextInterface, CloneableInterface
      */
     public function unset(string $name): ContextInterface
     {
+        if (!$this->has($name)) {
+            throw new VariableNotExistsException(
+                sprintf("Variable '%s' not exists", $name)
+            );
+        }
+
         $new = clone $this;
         unset($new->variables[$name]);
 
@@ -72,7 +80,9 @@ class Context implements ContextInterface, CloneableInterface
     public function get(string $name)
     {
         if (!$this->has($name)) {
-            return null;
+            throw new VariableNotExistsException(
+                sprintf("Variable '%s' not exists", $name)
+            );
         }
 
         return $this->variables[$name]->value();

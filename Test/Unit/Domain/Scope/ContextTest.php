@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Domain\Scope;
 
+use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 use Marsskom\Generator\Domain\Scope\Context;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
@@ -48,6 +49,8 @@ class ContextTest extends MockeryTestCase
      * Tests rewrite variable.
      *
      * @return void
+     *
+     * @throws VariableNotExistsException
      */
     public function testRewriteVariableInContext(): void
     {
@@ -65,6 +68,8 @@ class ContextTest extends MockeryTestCase
      * Tests array variable in context.
      *
      * @return void
+     *
+     * @throws VariableNotExistsException
      */
     public function testArrayVariable(): void
     {
@@ -82,6 +87,8 @@ class ContextTest extends MockeryTestCase
      * Tests an variable unset.
      *
      * @return void
+     *
+     * @throws VariableNotExistsException
      */
     public function testUnsetVariable(): void
     {
@@ -90,6 +97,19 @@ class ContextTest extends MockeryTestCase
             ->unset('variable');
 
         $this->assertFalse($context->has('variable'));
-        $this->assertNull($context->get('variable'));
+    }
+
+    /**
+     * Tests variable not exists exception.
+     *
+     * @return void
+     *
+     * @throws VariableNotExistsException
+     */
+    public function testVariableNotExistsException(): void
+    {
+        $this->expectException(VariableNotExistsException::class);
+
+        (new Context())->get('not_exists');
     }
 }
