@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Scope\Context;
+namespace Marsskom\Generator\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\InputNotExistsException;
-use Marsskom\Generator\Domain\Interfaces\Context\InputInterface;
+use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use function array_key_exists;
 use function array_keys;
 use function array_map;

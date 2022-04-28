@@ -9,6 +9,13 @@ use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 interface ContextInterface
 {
     /**
+     * Returns context id.
+     *
+     * @return ContextIdInterface
+     */
+    public function id(): ContextIdInterface;
+
+    /**
      * Sets variable.
      *
      * @param string $name

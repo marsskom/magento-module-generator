@@ -6,6 +6,7 @@ namespace Marsskom\Generator\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
+use Marsskom\Generator\Domain\Interfaces\Context\ContextIdInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
 use Marsskom\Generator\Domain\Scope\Context\Variable;
@@ -16,10 +17,30 @@ use function sprintf;
 
 class Context implements ContextInterface, CloneableInterface
 {
+    private ContextIdInterface $identity;
+
     /**
      * @var array<string, VariableInterface>
      */
     private array $variables = [];
+
+    /**
+     * Context constructor.
+     *
+     * @param ContextIdInterface $id
+     */
+    public function __construct(ContextIdInterface $id)
+    {
+        $this->identity = $id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function id(): ContextIdInterface
+    {
+        return $this->identity;
+    }
 
     /**
      * @inheritdoc

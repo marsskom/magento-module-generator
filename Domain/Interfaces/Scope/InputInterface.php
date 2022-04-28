@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Interfaces\Context;
+namespace Marsskom\Generator\Domain\Interfaces\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\InputNotExistsException;
 

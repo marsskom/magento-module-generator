@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Test\Unit\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\InputNotExistsException;
-use Marsskom\Generator\Domain\Scope\Context\Input;
+use Marsskom\Generator\Domain\Scope\Input;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use TypeError;
 

@@ -6,6 +6,7 @@ namespace Marsskom\Generator\Test\Unit\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 use Marsskom\Generator\Domain\Scope\Context;
+use Marsskom\Generator\Domain\Scope\Context\ContextId;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function implode;
 
@@ -18,7 +19,7 @@ class ContextTest extends MockeryTestCase
      */
     public function testImmutability(): void
     {
-        $context = new Context();
+        $context = new Context(new ContextId('default'));
         $varContext = $context->set('variable', 'value');
 
         $this->assertFalse($context->has('variable'));
@@ -32,7 +33,7 @@ class ContextTest extends MockeryTestCase
      */
     public function testSetIntoContext(): void
     {
-        $context = (new Context())
+        $context = (new Context(new ContextId('default')))
             ->set('first', 'value')
             ->set('second', 'value2');
 
@@ -54,7 +55,7 @@ class ContextTest extends MockeryTestCase
      */
     public function testRewriteVariableInContext(): void
     {
-        $context = (new Context())
+        $context = (new Context(new ContextId('default')))
             ->set('variable', 'value');
 
         $this->assertEquals('value', $context->get('variable'));
@@ -73,7 +74,7 @@ class ContextTest extends MockeryTestCase
      */
     public function testArrayVariable(): void
     {
-        $context = (new Context())
+        $context = (new Context(new ContextId('default')))
             ->set('variable', 1)
             ->add('variable', 2);
 
@@ -92,7 +93,7 @@ class ContextTest extends MockeryTestCase
      */
     public function testUnsetVariable(): void
     {
-        $context = (new Context())
+        $context = (new Context(new ContextId('default')))
             ->set('variable', 1)
             ->unset('variable');
 
@@ -110,6 +111,6 @@ class ContextTest extends MockeryTestCase
     {
         $this->expectException(VariableNotExistsException::class);
 
-        (new Context())->get('not_exists');
+        (new Context(new ContextId('default')))->get('not_exists');
     }
 }
