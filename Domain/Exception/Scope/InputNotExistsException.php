@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Exception\Context;
+namespace Marsskom\Generator\Domain\Exception\Scope;
 
 use Exception;
 

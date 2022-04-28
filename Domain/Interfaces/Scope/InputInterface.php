@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Interfaces\Scope;
 
-use Marsskom\Generator\Domain\Exception\Context\InputNotExistsException;
+use Marsskom\Generator\Domain\Exception\Scope\InputNotExistsException;
 
 interface InputInterface
 {

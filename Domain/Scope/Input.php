@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope;
 
-use Marsskom\Generator\Domain\Exception\Context\InputNotExistsException;
+use Marsskom\Generator\Domain\Exception\Scope\InputNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use function array_key_exists;
 use function array_keys;
