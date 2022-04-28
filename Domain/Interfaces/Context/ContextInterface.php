@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Interfaces;
+namespace Marsskom\Generator\Domain\Interfaces\Context;
 
 use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 

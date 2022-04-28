@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Test\Unit\Domain;
 
-use Marsskom\Generator\Domain\Interfaces\CallableInterface;
+use Marsskom\Generator\Domain\Interfaces\Callables\CallableInterface;
 use Marsskom\Generator\Test\Unit\Domain\Mock\SumPipeline;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;

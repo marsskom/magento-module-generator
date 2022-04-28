@@ -6,8 +6,8 @@ namespace Marsskom\Generator\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Context\VariableNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
+use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
-use Marsskom\Generator\Domain\Interfaces\ContextInterface;
 use Marsskom\Generator\Domain\Scope\Context\Variable;
 use function array_key_exists;
 use function array_merge;
