@@ -19,11 +19,14 @@ class ContextTest extends MockeryTestCase
      */
     public function testImmutability(): void
     {
-        $context = new Context(new ContextId('default'));
+        $context = (new Context(new ContextId('default')))
+            ->set('test', 1);
         $varContext = $context->set('variable', 'value');
 
-        $this->assertFalse($context->has('variable'));
+        $this->assertTrue($varContext->has('test'));
         $this->assertTrue($varContext->has('variable'));
+
+        $this->assertFalse($context->has('variable'));
     }
 
     /**

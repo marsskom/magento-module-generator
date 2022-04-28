@@ -11,6 +11,8 @@ use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
 use Marsskom\Generator\Domain\Scope\Context\Variable;
 use function array_key_exists;
+use function array_keys;
+use function array_map;
 use function array_merge;
 use function is_array;
 use function sprintf;
@@ -135,10 +137,12 @@ class Context implements ContextInterface, CloneableInterface
      */
     public function __clone()
     {
-        $variables = [];
-        foreach ($this->variables as $name => $variable) {
-            $variables[$name] = clone $variable;
-        }
-        $this->variables = $variables;
+        $this->variables = array_merge(
+            ...array_map(
+                static fn(string $k, VariableInterface $v) => [$k => clone $v],
+                array_keys($this->variables),
+                $this->variables
+            )
+        );
     }
 }
