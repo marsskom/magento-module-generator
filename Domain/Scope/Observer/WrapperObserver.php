@@ -31,7 +31,10 @@ class WrapperObserver implements ObserverInterface
         /** @var $subject CallableWrapper */
         switch ($eventName) {
             case CallableWrapper::FORM_PARAMETER_EVENT:
-                $subject->setCallableParameters($this->formParameters($payload));
+                $subject->setCallableParameters($this->formParameters(
+                    $payload->value()['parameters'],
+                    $payload->value()['arguments']
+                ));
                 break;
             case CallableWrapper::PREPARE_SCOPE_EVENT:
                 $subject->setCallableScope(
@@ -47,19 +50,18 @@ class WrapperObserver implements ObserverInterface
     /**
      * Returns specific parameters for the callable.
      *
-     * @param ValueObjectInterface $valueObject
+     * @param array $parameters
+     * @param array $args
      *
      * @return array
      */
-    public function formParameters(ValueObjectInterface $valueObject): array
+    public function formParameters(array $parameters, array $args): array
     {
-        $args = $valueObject->value()['arguments'];
-
         /** @var $scope ScopeInterface */
         $scope = $this->getByClass($args, ScopeInterface::class);
 
         $arguments = [];
-        foreach ($valueObject->value()['parameters'] as $name) {
+        foreach ($parameters as $name) {
             $argument = null;
 
             switch ($name) {
