@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Domain\Pipeline;
 
 use Marsskom\Generator\Domain\Interfaces\Callables\PipelineInterface;
+use function is_array;
 
 class Pipeline implements PipelineInterface
 {
@@ -29,7 +30,10 @@ class Pipeline implements PipelineInterface
     public function __invoke(...$args)
     {
         foreach ($this->callables as $callable) {
-            $callable(...$args);
+            $res = $callable(...$args);
+            $args = is_array($res) ? $res : [$res];
         }
+
+        return $args;
     }
 }

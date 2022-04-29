@@ -40,7 +40,7 @@ class ArrayRepository implements ContextRepositoryInterface, CloneableInterface
 
         if ($this->has($context->id())) {
             throw new ContextAlreadyExistsException(
-                sprintf("Contest with id '%s' already exists", $contextIdValue)
+                sprintf("Context with id '%s' already exists", $contextIdValue)
             );
         }
 
@@ -57,7 +57,7 @@ class ArrayRepository implements ContextRepositoryInterface, CloneableInterface
     {
         if (!$this->has($contextId)) {
             throw new ContextNotFoundException(
-                sprintf("Contest with id '%s' not found", $contextId->value())
+                sprintf("Context with id '%s' not found", $contextId->value())
             );
         }
 
@@ -74,7 +74,7 @@ class ArrayRepository implements ContextRepositoryInterface, CloneableInterface
     {
         if (!$this->has($contextId)) {
             throw new ContextNotFoundException(
-                sprintf("Contest with id '%s' not found", $contextId->value())
+                sprintf("Context with id '%s' not found", $contextId->value())
             );
         }
 
