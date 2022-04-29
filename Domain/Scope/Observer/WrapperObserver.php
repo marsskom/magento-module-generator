@@ -2,55 +2,64 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Scope;
+namespace Marsskom\Generator\Domain\Scope\Observer;
 
 use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
 use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
+use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
+use Marsskom\Generator\Domain\Interfaces\Observer\SubjectInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionParameter;
+use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
+use Marsskom\Generator\Domain\Scope\CallableWrapper;
+use Marsskom\Generator\Domain\Scope\Scope;
 
-class WrapperHelper
+class WrapperObserver implements ObserverInterface
 {
     /**
-     * Returns callable parameters.
+     * @inheritdoc
      *
-     * @param callable $callable
-     *
-     * @return array
-     *
-     * @throws ReflectionException
+     * @throws ContextAlreadyExistsException
+     * @throws ContextNotFoundException
      */
-    public function parameters(callable $callable): array
-    {
-        $reflection = new ReflectionFunction($callable);
-
-        return array_map(
-            static fn(ReflectionParameter $parameter) => $parameter->getName(),
-            $reflection->getParameters()
-        );
+    public function receive(
+        SubjectInterface $subject,
+        string $eventName,
+        ValueObjectInterface $payload
+    ): void {
+        /** @var $subject CallableWrapper */
+        switch ($eventName) {
+            case CallableWrapper::FORM_PARAMETER_EVENT:
+                $subject->setCallableParameters($this->formParameters($payload));
+                break;
+            case CallableWrapper::PREPARE_SCOPE_EVENT:
+                $subject->setCallableScope(
+                    $this->prepareScope(
+                        $payload->value()['scope'],
+                        $payload->value()['result']
+                    )
+                );
+                break;
+        }
     }
 
     /**
      * Returns specific parameters for the callable.
      *
-     * @param callable $callable
-     * @param array    $args
+     * @param ValueObjectInterface $valueObject
      *
      * @return array
-     *
-     * @throws ReflectionException
      */
-    public function assignParameters(callable $callable, array $args): array
+    public function formParameters(ValueObjectInterface $valueObject): array
     {
+        $args = $valueObject->value()['arguments'];
+
         /** @var $scope ScopeInterface */
         $scope = $this->getByClass($args, ScopeInterface::class);
 
         $arguments = [];
-        foreach ($this->parameters($callable) as $name) {
+        foreach ($valueObject->value()['parameters'] as $name) {
             $argument = null;
 
             switch ($name) {
@@ -107,20 +116,18 @@ class WrapperHelper
      * @throws ContextAlreadyExistsException
      * @throws ContextNotFoundException
      */
-    public function callableScopeResult(ScopeInterface $scope, $result): ScopeInterface
+    public function prepareScope(ScopeInterface $scope, $result): ScopeInterface
     {
         switch (true) {
             case $result instanceof ScopeInterface:
-                $scope = $result;
-                break;
+                return $result;
             case $result instanceof ContextInterface:
-                $scope = new Scope(
+                return new Scope(
                     $scope->repository()
                           ->remove($result->id())
                           ->add($result),
                     $scope->input()
                 );
-                break;
         }
 
         return $scope;

@@ -4,10 +4,11 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Infrastructure\Model;
 
-use Marsskom\Generator\Domain\Callables\ScopeCallableWrapper;
 use Marsskom\Generator\Domain\Exception\Callables\IsNotCallableException;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface;
 use Marsskom\Generator\Domain\Pipeline\ConditionPipeline;
+use Marsskom\Generator\Domain\Scope\CallableWrapper;
+use Marsskom\Generator\Domain\Scope\Observer\WrapperObserver;
 use Marsskom\Generator\Infrastructure\Api\DiFactoryInterface;
 use function array_shift;
 use function is_array;
@@ -34,7 +35,6 @@ class ScopeCallableBuilder implements CallableBuilderInterface
      */
     public function build(array $callables): array
     {
-        $wrapperClassName = $this->wrapperClass();
         $result = [];
 
         foreach ($callables as $callable) {
@@ -49,7 +49,7 @@ class ScopeCallableBuilder implements CallableBuilderInterface
 
                 $result[] = [
                     new ConditionPipeline(
-                        new $wrapperClassName($currentCallback),
+                        new CallableWrapper($currentCallback, new WrapperObserver()),
                         $this->build($callable)
                     ),
                 ];
@@ -61,7 +61,7 @@ class ScopeCallableBuilder implements CallableBuilderInterface
                 throw new IsNotCallableException("Item is not a callable.");
             }
 
-            $result[] = [new $wrapperClassName($callable)];
+            $result[] = [new CallableWrapper($callable, new WrapperObserver())];
         }
 
         return array_merge(...$result);
@@ -77,15 +77,5 @@ class ScopeCallableBuilder implements CallableBuilderInterface
     protected function isInvokeArray(array $array): bool
     {
         return is_string($array[0]) && (!isset($array[1]) || is_array($array[1]));
-    }
-
-    /**
-     * Returns wrapper class.
-     *
-     * @return string
-     */
-    protected function wrapperClass(): string
-    {
-        return ScopeCallableWrapper::class;
     }
 }

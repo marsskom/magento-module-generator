@@ -45,4 +45,11 @@ interface SubjectInterface
      * @throws EventNameNotExistsException
      */
     public function trigger(string $eventName, ValueObjectInterface $payload): void;
+
+    /**
+     * Returns observer existence state.
+     *
+     * @return bool
+     */
+    public function hasObservers(): bool;
 }

@@ -23,10 +23,9 @@ class Subject implements SubjectInterface, CloneableInterface
      */
     public function attach(string $eventName, ObserverInterface $observer): SubjectInterface
     {
-        $new = clone $this;
-        $new->observers[$eventName][] = $observer;
+        $this->observers[$eventName][] = $observer;
 
-        return $new;
+        return $this;
     }
 
     /**
@@ -40,14 +39,13 @@ class Subject implements SubjectInterface, CloneableInterface
             );
         }
 
-        $new = clone $this;
         foreach ($this->observers[$eventName] as $key => $specific) {
             if ($specific === $observer) {
-                unset($new->observers[$eventName][$key]);
+                unset($this->observers[$eventName][$key]);
             }
         }
 
-        return $new;
+        return $this;
     }
 
     /**
@@ -64,6 +62,14 @@ class Subject implements SubjectInterface, CloneableInterface
         foreach ($this->observers[$eventName] as $observer) {
             $observer->receive($this, $eventName, $payload);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasObservers(): bool
+    {
+        return !empty($this->observers);
     }
 
     /**

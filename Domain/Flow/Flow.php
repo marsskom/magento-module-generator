@@ -9,7 +9,6 @@ use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\Input\ValidatorInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
-use function array_keys;
 use function array_map;
 use function array_merge;
 use function is_array;
@@ -84,10 +83,12 @@ class Flow implements FlowInterface, CloneableInterface
 
         $this->validators = array_map(static fn(ValidatorInterface $v) => clone $v, $this->validators);
 
-        $this->callables = array_merge(
-            ...array_map(static function (string $key, $callable): array {
-                return [$key => is_callable($callable) ? clone $callable : $callable];
-            }, array_keys($this->callables), $this->callables)
-        );
+        $callables = [];
+        foreach ($this->callables as $alias => $array) {
+            foreach ($array as $callable) {
+                $callables[$alias][] = is_callable($callable) ? clone $callable : $callable;
+            }
+        }
+        $this->callables = $callables;
     }
 }
