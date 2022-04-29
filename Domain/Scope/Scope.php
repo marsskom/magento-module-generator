@@ -17,6 +17,8 @@ class Scope extends Subject implements ScopeInterface
 
     private InputInterface $input;
 
+    private string $activeContextAlias = '';
+
     /**
      * Scope constructor.
      *
@@ -38,8 +40,30 @@ class Scope extends Subject implements ScopeInterface
 
         $new = clone $this;
         $new->repository = $this->repository->add($context);
+        $new->activeContextAlias = $alias;
 
         return $new;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function current(string $alias): ScopeInterface
+    {
+        $this->repository->get(new ContextId($alias));
+
+        $new = clone $this;
+        $new->activeContextAlias = $alias;
+
+        return $new;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function what(): string
+    {
+        return $this->activeContextAlias;
     }
 
     /**

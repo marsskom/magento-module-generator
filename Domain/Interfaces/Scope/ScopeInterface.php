@@ -23,6 +23,24 @@ interface ScopeInterface
     public function context(string $alias): ScopeInterface;
 
     /**
+     * Sets current active context.
+     *
+     * @param string $alias
+     *
+     * @return ScopeInterface
+     *
+     * @throws ContextNotFoundException
+     */
+    public function current(string $alias): ScopeInterface;
+
+    /**
+     * Returns current context's alias.
+     *
+     * @return string
+     */
+    public function what(): string;
+
+    /**
      * Passes access into context object by the alias.
      *
      * @param string $alias

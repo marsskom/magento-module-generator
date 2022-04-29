@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Interfaces;
 
-use Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\Input\ValidatorInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 
@@ -13,7 +12,7 @@ interface FlowInterface
     /**
      * Adds input validator.
      *
-     * @param ValidatorInterface[]|ValidatorInterface $validator
+     * @param callable|callable[]|ValidatorInterface $validator
      *
      * @return FlowInterface
      */
@@ -30,18 +29,11 @@ interface FlowInterface
     public function with(string $alias, array $callables): FlowInterface;
 
     /**
-     * Sets flow builder.
-     *
-     * @param CallableBuilderInterface $builder
-     *
-     * @return FlowInterface
-     */
-    public function builder(CallableBuilderInterface $builder): FlowInterface;
-
-    /**
      * Runs flow.
+     *
+     * @param ScopeInterface $scope - scope that will be changed
      *
      * @return ScopeInterface
      */
-    public function run(): ScopeInterface;
+    public function run(ScopeInterface $scope): ScopeInterface;
 }

@@ -13,6 +13,7 @@ use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Scope\CallableWrapper;
+use Marsskom\Generator\Domain\Scope\Context\ContextId;
 use Marsskom\Generator\Domain\Scope\Scope;
 
 class WrapperObserver implements ObserverInterface
@@ -54,6 +55,8 @@ class WrapperObserver implements ObserverInterface
      * @param array $args
      *
      * @return array
+     *
+     * @throws ContextNotFoundException
      */
     public function formParameters(array $parameters, array $args): array
     {
@@ -71,8 +74,7 @@ class WrapperObserver implements ObserverInterface
                 case 'c':
                     $argument = $this->getByClass($args, ContextInterface::class);
                     if (null === $argument) {
-                        $contextsList = iterator_to_array($scope->repository()->list());
-                        $argument = array_pop($contextsList);
+                        $argument = $scope->repository()->get(new ContextId($scope->what()));
                     }
                     break;
                 case 'i':

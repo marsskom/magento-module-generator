@@ -23,7 +23,7 @@ use Marsskom\Generator\Test\Unit\Infrastructure\Mock\ValueCallable;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function is_array;
 
-class CallableBuilderTest extends MockeryTestCase
+class ScopeCallableBuilderTest extends MockeryTestCase
 {
     private CallableBuilderInterface $builder;
 
