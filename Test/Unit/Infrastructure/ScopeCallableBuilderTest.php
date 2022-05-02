@@ -13,8 +13,11 @@ use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Pipeline\Pipeline;
+use Marsskom\Generator\Domain\Scope\CallableWrapper;
 use Marsskom\Generator\Domain\Scope\Context\ContextId;
 use Marsskom\Generator\Domain\Scope\Input;
+use Marsskom\Generator\Domain\Scope\Observer\ParameterObserver;
+use Marsskom\Generator\Domain\Scope\Observer\ScopeObserver;
 use Marsskom\Generator\Domain\Scope\Scope;
 use Marsskom\Generator\Infrastructure\Model\Context\ArrayRepository;
 use Marsskom\Generator\Infrastructure\Model\ScopeCallableBuilder;
@@ -32,7 +35,9 @@ class ScopeCallableBuilderTest extends MockeryTestCase
      */
     protected function mockeryTestSetUp()
     {
-        $this->builder = new ScopeCallableBuilder(new FakeGlobalFactory());
+        $this->builder = (new ScopeCallableBuilder(new FakeGlobalFactory()))
+            ->withObserver(CallableWrapper::FORM_PARAMETER_EVENT, new ParameterObserver())
+            ->withObserver(CallableWrapper::PREPARE_SCOPE_EVENT, new ScopeObserver());
     }
 
     /**

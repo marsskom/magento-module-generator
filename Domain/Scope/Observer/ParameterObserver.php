@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope\Observer;
 
-use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
 use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
@@ -14,14 +13,13 @@ use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Scope\CallableWrapper;
 use Marsskom\Generator\Domain\Scope\Context\ContextId;
-use Marsskom\Generator\Domain\Scope\Scope;
+use Marsskom\Generator\Domain\Scope\Wrapper\Event\ParameterEventModel;
 
-class WrapperObserver implements ObserverInterface
+class ParameterObserver implements ObserverInterface
 {
     /**
      * @inheritdoc
      *
-     * @throws ContextAlreadyExistsException
      * @throws ContextNotFoundException
      */
     public function receive(
@@ -30,22 +28,16 @@ class WrapperObserver implements ObserverInterface
         ValueObjectInterface $payload
     ): void {
         /** @var $subject CallableWrapper */
-        switch ($eventName) {
-            case CallableWrapper::FORM_PARAMETER_EVENT:
-                $subject->setCallableParameters($this->formParameters(
-                    $payload->value()['parameters'],
-                    $payload->value()['arguments']
-                ));
-                break;
-            case CallableWrapper::PREPARE_SCOPE_EVENT:
-                $subject->setCallableScope(
-                    $this->prepareScope(
-                        $payload->value()['scope'],
-                        $payload->value()['result']
-                    )
-                );
-                break;
-        }
+        /** @var $model ParameterEventModel */
+
+        $model = $payload->value();
+
+        $subject->value()->setParameters(
+            $this->formParameters(
+                $model->parameters(),
+                $model->arguments()
+            )
+        );
     }
 
     /**
@@ -107,33 +99,5 @@ class WrapperObserver implements ObserverInterface
         }
 
         return null;
-    }
-
-    /**
-     * Forms callable scope result.
-     *
-     * @param ScopeInterface $scope
-     * @param mixed          $result
-     *
-     * @return ScopeInterface
-     *
-     * @throws ContextAlreadyExistsException
-     * @throws ContextNotFoundException
-     */
-    public function prepareScope(ScopeInterface $scope, $result): ScopeInterface
-    {
-        switch (true) {
-            case $result instanceof ScopeInterface:
-                return $result;
-            case $result instanceof ContextInterface:
-                return new Scope(
-                    $scope->repository()
-                          ->remove($result->id())
-                          ->add($result),
-                    $scope->input()
-                );
-        }
-
-        return $scope;
     }
 }

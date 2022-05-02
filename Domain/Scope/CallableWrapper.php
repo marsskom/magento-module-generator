@@ -8,16 +8,22 @@ use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
 use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
 use Marsskom\Generator\Domain\Exception\Observer\EventNameNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableInterface;
-use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
+use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Observer\Subject;
+use Marsskom\Generator\Domain\Scope\Wrapper\CallableValue;
+use Marsskom\Generator\Domain\Scope\Wrapper\Event\ParameterEventModel;
+use Marsskom\Generator\Domain\Scope\Wrapper\Event\ScopeEventModel;
 use Marsskom\Generator\Domain\ValueObject;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionParameter;
 use function array_values;
 
-class CallableWrapper extends Subject implements CallableInterface
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class CallableWrapper extends Subject implements CallableInterface, ValueObjectInterface
 {
     public const FORM_PARAMETER_EVENT = __CLASS__ . '-form_parameter_event';
 
@@ -28,26 +34,18 @@ class CallableWrapper extends Subject implements CallableInterface
      */
     private $callable;
 
-    private array $callableParameters = [];
-
-    private ?ScopeInterface $callableScope = null;
+    private CallableValue $eventValue;
 
     /**
      * Scope callable wrapper constructor.
      *
-     * @param callable               $callable
-     * @param null|ObserverInterface $observer
+     * @param callable $callable
      */
     public function __construct(
-        callable $callable,
-        ?ObserverInterface $observer = null
+        callable $callable
     ) {
         $this->callable = $callable;
-
-        if (null !== $observer) {
-            $this->attach(self::FORM_PARAMETER_EVENT, $observer);
-            $this->attach(self::PREPARE_SCOPE_EVENT, $observer);
-        }
+        $this->eventValue = new CallableValue();
     }
 
     /**
@@ -60,42 +58,46 @@ class CallableWrapper extends Subject implements CallableInterface
      */
     public function __invoke(...$args)
     {
-        $scope = null;
-        foreach ($args as $arg) {
-            if ($arg instanceof ScopeInterface) {
-                $scope = $arg;
-                break;
-            }
-        }
-
+        $scope = $this->getScope($args);
         if (null === $scope || !$this->hasObservers()) {
             return ($this->callable)(...$args);
         }
-
-        /** @var $scope ScopeInterface */
 
         $parameters = $this->parameters($this->callable);
 
         $this->trigger(
             self::FORM_PARAMETER_EVENT,
-            new ValueObject([
-                'parameters' => $parameters,
-                'arguments'  => $args,
-            ])
+            new ValueObject(new ParameterEventModel($parameters, $args))
         );
-        $arguments = $this->getCallableParameters();
 
-        $result = ($this->callable)(...array_values($arguments));
+        $result = ($this->callable)(...array_values(
+            $this->eventValue->getParameters()
+        ));
 
         $this->trigger(
             self::PREPARE_SCOPE_EVENT,
-            new ValueObject([
-                'scope'  => $scope,
-                'result' => $result,
-            ])
+            new ValueObject(new ScopeEventModel($scope, $result))
         );
 
-        return $this->getCallableScope();
+        return $this->eventValue->getScope();
+    }
+
+    /**
+     * Returns scope.
+     *
+     * @param array $args
+     *
+     * @return null|ScopeInterface
+     */
+    protected function getScope(array $args): ?ScopeInterface
+    {
+        foreach ($args as $arg) {
+            if ($arg instanceof ScopeInterface) {
+                return $arg;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -109,51 +111,17 @@ class CallableWrapper extends Subject implements CallableInterface
      */
     protected function parameters(callable $callable): array
     {
-        $reflection = new ReflectionFunction($callable);
-
         return array_map(
             static fn(ReflectionParameter $parameter) => $parameter->getName(),
-            $reflection->getParameters()
+            (new ReflectionFunction($callable))->getParameters()
         );
     }
 
     /**
-     * Returns callable parameters.
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function getCallableParameters(): array
+    public function value(): CallableValue
     {
-        return $this->callableParameters;
-    }
-
-    /**
-     * Sets callable parameters.
-     *
-     * @param array $callableParameters
-     */
-    public function setCallableParameters(array $callableParameters): void
-    {
-        $this->callableParameters = $callableParameters;
-    }
-
-    /**
-     * Returns callable scope.
-     *
-     * @return null|ScopeInterface
-     */
-    public function getCallableScope(): ?ScopeInterface
-    {
-        return $this->callableScope;
-    }
-
-    /**
-     * Sets callable scope.
-     *
-     * @param null|ScopeInterface $callableScope
-     */
-    public function setCallableScope(?ScopeInterface $callableScope): void
-    {
-        $this->callableScope = $callableScope;
+        return $this->eventValue;
     }
 }

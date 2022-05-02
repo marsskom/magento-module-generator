@@ -10,8 +10,11 @@ use Marsskom\Generator\Domain\Exception\Pipeline\ConditionFailedException;
 use Marsskom\Generator\Domain\Exception\Validator\ValidateException;
 use Marsskom\Generator\Domain\Flow\Flow;
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
+use Marsskom\Generator\Domain\Scope\CallableWrapper;
 use Marsskom\Generator\Domain\Scope\Context\ContextId;
 use Marsskom\Generator\Domain\Scope\Input;
+use Marsskom\Generator\Domain\Scope\Observer\ParameterObserver;
+use Marsskom\Generator\Domain\Scope\Observer\ScopeObserver;
 use Marsskom\Generator\Domain\Scope\Scope;
 use Marsskom\Generator\Infrastructure\Model\Context\ArrayRepository;
 use Marsskom\Generator\Infrastructure\Model\ScopeCallableBuilder;
@@ -28,7 +31,11 @@ class FlowTest extends MockeryTestCase
      */
     protected function mockeryTestSetUp()
     {
-        $this->flow = (new Flow(new ScopeCallableBuilder(new FakeGlobalFactory())))
+        $builder = (new ScopeCallableBuilder(new FakeGlobalFactory()))
+            ->withObserver(CallableWrapper::FORM_PARAMETER_EVENT, new ParameterObserver())
+            ->withObserver(CallableWrapper::PREPARE_SCOPE_EVENT, new ScopeObserver());
+
+        $this->flow = (new Flow($builder))
             ->validator(
                 static function ($i): void {
                     if (!$i->has('param')) {

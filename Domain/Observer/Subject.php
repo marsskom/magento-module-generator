@@ -11,7 +11,7 @@ use Marsskom\Generator\Domain\Interfaces\Observer\SubjectInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use function sprintf;
 
-class Subject implements SubjectInterface, CloneableInterface
+abstract class Subject implements SubjectInterface, CloneableInterface
 {
     /**
      * @var array<string, ObserverInterface[]>
