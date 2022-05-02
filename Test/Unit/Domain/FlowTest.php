@@ -16,6 +16,7 @@ use Marsskom\Generator\Domain\Scope\Input;
 use Marsskom\Generator\Domain\Scope\Observer\ParameterObserver;
 use Marsskom\Generator\Domain\Scope\Observer\ScopeObserver;
 use Marsskom\Generator\Domain\Scope\Scope;
+use Marsskom\Generator\Domain\Scope\ScopeFactory;
 use Marsskom\Generator\Infrastructure\Model\Context\ArrayRepository;
 use Marsskom\Generator\Infrastructure\Model\ScopeCallableBuilder;
 use Marsskom\Generator\Test\Unit\Infrastructure\Mock\FakeGlobalFactory;
@@ -33,7 +34,10 @@ class FlowTest extends MockeryTestCase
     {
         $builder = (new ScopeCallableBuilder(new FakeGlobalFactory()))
             ->withObserver(CallableWrapper::FORM_PARAMETER_EVENT, new ParameterObserver())
-            ->withObserver(CallableWrapper::PREPARE_SCOPE_EVENT, new ScopeObserver());
+            ->withObserver(
+                CallableWrapper::PREPARE_SCOPE_EVENT,
+                new ScopeObserver(new ScopeFactory())
+            );
 
         $this->flow = (new Flow($builder))
             ->validator(

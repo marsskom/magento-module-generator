@@ -4,24 +4,31 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope\Observer;
 
-use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
-use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\SubjectInterface;
+use Marsskom\Generator\Domain\Interfaces\Scope\ScopeFactoryInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Scope\CallableWrapper;
-use Marsskom\Generator\Domain\Scope\Scope;
 use Marsskom\Generator\Domain\Scope\Wrapper\Event\ScopeEventModel;
 
 class ScopeObserver implements ObserverInterface
 {
+    private ScopeFactoryInterface $factory;
+
+    /**
+     * Scope observer constructor.
+     *
+     * @param ScopeFactoryInterface $factory
+     */
+    public function __construct(ScopeFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * @inheritdoc
-     *
-     * @throws ContextAlreadyExistsException
-     * @throws ContextNotFoundException
      */
     public function receive(
         SubjectInterface $subject,
@@ -48,9 +55,6 @@ class ScopeObserver implements ObserverInterface
      * @param mixed          $result
      *
      * @return ScopeInterface
-     *
-     * @throws ContextAlreadyExistsException
-     * @throws ContextNotFoundException
      */
     public function prepareScope(ScopeInterface $scope, $result): ScopeInterface
     {
@@ -58,12 +62,7 @@ class ScopeObserver implements ObserverInterface
             case $result instanceof ScopeInterface:
                 return $result;
             case $result instanceof ContextInterface:
-                return (new Scope(
-                    $scope->repository()
-                          ->remove($result->id())
-                          ->add($result),
-                    $scope->input()
-                ))->setActiveContextAlias($scope->getActiveContextAlias());
+                return $this->factory->createWithReplacedContext($scope, $result);
         }
 
         return $scope;
