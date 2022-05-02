@@ -88,8 +88,6 @@ class Flow implements FlowInterface, CloneableInterface
             $this->builder->build($this->validators)
         ))($scope);
 
-        // TODO: validator exception here.
-
         $pipelines = [];
         foreach ($this->callables as $alias => $callables) {
             $pipelines[] = new ContextPipeline(
