@@ -16,6 +16,7 @@ use Marsskom\Generator\Domain\Scope\Pipeline\ContextPipeline;
 use function array_keys;
 use function array_map;
 use function array_merge;
+use function array_shift;
 use function is_array;
 use function is_callable;
 
@@ -96,7 +97,9 @@ class Flow implements FlowInterface, CloneableInterface
             );
         }
 
-        return (new Pipeline($pipelines))($scope);
+        $scope = (new Pipeline($pipelines))($scope);
+
+        return is_array($scope) ? array_shift($scope) : $scope;
     }
 
     /**

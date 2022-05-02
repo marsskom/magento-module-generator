@@ -3,6 +3,17 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Marsskom\Generator\Infrastructure\Api\DiFactoryInterface"
                 type="Marsskom\Generator\Infrastructure\Model\Factories\GlobalFactory"/>
+    
+    <preference for="Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface"
+                type="Marsskom\Generator\Infrastructure\Model\ScopeCallableBuilder"/>
+    
+    <preference for="Marsskom\Generator\Domain\Interfaces\FlowInterface"
+                type="Marsskom\Generator\Domain\Flow\Flow"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\Data\FlowFactoryInterface"
+                type="Marsskom\Generator\Infrastructure\Model\FlowFactory"/>
+
+    <preference for="Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface"
+                type="Marsskom\Generator\Domain\Scope\Scope"/>
 
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
