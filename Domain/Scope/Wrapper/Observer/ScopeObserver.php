@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Domain\Scope\Observer;
+namespace Marsskom\Generator\Domain\Scope\Wrapper\Observer;
 
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
