@@ -31,14 +31,14 @@ interface ScopeInterface
      *
      * @throws ContextNotFoundException
      */
-    public function current(string $alias): ScopeInterface;
+    public function setActiveContextAlias(string $alias): ScopeInterface;
 
     /**
      * Returns current context's alias.
      *
      * @return string
      */
-    public function what(): string;
+    public function getActiveContextAlias(): string;
 
     /**
      * Passes access into context object by the alias.

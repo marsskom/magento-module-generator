@@ -12,6 +12,7 @@ use Marsskom\Generator\Domain\Interfaces\FlowInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\Input\ValidatorInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Pipeline\Pipeline;
+use Marsskom\Generator\Domain\Scope\Pipeline\ContextPipeline;
 use function array_keys;
 use function array_map;
 use function array_merge;
@@ -79,25 +80,25 @@ class Flow implements FlowInterface, CloneableInterface
      */
     public function run(ScopeInterface $scope): ScopeInterface
     {
+        foreach (array_keys($this->callables) as $alias) {
+            $scope = $scope->context($alias);
+        }
+
         (new Pipeline(
             $this->builder->build($this->validators)
         ))($scope);
 
         // TODO: validator exception here.
 
-        foreach (array_keys($this->callables) as $alias) {
-            $scope = $scope->context($alias);
-        }
-
         $pipelines = [];
         foreach ($this->callables as $alias => $callables) {
-            $pipelines[] = new Pipeline($this->builder->build([
-                static fn($s) => $s->current($alias),
-            ]));
-            $pipelines[] = new Pipeline($this->builder->build($callables));
+            $pipelines[] = new ContextPipeline(
+                $alias,
+                $this->builder->build($callables)
+            );
         }
 
-        return (new Pipeline($pipelines))($scope)[0];
+        return (new Pipeline($pipelines))($scope);
     }
 
     /**

@@ -41,6 +41,6 @@ class ConditionPipeline extends Pipeline
             return $args;
         }
 
-        return parent::__invoke($args);
+        return parent::__invoke(...$args);
     }
 }

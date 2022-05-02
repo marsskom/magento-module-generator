@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope;
 
+use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Repository\ContextRepositoryInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
-use Marsskom\Generator\Domain\Observer\Subject;
 use Marsskom\Generator\Domain\Scope\Context\ContextId;
 
-class Scope extends Subject implements ScopeInterface
+class Scope implements ScopeInterface, CloneableInterface
 {
     private ContextRepositoryInterface $repository;
 
@@ -48,7 +48,7 @@ class Scope extends Subject implements ScopeInterface
     /**
      * @inheritdoc
      */
-    public function current(string $alias): ScopeInterface
+    public function setActiveContextAlias(string $alias): ScopeInterface
     {
         $this->repository->get(new ContextId($alias));
 
@@ -61,7 +61,7 @@ class Scope extends Subject implements ScopeInterface
     /**
      * @inheritdoc
      */
-    public function what(): string
+    public function getActiveContextAlias(): string
     {
         return $this->activeContextAlias;
     }
@@ -97,8 +97,6 @@ class Scope extends Subject implements ScopeInterface
      */
     public function __clone()
     {
-        parent::__clone();
-
         $this->repository = clone $this->repository;
         $this->input = clone $this->input;
     }

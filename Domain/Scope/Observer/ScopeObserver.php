@@ -58,12 +58,12 @@ class ScopeObserver implements ObserverInterface
             case $result instanceof ScopeInterface:
                 return $result;
             case $result instanceof ContextInterface:
-                return new Scope(
+                return (new Scope(
                     $scope->repository()
                           ->remove($result->id())
                           ->add($result),
                     $scope->input()
-                );
+                ))->setActiveContextAlias($scope->getActiveContextAlias());
         }
 
         return $scope;

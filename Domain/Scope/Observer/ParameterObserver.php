@@ -66,7 +66,7 @@ class ParameterObserver implements ObserverInterface
                 case 'c':
                     $argument = $this->getByClass($args, ContextInterface::class);
                     if (null === $argument) {
-                        $argument = $scope->repository()->get(new ContextId($scope->what()));
+                        $argument = $scope->repository()->get(new ContextId($scope->getActiveContextAlias()));
                     }
                     break;
                 case 'i':

@@ -30,8 +30,8 @@ class Pipeline implements PipelineInterface
     public function __invoke(...$args)
     {
         foreach ($this->callables as $callable) {
-            $res = $callable(...$args);
-            $args = is_array($res) ? $res : [$res];
+            $arguments = is_array($args) ? $args : [$args];
+            $args = $callable(...$arguments);
         }
 
         return $args;
