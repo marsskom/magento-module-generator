@@ -159,7 +159,7 @@ class ScopeCallableBuilderTest extends MockeryTestCase
         ];
 
         $pipeline = new Pipeline($this->builder->build($fns));
-        $scope = $pipeline($scope)[0];
+        $scope = $pipeline($scope);
 
         $this->assertTrue($scope->repository()->has(new ContextId('default')));
         $this->assertTrue($scope->repository()->has(new ContextId('context')));

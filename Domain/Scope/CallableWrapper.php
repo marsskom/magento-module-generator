@@ -8,9 +8,9 @@ use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
 use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
 use Marsskom\Generator\Domain\Exception\Observer\EventNameNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableInterface;
-use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Observer\Subject;
+use Marsskom\Generator\Domain\Scope\Helper\ArgFindHelper;
 use Marsskom\Generator\Domain\Scope\Wrapper\CallableValue;
 use Marsskom\Generator\Domain\Scope\Wrapper\Event\ParameterEventModel;
 use Marsskom\Generator\Domain\Scope\Wrapper\Event\ScopeEventModel;
@@ -58,7 +58,7 @@ class CallableWrapper extends Subject implements CallableInterface, ValueObjectI
      */
     public function __invoke(...$args)
     {
-        $scope = $this->getScope($args);
+        $scope = (new ArgFindHelper())->scope($args);
         if (null === $scope || !$this->hasObservers()) {
             return ($this->callable)(...$args);
         }
@@ -80,24 +80,6 @@ class CallableWrapper extends Subject implements CallableInterface, ValueObjectI
         );
 
         return $this->eventValue->getScope();
-    }
-
-    /**
-     * Returns scope.
-     *
-     * @param array $args
-     *
-     * @return null|ScopeInterface
-     */
-    protected function getScope(array $args): ?ScopeInterface
-    {
-        foreach ($args as $arg) {
-            if ($arg instanceof ScopeInterface) {
-                return $arg;
-            }
-        }
-
-        return null;
     }
 
     /**

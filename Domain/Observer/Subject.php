@@ -75,6 +75,14 @@ abstract class Subject implements SubjectInterface, CloneableInterface
     /**
      * @inheritdoc
      */
+    public function observers(): array
+    {
+        return $this->observers;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __clone()
     {
         $observers = [];

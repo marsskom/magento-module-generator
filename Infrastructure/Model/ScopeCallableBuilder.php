@@ -7,7 +7,7 @@ namespace Marsskom\Generator\Infrastructure\Model;
 use Marsskom\Generator\Domain\Exception\Callables\IsNotCallableException;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableInterface;
-use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
+use Marsskom\Generator\Domain\Observer\SubjectHelper;
 use Marsskom\Generator\Domain\Pipeline\ConditionPipeline;
 use Marsskom\Generator\Domain\Scope\CallableWrapper;
 use Marsskom\Generator\Infrastructure\Api\DiFactoryInterface;
@@ -18,12 +18,9 @@ use function is_string;
 
 class ScopeCallableBuilder implements CallableBuilderInterface
 {
-    private DiFactoryInterface $factory;
+    use SubjectHelper;
 
-    /**
-     * @var array<string, ObserverInterface[]>
-     */
-    private array $observers = [];
+    private DiFactoryInterface $factory;
 
     /**
      * Scope callback builder constructor.
@@ -34,16 +31,6 @@ class ScopeCallableBuilder implements CallableBuilderInterface
         DiFactoryInterface $factory
     ) {
         $this->factory = $factory;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function withObserver(string $eventName, ObserverInterface $observer): CallableBuilderInterface
-    {
-        $this->observers[$eventName][] = $observer;
-
-        return $this;
     }
 
     /**
@@ -104,14 +91,6 @@ class ScopeCallableBuilder implements CallableBuilderInterface
      */
     protected function createWrapper(callable $callable): CallableInterface
     {
-        $wrapper = (new CallableWrapper($callable));
-
-        foreach ($this->observers as $eventName => $observers) {
-            foreach ($observers as $observer) {
-                $wrapper->attach($eventName, $observer);
-            }
-        }
-
-        return $wrapper;
+        return $this->attach(new CallableWrapper($callable));
     }
 }

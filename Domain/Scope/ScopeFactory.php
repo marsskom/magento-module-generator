@@ -20,11 +20,11 @@ class ScopeFactory implements ScopeFactoryInterface
      */
     public function createWithReplacedContext(ScopeInterface $scope, ContextInterface $context): ScopeInterface
     {
-        return (new Scope(
+        return (new ScopeBuilder())->build(
             $scope->repository()
                   ->remove($context->id())
                   ->add($context),
             $scope->input()
-        ))->setActiveContextAlias($scope->getActiveContextAlias());
+        )->setActiveContextAlias($scope->getActiveContextAlias());
     }
 }

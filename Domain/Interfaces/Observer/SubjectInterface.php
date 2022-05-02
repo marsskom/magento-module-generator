@@ -52,4 +52,11 @@ interface SubjectInterface
      * @return bool
      */
     public function hasObservers(): bool;
+
+    /**
+     * Returns observers.
+     *
+     * @return array<string, ObserverInterface[]>
+     */
+    public function observers(): array;
 }

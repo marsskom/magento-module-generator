@@ -10,14 +10,14 @@ use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
 interface CallableBuilderInterface
 {
     /**
-     * Adds observer into callable.
+     * Adds observer.
      *
      * @param string            $eventName
      * @param ObserverInterface $observer
      *
-     * @return CallableBuilderInterface
+     * @return object
      */
-    public function withObserver(string $eventName, ObserverInterface $observer): CallableBuilderInterface;
+    public function withObserver(string $eventName, ObserverInterface $observer): object;
 
     /**
      * Builds callbacks pipelines.

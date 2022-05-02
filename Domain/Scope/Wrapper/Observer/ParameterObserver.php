@@ -5,14 +5,13 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Domain\Scope\Wrapper\Observer;
 
 use Marsskom\Generator\Domain\Exception\Context\ContextNotFoundException;
-use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\ObserverInterface;
 use Marsskom\Generator\Domain\Interfaces\Observer\SubjectInterface;
-use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Marsskom\Generator\Domain\Scope\CallableWrapper;
 use Marsskom\Generator\Domain\Scope\Context\ContextId;
+use Marsskom\Generator\Domain\Scope\Helper\ArgFindHelper;
 use Marsskom\Generator\Domain\Scope\Wrapper\Event\ParameterEventModel;
 
 class ParameterObserver implements ObserverInterface
@@ -52,8 +51,10 @@ class ParameterObserver implements ObserverInterface
      */
     public function formParameters(array $parameters, array $args): array
     {
+        $helper = new ArgFindHelper();
+
         /** @var $scope ScopeInterface */
-        $scope = $this->getByClass($args, ScopeInterface::class);
+        $scope = $helper->scope($args);
 
         $arguments = [];
         foreach ($parameters as $name) {
@@ -64,13 +65,13 @@ class ParameterObserver implements ObserverInterface
                     $argument = $scope;
                     break;
                 case 'c':
-                    $argument = $this->getByClass($args, ContextInterface::class);
-                    if (null === $argument) {
-                        $argument = $scope->repository()->get(new ContextId($scope->getActiveContextAlias()));
-                    }
+                    $argument = $helper->context($args) ??
+                        $scope->repository()->get(
+                            new ContextId($scope->getActiveContextAlias())
+                        );
                     break;
                 case 'i':
-                    $argument = $this->getByClass($args, InputInterface::class) ?? $scope->input();
+                    $argument = $helper->input($args) ?? $scope->input();
                     break;
                 default:
                     continue 2;
@@ -80,24 +81,5 @@ class ParameterObserver implements ObserverInterface
         }
 
         return $arguments;
-    }
-
-    /**
-     * Returns argument by class instance.
-     *
-     * @param array  $args
-     * @param string $className
-     *
-     * @return null|mixed
-     */
-    public function getByClass(array $args, string $className)
-    {
-        foreach ($args as $arg) {
-            if ($arg instanceof $className) {
-                return $arg;
-            }
-        }
-
-        return null;
     }
 }
