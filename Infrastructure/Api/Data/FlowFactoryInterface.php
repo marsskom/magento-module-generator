@@ -13,5 +13,5 @@ interface FlowFactoryInterface
      *
      * @return FlowInterface
      */
-    public function bareFlow(): FlowInterface;
+    public function create(): FlowInterface;
 }

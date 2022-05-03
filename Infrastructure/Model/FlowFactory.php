@@ -36,7 +36,7 @@ class FlowFactory implements FlowFactoryInterface
     /**
      * @inheritdoc
      */
-    public function bareFlow(): FlowInterface
+    public function create(): FlowInterface
     {
         $builder = $this->builderFactory
             ->create()
