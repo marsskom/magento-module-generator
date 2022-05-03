@@ -7,6 +7,8 @@ namespace Marsskom\Generator\Magento\Console\Command;
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
 use Marsskom\Generator\Infrastructure\Console\Command\GeneratorCommand;
 use Marsskom\Generator\Magento\Model\Enum\InputParameter;
+use Marsskom\Generator\Magento\Model\Enum\TemplateVariable;
+use Marsskom\Generator\Magento\Model\Validator\ModuleValidator;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -43,7 +45,15 @@ class ModuleCommand extends GeneratorCommand
      */
     protected function flow(): FlowInterface
     {
+        $moduleNameCallable = static fn($c, $i) => $c->set(
+            TemplateVariable::MODULE_NAME,
+            $i->get(InputParameter::MODULE)
+        );
+
         return $this->flowFactory
-            ->bareFlow();
+            ->create()
+            ->validator(new ModuleValidator())
+            ->with('default', [$moduleNameCallable])
+            ->with('module', [$moduleNameCallable]);
     }
 }

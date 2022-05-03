@@ -17,8 +17,10 @@ use Marsskom\Generator\Domain\Scope\Wrapper\Event\ScopeEventModel;
 use Marsskom\Generator\Domain\ValueObject;
 use ReflectionException;
 use ReflectionFunction;
+use ReflectionMethod;
 use ReflectionParameter;
 use function array_values;
+use function is_object;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -93,9 +95,15 @@ class CallableWrapper extends Subject implements CallableInterface, ValueObjectI
      */
     protected function parameters(callable $callable): array
     {
+        if (is_object($callable)) {
+            $parameters = (new ReflectionMethod($callable, '__invoke'))->getParameters();
+        } else {
+            $parameters = (new ReflectionFunction($callable))->getParameters();
+        }
+
         return array_map(
             static fn(ReflectionParameter $parameter) => $parameter->getName(),
-            (new ReflectionFunction($callable))->getParameters()
+            $parameters
         );
     }
 

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Infrastructure\Console\Command;
 
+use Exception;
 use Magento\Framework\Console\Cli;
-use Magento\Framework\Exception\LocalizedException;
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
 use Marsskom\Generator\Domain\Scope\Input;
 use Marsskom\Generator\Domain\Scope\ScopeBuilder;
@@ -62,14 +62,13 @@ abstract class GeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $scope = $this->scopeBuilder->build(new ArrayRepository(), new Input($input->getOptions()));
+
         try {
-            $this->flow()->run(
-                $this->scopeBuilder->build(
-                    new ArrayRepository(),
-                    new Input($input->getOptions()),
-                )
-            );
-        } catch (LocalizedException $exception) {
+            $this->flow()->run($scope);
+        } catch (Exception $exception) {
+            $output->writeln($exception->getMessage());
+
             return Cli::RETURN_FAILURE;
         }
 
