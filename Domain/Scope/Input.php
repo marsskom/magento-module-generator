@@ -6,7 +6,6 @@ namespace Marsskom\Generator\Domain\Scope;
 
 use Marsskom\Generator\Domain\Exception\Scope\InputNotExistsException;
 use Marsskom\Generator\Domain\Interfaces\Scope\InputInterface;
-use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function sprintf;
@@ -27,7 +26,7 @@ class Input implements InputInterface
      */
     public function __construct(array $input)
     {
-        array_map(static fn(string $key, string $value) => null, array_keys($input), $input);
+        array_map(static fn(string $key, $value) => null, array_keys($input), $input);
 
         $this->input = $input;
     }
@@ -51,7 +50,7 @@ class Input implements InputInterface
      */
     public function has(string $name): bool
     {
-        return array_key_exists($name, $this->input);
+        return isset($this->input[$name]);
     }
 
     /**

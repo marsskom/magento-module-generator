@@ -39,6 +39,8 @@
             <argument name="commands" xsi:type="array">
                 <item name="generatorModuleCommand"
                       xsi:type="object">Marsskom\Generator\Magento\Console\Command\ModuleCommand</item>
+                <item name="generatorDataPatchCommand"
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\DataPatchCommand</item>
                 <item name="generatorConsoleCommand"
                       xsi:type="object">Marsskom\Generator\Magento\Console\Command\ConsoleCommand</item>
             </argument>
