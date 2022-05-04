@@ -63,9 +63,9 @@ class Context implements ContextInterface, CloneableInterface
      */
     public function add(string $name, $value): ContextInterface
     {
-        $currentValue = $this->get($name);
+        $currentValue = $this->has($name) ? $this->get($name) : null;
         if (null === $currentValue) {
-            return $this->set($name, $value);
+            return $this->set($name, is_array($value) ? $value : [$value]);
         }
 
         $new = clone $this;
@@ -126,6 +126,7 @@ class Context implements ContextInterface, CloneableInterface
     {
         $result = [];
         foreach ($this->variables as $name => $variable) {
+            // TODO: convert variable's value into string if need.
             $result[$name] = $variable->value();
         }
 

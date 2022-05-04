@@ -13,11 +13,11 @@ interface InputInterface
      *
      * @param string $name
      *
-     * @return string
+     * @return mixed
      *
      * @throws InputNotExistsException
      */
-    public function get(string $name): string;
+    public function get(string $name);
 
     /**
      * Returns input variable existence state.
@@ -31,7 +31,7 @@ interface InputInterface
     /**
      * Returns all input.
      *
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function getAll(): array;
 }

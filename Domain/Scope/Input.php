@@ -34,7 +34,7 @@ class Input implements InputInterface
     /**
      * @inheritdoc
      */
-    public function get(string $name): string
+    public function get(string $name)
     {
         if (!$this->has($name)) {
             throw new InputNotExistsException(

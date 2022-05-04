@@ -7,22 +7,9 @@ namespace Marsskom\Generator\Test\Unit\Domain\Scope;
 use Marsskom\Generator\Domain\Exception\Scope\InputNotExistsException;
 use Marsskom\Generator\Domain\Scope\Input;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use TypeError;
 
 class InputTest extends MockeryTestCase
 {
-    /**
-     * Tests constructor.
-     *
-     * @return void
-     */
-    public function testConstructor(): void
-    {
-        $this->expectException(TypeError::class);
-
-        new Input(['a' => null]);
-    }
-
     /**
      * Tests input option.
      *

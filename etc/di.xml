@@ -43,6 +43,8 @@
                       xsi:type="object">Marsskom\Generator\Magento\Console\Command\DataPatchCommand</item>
                 <item name="generatorConsoleCommand"
                       xsi:type="object">Marsskom\Generator\Magento\Console\Command\ConsoleCommand</item>
+                <item name="generatorEntityCommand"
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\EntityCommand</item>
                 <item name="generatorCronCommand"
                       xsi:type="object">Marsskom\Generator\Magento\Console\Command\CronCommand</item>
             </argument>
