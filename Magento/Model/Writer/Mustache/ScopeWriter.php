@@ -85,6 +85,12 @@ class ScopeWriter extends Subject
     public function execute(ScopeInterface $scope): void
     {
         foreach ($scope->repository()->list() as $context) {
+            try {
+                $context->get(ContextVariable::BOUNDED_VALUE);
+            } catch (VariableNotExistsException $exception) {
+                continue;
+            }
+
             $context = $this->prepareContext($context);
 
             foreach ($this->writers as $writer) {
@@ -160,6 +166,10 @@ class ScopeWriter extends Subject
             case FileExistsActionQuestion::ACTION_APPEND:
                 try {
                     $writer->append($context);
+
+                    $this->trigger(self::OUTPUT_INFO_EVENT, new ValueObject(
+                        sprintf("File '%s' was updated", $context->get(ContextVariable::FILENAME_VALUE))
+                    ));
                 } catch (LocalizedException $exception) {
                     $this->trigger(self::OUTPUT_ERROR_EVENT, new ValueObject($exception->getMessage()));
                 }
