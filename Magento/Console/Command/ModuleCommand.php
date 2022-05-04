@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace Marsskom\Generator\Magento\Console\Command;
 
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
-use Marsskom\Generator\Infrastructure\Console\Command\GeneratorCommand;
+use Marsskom\Generator\Infrastructure\Model\Enum\ContextVariable;
+use Marsskom\Generator\Infrastructure\Model\Filesystem\FileName;
+use Marsskom\Generator\Infrastructure\Model\TemplateEngine\Mustache\Param;
 use Marsskom\Generator\Magento\Model\Enum\InputParameter;
 use Marsskom\Generator\Magento\Model\Enum\TemplateVariable;
 use Marsskom\Generator\Magento\Model\Validator\ModuleValidator;
@@ -53,7 +55,21 @@ class ModuleCommand extends GeneratorCommand
         return $this->flowFactory
             ->create()
             ->validator(new ModuleValidator())
-            ->with('default', [$moduleNameCallable])
-            ->with('module', [$moduleNameCallable]);
+            ->with('default', [
+                $moduleNameCallable,
+                static fn($c) => $c->set(ContextVariable::FILENAME_VALUE, new FileName('registration.php')),
+                static fn($c) => $c->set(
+                    ContextVariable::BOUNDED_VALUE,
+                    new Param('module/registration.stub', $c->getAll())
+                ),
+            ])
+            ->with('module', [
+                $moduleNameCallable,
+                static fn($c) => $c->set(ContextVariable::FILENAME_VALUE, new FileName('etc/module.xml')),
+                static fn($c) => $c->set(
+                    ContextVariable::BOUNDED_VALUE,
+                    new Param('module/module.stub', $c->getAll())
+                ),
+            ]);
     }
 }

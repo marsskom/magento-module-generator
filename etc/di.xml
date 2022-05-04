@@ -16,12 +16,23 @@
                 type="Marsskom\Generator\Domain\Scope\Scope"/>
 
     <preference for="Marsskom\Generator\Infrastructure\Api\PathInterface"
-                type="Marsskom\Generator\Infrastructure\Model\Path"/>
+                type="Marsskom\Generator\Infrastructure\Model\Filesystem\Path"/>
 
     <preference for="Marsskom\Generator\Infrastructure\Api\Data\TemplateEngineInterface"
                 type="Marsskom\Generator\Infrastructure\Model\TemplateEngine\Mustache\Engine"/>
     <preference for="Marsskom\Generator\Infrastructure\Api\Data\TemplateInterface"
                 type="Marsskom\Generator\Infrastructure\Model\TemplateEngine\Mustache\Template"/>
+
+    <type name="Marsskom\Generator\Magento\Model\Writer\Mustache\ScopeWriter">
+        <arguments>
+            <argument name="writers" xsi:type="array">
+                <item name="0"
+                      xsi:type="object">Marsskom\Generator\Infrastructure\Model\Writer\PhpWriter</item>
+                <item name="1"
+                      xsi:type="object">Marsskom\Generator\Infrastructure\Model\Writer\XmlWriter</item>
+            </argument>
+        </arguments>
+    </type>
 
     <type name="Magento\Framework\Console\CommandList">
         <arguments>

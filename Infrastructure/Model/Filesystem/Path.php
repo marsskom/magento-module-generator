@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Marsskom\Generator\Infrastructure\Model;
+namespace Marsskom\Generator\Infrastructure\Model\Filesystem;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
