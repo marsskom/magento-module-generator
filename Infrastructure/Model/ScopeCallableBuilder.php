@@ -43,10 +43,17 @@ class ScopeCallableBuilder implements CallableBuilderInterface
         foreach ($callables as $callable) {
             if (is_array($callable)) {
                 $currentCallback = null;
-                if (!is_callable($callable[0]) && $this->isInvokeArray($callable[0])) {
-                    $currentCallback = $this->factory->create($callable[0][0], $callable[0][1] ?? []);
+                if (!is_callable($callable[0])) {
+                    if ($this->isInvokeArray($callable)) {
+                        $currentCallback = $this->factory->create($callable[0], $callable[1] ?? []);
+                    } elseif ($this->isInvokeArray($callable[0])) {
+                        $currentCallback = $this->factory->create($callable[0][0], $callable[0][1] ?? []);
+                    }
+
                     array_shift($callable);
-                } else {
+                }
+
+                if (null === $currentCallback) {
                     $currentCallback = array_shift($callable);
                 }
 

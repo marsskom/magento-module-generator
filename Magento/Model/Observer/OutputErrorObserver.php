@@ -9,7 +9,7 @@ use Marsskom\Generator\Domain\Interfaces\Observer\SubjectInterface;
 use Marsskom\Generator\Domain\Interfaces\ValueObjectInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OutputInfoObserver implements ObserverInterface
+class OutputErrorObserver implements ObserverInterface
 {
     private OutputInterface $output;
 
@@ -28,6 +28,6 @@ class OutputInfoObserver implements ObserverInterface
      */
     public function receive(SubjectInterface $subject, string $eventName, ValueObjectInterface $payload): void
     {
-        $this->output->writeln('<info>' . $payload->value() . '</info>');
+        $this->output->writeln('<error>' . $payload->value() . '</error>');
     }
 }

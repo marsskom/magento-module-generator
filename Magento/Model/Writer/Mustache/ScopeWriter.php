@@ -23,9 +23,14 @@ use Marsskom\Generator\Magento\Model\Helper\Builder\ModuleBuilder;
 use Marsskom\Generator\Magento\Model\InputQuestion\Writer\FileExistsActionQuestion;
 use function sprintf;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ScopeWriter extends Subject
 {
     public const OUTPUT_INFO_EVENT = __CLASS__ . '-output_info_event';
+
+    public const OUTPUT_ERROR_EVENT = __CLASS__ . '-output_error_event';
 
     public const OUTPUT_ASK_EVENT = __CLASS__ . '-output_ask_event';
 
@@ -153,7 +158,11 @@ class ScopeWriter extends Subject
 
                 return;
             case FileExistsActionQuestion::ACTION_APPEND:
-                $writer->append($context);
+                try {
+                    $writer->append($context);
+                } catch (LocalizedException $exception) {
+                    $this->trigger(self::OUTPUT_ERROR_EVENT, new ValueObject($exception->getMessage()));
+                }
 
                 return;
             default:

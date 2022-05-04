@@ -12,6 +12,7 @@ use Marsskom\Generator\Domain\Scope\ScopeBuilder;
 use Marsskom\Generator\Infrastructure\Api\Data\FlowFactoryInterface;
 use Marsskom\Generator\Infrastructure\Model\Context\ArrayRepository;
 use Marsskom\Generator\Magento\Model\Observer\OutputAskObserver;
+use Marsskom\Generator\Magento\Model\Observer\OutputErrorObserver;
 use Marsskom\Generator\Magento\Model\Observer\OutputInfoObserver;
 use Marsskom\Generator\Magento\Model\Writer\Mustache\ScopeWriter;
 use Symfony\Component\Console\Command\Command;
@@ -76,10 +77,13 @@ abstract class GeneratorCommand extends Command
             $scope = $this->flow()->run($scope);
 
             /** @var $scopeWriter ScopeWriter */
-            $scopeWriter = $this->scopeWriter->attach(
-                ScopeWriter::OUTPUT_ASK_EVENT,
-                new OutputAskObserver($input, $output)
-            )->attach(ScopeWriter::OUTPUT_INFO_EVENT, new OutputInfoObserver($output));
+            $scopeWriter = $this->scopeWriter
+                ->attach(
+                    ScopeWriter::OUTPUT_ASK_EVENT,
+                    new OutputAskObserver($input, $output)
+                )
+                ->attach(ScopeWriter::OUTPUT_INFO_EVENT, new OutputInfoObserver($output))
+                ->attach(ScopeWriter::OUTPUT_ERROR_EVENT, new OutputErrorObserver($output));
 
             $scopeWriter->execute($scope);
         } catch (Exception $exception) {
