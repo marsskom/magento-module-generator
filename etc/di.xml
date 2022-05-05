@@ -1,66 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Marsskom\Generator\Api\Data\Scope\ScopeInterface"
-                type="Marsskom\Generator\Model\Scope\Scope"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\DiFactoryInterface"
+                type="Marsskom\Generator\Infrastructure\Model\Factories\GlobalFactory"/>
 
-    <preference for="Marsskom\Generator\Api\Data\Context\ContextInterface"
-                type="Marsskom\Generator\Model\Context\Context"/>
-    <preference for="Marsskom\Generator\Api\Data\Scope\InputInterface"
-                type="Marsskom\Generator\Model\Scope\Input"/>
-    <preference for="Marsskom\Generator\Api\Data\Scope\ScopeVariableInterface"
-                type="Marsskom\Generator\Model\Scope\ScopeVariable"/>
-    <preference for="Marsskom\Generator\Api\Data\Command\InterruptInterface"
-                type="Marsskom\Generator\Model\Console\Interrupt"/>
+    <preference for="Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface"
+                type="Marsskom\Generator\Infrastructure\Model\ScopeCallableBuilder"/>
 
-    <preference for="Marsskom\Generator\Api\Data\Variable\VariableInterface"
-                type="Marsskom\Generator\Model\Variable\Variable"/>
+    <preference for="Marsskom\Generator\Domain\Interfaces\FlowInterface"
+                type="Marsskom\Generator\Domain\Flow\Flow"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\Data\FlowFactoryInterface"
+                type="Marsskom\Generator\Infrastructure\Model\FlowFactory"/>
 
-    <preference for="Marsskom\Generator\Api\Data\Helper\PathInterface"
-                type="Marsskom\Generator\Model\Helper\Path"/>
+    <preference for="Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface"
+                type="Marsskom\Generator\Domain\Scope\Scope"/>
 
-    <preference for="Marsskom\Generator\Api\Data\TemplateEngineInterface"
-                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Engine"/>
-    <preference for="Marsskom\Generator\Api\Data\Template\TemplateInterface"
-                type="Marsskom\Generator\Model\TemplateEngine\Mustache\Template"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\PathInterface"
+                type="Marsskom\Generator\Infrastructure\Model\Filesystem\Path"/>
 
-    <preference for="Marsskom\Generator\Api\Data\Validator\ValidateResultInterface"
-                type="Marsskom\Generator\Model\Validator\ValidateResult"/>
-    <preference for="Marsskom\Generator\Api\Data\Validator\ValidationObserverInterface"
-                type="Marsskom\Generator\Model\Validator\ValidatorObserver"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\Data\TemplateEngineInterface"
+                type="Marsskom\Generator\Infrastructure\Model\TemplateEngine\Mustache\Engine"/>
+    <preference for="Marsskom\Generator\Infrastructure\Api\Data\TemplateInterface"
+                type="Marsskom\Generator\Infrastructure\Model\TemplateEngine\Mustache\Template"/>
 
-    <type name="Marsskom\Generator\Model\Validator\Console\ModuleValidator" shared="false"/>
-    <type name="Marsskom\Generator\Model\Validator\Console\NameValidator" shared="false"/>
-    <type name="Marsskom\Generator\Model\Validator\Entity\PropertiesValidator" shared="false"/>
-
-    <type name="Marsskom\Generator\Model\Sequence\Automation\Writer\BasedOnExtensionWriter">
+    <type name="Marsskom\Generator\Magento\Model\Writer\Mustache\ScopeWriter">
         <arguments>
-            <argument name="sequences" xsi:type="array">
+            <argument name="writers" xsi:type="array">
                 <item name="0"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\PhpWriter</item>
+                      xsi:type="object">Marsskom\Generator\Infrastructure\Model\Writer\PhpWriter</item>
                 <item name="1"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\XmlWriter</item>
-            </argument>
-        </arguments>
-    </type>
-    <type name="Marsskom\Generator\Model\Sequence\Automation\Writer\ScopeWriter">
-        <arguments>
-            <argument name="sequences" xsi:type="array">
-                <item name="0"
-                      xsi:type="object">Marsskom\Generator\Model\Sequence\Automation\Writer\BasedOnExtensionWriter</item>
-            </argument>
-        </arguments>
-    </type>
-
-    <type name="Marsskom\Generator\Model\Scope\Variable\Registry">
-        <arguments>
-            <argument name="registriesCollections" xsi:type="array">
-                <item name="0"
-                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\DefaultRegistryCollection</item>
-                <item name="1"
-                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CommandRegistryCollection</item>
-                <item name="2"
-                      xsi:type="object">Marsskom\Generator\Model\Variable\RegistryCollection\CronRegistryCollection</item>
+                      xsi:type="object">Marsskom\Generator\Infrastructure\Model\Writer\XmlWriter</item>
             </argument>
         </arguments>
     </type>
@@ -69,15 +38,15 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="generatorModuleCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\ModuleCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\ModuleCommand</item>
                 <item name="generatorDataPatchCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\Patch\DataPatchCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\DataPatchCommand</item>
                 <item name="generatorConsoleCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\Console\ConsoleCommandCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\ConsoleCommand</item>
                 <item name="generatorEntityCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\EntityCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\EntityCommand</item>
                 <item name="generatorCronCommand"
-                      xsi:type="object">Marsskom\Generator\Console\Command\Crontab\CronCommand</item>
+                      xsi:type="object">Marsskom\Generator\Magento\Console\Command\CronCommand</item>
             </argument>
         </arguments>
     </type>
