@@ -9,7 +9,6 @@ use Marsskom\Generator\Domain\Exception\Context\ContextAlreadyExistsException;
 use Marsskom\Generator\Domain\Interfaces\Callables\CallableBuilderInterface;
 use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\FlowInterface;
-use Marsskom\Generator\Domain\Interfaces\Scope\Input\ValidatorInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 use Marsskom\Generator\Domain\Pipeline\Pipeline;
 use Marsskom\Generator\Domain\Scope\Pipeline\ContextPipeline;
@@ -23,7 +22,7 @@ use function is_callable;
 class Flow implements FlowInterface, CloneableInterface
 {
     /**
-     * @var ValidatorInterface[]
+     * @var callable[]
      */
     private array $validators = [];
 

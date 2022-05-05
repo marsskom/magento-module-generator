@@ -13,14 +13,14 @@ use function sprintf;
 class Input implements InputInterface
 {
     /**
-     * @var array<string, string>
+     * @var array<string, mixed>
      */
     private array $input;
 
     /**
      * Input constructor.
      *
-     * @param array<string, string> $input
+     * @param array<string, mixed> $input
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */

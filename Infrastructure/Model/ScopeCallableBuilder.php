@@ -98,6 +98,6 @@ class ScopeCallableBuilder implements CallableBuilderInterface
      */
     protected function createWrapper(callable $callable): CallableInterface
     {
-        return $this->attach(new CallableWrapper($callable));
+        return $this->attachTo(new CallableWrapper($callable));
     }
 }

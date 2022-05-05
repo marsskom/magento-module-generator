@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Interfaces;
 
-use Marsskom\Generator\Domain\Interfaces\Scope\Input\ValidatorInterface;
 use Marsskom\Generator\Domain\Interfaces\Scope\ScopeInterface;
 
 interface FlowInterface
@@ -12,7 +11,7 @@ interface FlowInterface
     /**
      * Adds input validator.
      *
-     * @param callable|callable[]|ValidatorInterface $validator
+     * @param callable|callable[] $validator
      *
      * @return FlowInterface
      */

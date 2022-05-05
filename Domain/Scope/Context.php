@@ -137,12 +137,10 @@ class Context implements ContextInterface, CloneableInterface
      */
     public function __clone()
     {
-        $this->variables = array_merge(
-            ...array_map(
-                static fn(string $k, VariableInterface $v) => [$k => clone $v],
-                array_keys($this->variables),
-                $this->variables
-            )
-        );
+        $variables = [];
+        foreach ($this->variables as $key => $variable) {
+            $variables[$key] = clone $variable;
+        }
+        $this->variables = $variables;
     }
 }

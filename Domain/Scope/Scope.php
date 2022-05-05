@@ -50,6 +50,7 @@ class Scope implements ScopeInterface, CloneableInterface
      */
     public function setActiveContextAlias(string $alias): ScopeInterface
     {
+        // Validation.
         $this->repository->get(new ContextId($alias));
 
         $new = clone $this;

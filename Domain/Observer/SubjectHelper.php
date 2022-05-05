@@ -36,7 +36,7 @@ trait SubjectHelper
      *
      * @return mixed
      */
-    public function attach(SubjectInterface $subject)
+    public function attachTo(SubjectInterface $subject)
     {
         foreach ($this->observers as $eventName => $observers) {
             foreach ($observers as $observer) {

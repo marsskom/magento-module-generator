@@ -11,9 +11,6 @@ use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextIdInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\ContextInterface;
 use Marsskom\Generator\Domain\Interfaces\Repository\ContextRepositoryInterface;
-use function array_keys;
-use function array_map;
-use function array_merge;
 use function sprintf;
 
 class ArrayRepository implements ContextRepositoryInterface, CloneableInterface
@@ -96,12 +93,10 @@ class ArrayRepository implements ContextRepositoryInterface, CloneableInterface
      */
     public function __clone()
     {
-        $this->repository = array_merge(
-            ...array_map(
-                static fn(string $k, ContextInterface $c) => [$k => clone $c],
-                array_keys($this->repository),
-                $this->repository
-            )
-        );
+        $repository = [];
+        foreach ($this->repository as $key => $repo) {
+            $repository[$key] = clone $repo;
+        }
+        $this->repository = $repository;
     }
 }

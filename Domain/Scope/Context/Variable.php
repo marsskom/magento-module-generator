@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace Marsskom\Generator\Domain\Scope\Context;
 
+use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
+use function is_callable;
 
-class Variable implements VariableInterface
+class Variable implements VariableInterface, CloneableInterface
 {
     private string $name;
 
@@ -41,5 +43,15 @@ class Variable implements VariableInterface
     public function value()
     {
         return $this->value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __clone()
+    {
+        if (is_callable($this->value)) {
+            $this->value = clone $this->value;
+        }
     }
 }

@@ -32,7 +32,6 @@ class NamespaceCallable
      */
     public function __invoke(ContextInterface $c, InputInterface $i): ContextInterface
     {
-        $moduleName = $i->get(InputParameter::MODULE);
         $path = $i->has(InputParameter::PATH) ? $i->get(InputParameter::PATH) : '';
 
         if ($c->has(ContextVariable::FILENAME_VALUE)) {
@@ -41,7 +40,7 @@ class NamespaceCallable
             $path = false === $pos ? $fileName : substr($fileName, 0, $pos);
         }
 
-        $namespace = $this->getNamespace($moduleName, $path);
+        $namespace = $this->getNamespace($i->get(InputParameter::MODULE), $path);
 
         return $c->set(
             TemplateVariable::FILE_NAMESPACE,

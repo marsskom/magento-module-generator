@@ -10,6 +10,9 @@ class ScopeEventModel
 {
     private ScopeInterface $scope;
 
+    /**
+     * @var mixed
+     */
     private $result;
 
     /**
@@ -35,7 +38,7 @@ class ScopeEventModel
     }
 
     /**
-     * Returns callable result.
+     * Returns result.
      *
      * @return mixed
      */

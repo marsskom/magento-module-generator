@@ -18,7 +18,7 @@ interface PathInterface
     public function module(Module $module): string;
 
     /**
-     * Returns path that refers to module.
+     * Returns path that according to module.
      *
      * @param Module $module
      * @param string $path
