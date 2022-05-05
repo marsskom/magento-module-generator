@@ -7,6 +7,7 @@ namespace Marsskom\Generator\Domain\Scope\Context;
 use Marsskom\Generator\Domain\Interfaces\CloneableInterface;
 use Marsskom\Generator\Domain\Interfaces\Context\VariableInterface;
 use function is_callable;
+use function is_object;
 
 class Variable implements VariableInterface, CloneableInterface
 {
@@ -50,7 +51,7 @@ class Variable implements VariableInterface, CloneableInterface
      */
     public function __clone()
     {
-        if (is_callable($this->value)) {
+        if (is_object($this->value) || is_callable($this->value)) {
             $this->value = clone $this->value;
         }
     }
