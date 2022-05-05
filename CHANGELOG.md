@@ -1,3 +1,12 @@
+## [1.0.0] = 2022-05-05
+
+### Added
+
+- Remove old codebase
+- Rewrite all codebase to pipelines and callables
+- Rewrite tests
+- All changes were made belongs to the issue #59
+
 ## [0.0.2] - 2022-04-26
 
 ### Added
