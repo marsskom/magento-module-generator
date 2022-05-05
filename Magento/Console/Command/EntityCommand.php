@@ -110,20 +110,9 @@ class EntityCommand extends GeneratorCommand
                             throw new ConditionFailedException("Skip interface creation.");
                         }
                     },
-                    static fn($c, $i) => $c->set(
-                        TemplateVariable::INTERFACE_NAME,
-                        $i->get(InputParameter::NAME) . 'Interface'
-                    ),
+                    static fn($c, $i) => $c
+                        ->set(TemplateVariable::INTERFACE_NAME, $i->get(InputParameter::NAME) . 'Interface'),
                     ...$pipeline,
-                    static function ($s, $c): ContextInterface {
-                        $interfaceNamespace = $c->get(TemplateVariable::FILE_NAMESPACE)
-                            . '\\' . $c->get(TemplateVariable::INTERFACE_NAME);
-
-                        return $s
-                            ->use('default')
-                            ->add(TemplateVariable::FILE_USES, 'use ' . $interfaceNamespace . ';')
-                            ->add(TemplateVariable::CLASS_IMPLEMENTS, $c->get(TemplateVariable::INTERFACE_NAME));
-                    },
                     static fn($c, $i) => $c->set(ContextVariable::FILENAME_VALUE, new FileName(
                         'Api/Data/%path%/%name%Interface.php',
                         [
@@ -133,6 +122,15 @@ class EntityCommand extends GeneratorCommand
                     )),
                     // Overrides namespace
                     new NamespaceCallable(),
+                    static function ($s, $c): ContextInterface {
+                        $interfaceNamespace = $c->get(TemplateVariable::FILE_NAMESPACE)
+                            . '\\' . $c->get(TemplateVariable::INTERFACE_NAME);
+
+                        return $s
+                            ->use('default')
+                            ->add(TemplateVariable::FILE_USES, 'use ' . $interfaceNamespace . ';')
+                            ->add(TemplateVariable::CLASS_IMPLEMENTS, $c->get(TemplateVariable::INTERFACE_NAME));
+                    },
                     static fn($c, $i) => $c->set(
                         ContextVariable::BOUNDED_VALUE,
                         new Param('entity/interface.stub', $c->getAll())

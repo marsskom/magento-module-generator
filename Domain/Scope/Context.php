@@ -126,7 +126,6 @@ class Context implements ContextInterface, CloneableInterface
     {
         $result = [];
         foreach ($this->variables as $name => $variable) {
-            // TODO: convert variable's value into string if need.
             $result[$name] = $variable->value();
         }
 

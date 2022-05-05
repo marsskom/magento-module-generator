@@ -30,13 +30,13 @@ class NamespaceCallable
      * @throws InputNotExistsException
      * @throws VariableNotExistsException
      */
-    public function __invoke($c, $i): ContextInterface
+    public function __invoke(ContextInterface $c, InputInterface $i): ContextInterface
     {
         $moduleName = $i->get(InputParameter::MODULE);
         $path = $i->has(InputParameter::PATH) ? $i->get(InputParameter::PATH) : '';
 
-        if (empty($path) && $c->has(ContextVariable::FILENAME_VALUE)) {
-            $fileName = $c->get(ContextVariable::FILENAME_VALUE);
+        if ($c->has(ContextVariable::FILENAME_VALUE)) {
+            $fileName = (string) $c->get(ContextVariable::FILENAME_VALUE);
             $pos = strrpos($fileName, '/');
             $path = false === $pos ? $fileName : substr($fileName, 0, $pos);
         }
